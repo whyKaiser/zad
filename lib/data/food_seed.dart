@@ -1,0 +1,258 @@
+import '../models/food_item.dart';
+
+/// قاعدة بذرة لأشهر الأطباق الخليجية — قيم لكل 100 جرام، مقاطعة من عدة مصادر.
+/// confidence يعكس مدى اتفاق المصادر. تُحدّث وتُوثّق قبل الإطلاق.
+/// المصادر: snapcalorie, clearcals, mynetdiary, thewellnesscorner, arise, fitia, fatsecret.
+const List<FoodItem> kFoodSeed = [
+  FoodItem(
+    id: 'kabsa_chicken',
+    nameAr: 'كبسة دجاج',
+    nameEn: 'Chicken kabsa',
+    kcalPer100g: 145,
+    proteinPer100g: 9,
+    carbsPer100g: 17,
+    fatPer100g: 5,
+    typicalServingG: 450,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'snapcalorie/clearcals/mynetdiary (متوسط)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'mandi_chicken',
+    nameAr: 'مندي دجاج',
+    nameEn: 'Chicken mandi',
+    kcalPer100g: 140,
+    proteinPer100g: 11,
+    carbsPer100g: 17,
+    fatPer100g: 6,
+    typicalServingG: 450,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'thewellnesscorner/clearcals/calorieflowapp (متوسط)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'shawarma_chicken',
+    nameAr: 'شاورما دجاج',
+    nameEn: 'Chicken shawarma',
+    kcalPer100g: 190,
+    proteinPer100g: 14,
+    carbsPer100g: 18,
+    fatPer100g: 6,
+    typicalServingG: 250,
+    servingLabelAr: 'ساندويتش',
+    servingLabelEn: 'sandwich',
+    source: 'arise/mynetdiary/fitia (متوسط)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'kabsa_lamb',
+    nameAr: 'كبسة لحم',
+    nameEn: 'Lamb kabsa',
+    kcalPer100g: 160,
+    proteinPer100g: 8,
+    carbsPer100g: 17,
+    fatPer100g: 7,
+    typicalServingG: 450,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'snapcalorie/fatsecret (مشتق — اللحم أدسم من الدجاج)',
+    confidence: 'low',
+  ),
+  FoodItem(
+    id: 'biryani_chicken',
+    nameAr: 'برياني دجاج',
+    nameEn: 'Chicken biryani',
+    kcalPer100g: 150,
+    proteinPer100g: 7,
+    carbsPer100g: 20,
+    fatPer100g: 5,
+    typicalServingG: 400,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'clearcals/fitia/nutritionvalue (نطاق 129-179)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'falafel',
+    nameAr: 'فلافل',
+    nameEn: 'Falafel',
+    kcalPer100g: 333,
+    proteinPer100g: 13,
+    carbsPer100g: 32,
+    fatPer100g: 18,
+    typicalServingG: 85,
+    servingLabelAr: '5 قطع',
+    servingLabelEn: '5 pieces',
+    source: 'USDA/foodstruct/eatthismuch (متطابقة — مقلي)',
+    confidence: 'high',
+  ),
+  FoodItem(
+    id: 'foul',
+    nameAr: 'فول',
+    nameEn: 'Ful medames',
+    kcalPer100g: 110,
+    proteinPer100g: 6,
+    carbsPer100g: 13,
+    fatPer100g: 2,
+    typicalServingG: 200,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'bowl',
+    source: 'nutritionvalue/nutriscan/fatsecret (متطابقة)',
+    confidence: 'high',
+  ),
+  FoodItem(
+    id: 'mandi_madhbi_chicken',
+    nameAr: 'مظبي دجاج',
+    nameEn: 'Chicken madhbi',
+    kcalPer100g: 135,
+    proteinPer100g: 11,
+    carbsPer100g: 18,
+    fatPer100g: 5,
+    typicalServingG: 450,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'calorieflowapp/clearcals (أخف من المندي — مشوي)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'harees',
+    nameAr: 'هريس',
+    nameEn: 'Harees',
+    kcalPer100g: 80,
+    proteinPer100g: 4,
+    carbsPer100g: 13,
+    fatPer100g: 2,
+    typicalServingG: 250,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'bowl',
+    source: 'fatsecret/بحث عُماني محكّم (71-82)',
+    confidence: 'high',
+  ),
+  FoodItem(
+    id: 'jareesh',
+    nameAr: 'جريش',
+    nameEn: 'Jareesh',
+    kcalPer100g: 130,
+    proteinPer100g: 5,
+    carbsPer100g: 19,
+    fatPer100g: 3,
+    typicalServingG: 300,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'bowl',
+    source: 'caloriqueapp (الحَب الجاف 300؛ المطبوخ أقل — يحتاج تدقيق)',
+    confidence: 'low',
+  ),
+  FoodItem(
+    id: 'hummus',
+    nameAr: 'حمص',
+    nameEn: 'Hummus',
+    kcalPer100g: 166,
+    proteinPer100g: 8,
+    carbsPer100g: 14,
+    fatPer100g: 10,
+    typicalServingG: 100,
+    servingLabelAr: 'صحن صغير',
+    servingLabelEn: 'small bowl',
+    source: 'foodstruct/eatthismuch/recipal (متطابقة)',
+    confidence: 'high',
+  ),
+  FoodItem(
+    id: 'samosa_meat',
+    nameAr: 'سمبوسة لحم',
+    nameEn: 'Meat samosa',
+    kcalPer100g: 360,
+    proteinPer100g: 9,
+    carbsPer100g: 30,
+    fatPer100g: 22,
+    typicalServingG: 50,
+    servingLabelAr: 'قطعة',
+    servingLabelEn: 'piece',
+    source: 'snapcalorie/mynetdiary (مقلي، 150-300/قطعة)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'rice_bukhari',
+    nameAr: 'رز بخاري',
+    nameEn: 'Bukhari rice',
+    kcalPer100g: 115,
+    proteinPer100g: 3,
+    carbsPer100g: 24,
+    fatPer100g: 1,
+    typicalServingG: 250,
+    servingLabelAr: 'كوب',
+    servingLabelEn: 'cup',
+    source: 'snapcalorie/nutritionix/clearcals (أرز فقط بلا لحم)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'tabbouleh',
+    nameAr: 'تبولة',
+    nameEn: 'Tabbouleh',
+    kcalPer100g: 123,
+    proteinPer100g: 2,
+    carbsPer100g: 10,
+    fatPer100g: 9,
+    typicalServingG: 150,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'fatsecret/nutritionvalue/myfooddata (متطابقة — زيت زيتون)',
+    confidence: 'high',
+  ),
+  FoodItem(
+    id: 'mutabbaq',
+    nameAr: 'مطبق',
+    nameEn: 'Mutabbaq',
+    kcalPer100g: 280,
+    proteinPer100g: 15,
+    carbsPer100g: 25,
+    fatPer100g: 15,
+    typicalServingG: 200,
+    servingLabelAr: 'قطعة',
+    servingLabelEn: 'piece',
+    source: 'nutritionix/nutribit/وصفة سعودية (450-631/قطعة)',
+    confidence: 'medium',
+  ),
+  FoodItem(
+    id: 'haneeth_lamb',
+    nameAr: 'حنيذ لحم',
+    nameEn: 'Lamb haneeth',
+    kcalPer100g: 175,
+    proteinPer100g: 12,
+    carbsPer100g: 16,
+    fatPer100g: 9,
+    typicalServingG: 450,
+    servingLabelAr: 'صحن',
+    servingLabelEn: 'plate',
+    source: 'fatsecret لحم 270/100g + أرز (مشتق)',
+    confidence: 'low',
+  ),
+];
+
+/// بحث بسيط بالاسم (عربي أو إنجليزي). لاحقاً نطوّره لبحث ضبابي.
+FoodItem? findFood(String query) {
+  final q = query.trim().toLowerCase();
+  if (q.isEmpty) return null;
+  for (final f in kFoodSeed) {
+    if (f.nameAr.contains(q) || f.nameEn.toLowerCase().contains(q)) return f;
+  }
+  return null;
+}
+
+/// صنف بالمعرّف.
+FoodItem? foodById(String id) {
+  for (final f in kFoodSeed) {
+    if (f.id == id) return f;
+  }
+  return null;
+}
+
+/// قائمة الأصناف المطابقة (الكل إن كان الاستعلام فارغاً).
+List<FoodItem> searchFoods(String query) {
+  final q = query.trim().toLowerCase();
+  if (q.isEmpty) return kFoodSeed;
+  return kFoodSeed
+      .where((f) => f.nameAr.contains(q) || f.nameEn.toLowerCase().contains(q))
+      .toList();
+}
