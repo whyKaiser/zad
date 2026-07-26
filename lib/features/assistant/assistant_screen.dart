@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
+import '../../data/recent_foods_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/meal.dart';
 import '../../services/food_lookup.dart';
@@ -82,14 +83,16 @@ class _AssistantScreenState extends State<AssistantScreen> {
 
   void _addToDiary(_Entry entry) {
     final r = entry.result!;
-    context.read<DiaryRepository>().addMeal(Meal(
-          id: DateTime.now().microsecondsSinceEpoch.toString(),
-          name: r.name,
-          calories: r.calories,
-          macros: r.macros,
-          time: DateTime.now(),
-          type: _inferType(),
-        ));
+    final meal = Meal(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      name: r.name,
+      calories: r.calories,
+      macros: r.macros,
+      time: DateTime.now(),
+      type: _inferType(),
+    );
+    context.read<DiaryRepository>().addMeal(meal);
+    context.read<RecentFoodsController>().record(meal);
     Haptics.light();
     setState(() => entry.added = true);
   }

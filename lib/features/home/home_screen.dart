@@ -3,6 +3,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
+import '../../data/activity_controller.dart';
 import '../../data/diary_repository.dart';
 import '../../data/points_controller.dart';
 import '../../data/profile_controller.dart';
@@ -11,6 +12,7 @@ import '../../l10n/app_localizations.dart';
 import '../../models/meal.dart';
 import '../../models/rank.dart';
 import '../../theme/app_theme.dart';
+import '../activity/activity_screen.dart';
 import '../add_meal/add_meal_screen.dart';
 import '../profile/profile_screen.dart';
 import '../streak/streak_screen.dart';
@@ -20,6 +22,9 @@ import 'widgets/macro_ring.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
+  static bool _isSameDay(DateTime a, DateTime b) =>
+      a.year == b.year && a.month == b.month && a.day == b.day;
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
@@ -28,9 +33,13 @@ class HomeScreen extends StatelessWidget {
     final profile = context.watch<ProfileController>().profile;
     final consumed = repo.consumedMacros;
 
-    final goalCalories = profile?.targetCalories ?? repo.goal.calories;
+    final baseGoal = profile?.targetCalories ?? repo.goal.calories;
     final goalMacros = profile?.targetMacros ?? repo.goal.macros;
     final consumedCal = repo.consumedCalories;
+    // النشاط يُضاف للميزانية فقط في اليوم الحالي.
+    final isToday = _isSameDay(repo.selectedDate, DateTime.now());
+    final burned = isToday ? context.watch<ActivityController>().burnedToday : 0;
+    final goalCalories = baseGoal + burned;
     final remaining = (goalCalories - consumedCal).clamp(0, goalCalories);
     final name = profile?.name ?? repo.userName;
 
@@ -77,6 +86,11 @@ class HomeScreen extends StatelessWidget {
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: _WaterCard(),
           ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
+          const SizedBox(height: 12),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 20),
+            child: _ActivityCard(),
+          ).animate().fadeIn(delay: 230.ms, duration: 400.ms),
           const SizedBox(height: 20),
           ..._buildMealSections(context, c, loc, repo),
         ],
@@ -339,6 +353,51 @@ class _WaterCard extends StatelessWidget {
       );
 }
 
+// ─── Activity Card ───────────────────────────────────────────────────────────
+
+class _ActivityCard extends StatelessWidget {
+  const _ActivityCard();
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final loc = AppLocalizations.of(context);
+    final burned = context.watch<ActivityController>().burnedToday;
+
+    return GestureDetector(
+      onTap: () {
+        Haptics.select();
+        Navigator.push(context, ZadPageRoute(page: const ActivityScreen()));
+      },
+      child: _GlassCard(
+        padding: const EdgeInsets.all(16),
+        child: Row(children: [
+          Icon(Icons.directions_run_rounded, color: c.accent2, size: 22),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(loc.isAr ? 'النشاط' : 'Activity',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
+              const SizedBox(height: 2),
+              Text(
+                burned > 0
+                    ? (loc.isAr ? 'حرقت $burned سعرة — أُضيفت لميزانيتك' : '$burned burned — added to budget')
+                    : (loc.isAr ? 'سجّل تمرينك وزد ميزانيتك' : 'Log a workout to earn calories'),
+                style: TextStyle(fontSize: 13, color: c.textSecondary),
+              ),
+            ]),
+          ),
+          if (burned > 0)
+            Text('+$burned',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: c.accent2)),
+          const SizedBox(width: 6),
+          Icon(Icons.chevron_right_rounded, color: c.textTertiary),
+        ]),
+      ),
+    );
+  }
+}
+
 // ─── Meal Sections ───────────────────────────────────────────────────────────
 
 class _MealSection extends StatelessWidget {
@@ -400,13 +459,94 @@ class _MealSection extends StatelessWidget {
           ),
           if (meals.isEmpty)
             Padding(
-              padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-              child: Text(loc.addFood,
-                  style: TextStyle(fontSize: 13, color: c.textTertiary)),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
+              child: Row(children: [
+                Text(loc.addFood,
+                    style: TextStyle(fontSize: 13, color: c.textTertiary)),
+                const Spacer(),
+                _CopyYesterdayButton(type: type, loc: loc, c: c),
+              ]),
             )
           else
             ...meals.map((m) => _MealRow(meal: m, loc: loc, c: c)),
         ],
+      ),
+    );
+  }
+}
+
+/// ينسخ وجبات نفس النوع من أمس بنقرة — أكثر سلوك متكرر في تتبّع السعرات.
+class _CopyYesterdayButton extends StatefulWidget {
+  final MealType type;
+  final AppLocalizations loc;
+  final dynamic c;
+  const _CopyYesterdayButton({required this.type, required this.loc, required this.c});
+
+  @override
+  State<_CopyYesterdayButton> createState() => _CopyYesterdayButtonState();
+}
+
+class _CopyYesterdayButtonState extends State<_CopyYesterdayButton> {
+  bool _busy = false;
+
+  Future<void> _copy() async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    final loc = widget.loc;
+    final repo = context.read<DiaryRepository>();
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final yesterday = DateTime.now().subtract(const Duration(days: 1));
+      final all = await repo.getMealsForDay(yesterday);
+      final same = all.where((m) => m.type == widget.type).toList();
+      if (!mounted) return;
+      if (same.isEmpty) {
+        messenger.showSnackBar(SnackBar(
+          content: Text(loc.isAr ? 'ما فيه تسجيل أمس لهذي الوجبة' : 'Nothing logged yesterday'),
+          behavior: SnackBarBehavior.floating,
+        ));
+        return;
+      }
+      final stamp = DateTime.now().microsecondsSinceEpoch;
+      for (var i = 0; i < same.length; i++) {
+        final m = same[i];
+        repo.addMeal(Meal(
+          id: '${stamp + i}',
+          name: m.name,
+          calories: m.calories,
+          macros: m.macros,
+          time: DateTime.now(),
+          type: m.type,
+        ));
+      }
+      Haptics.light();
+      messenger.showSnackBar(SnackBar(
+        content: Text(loc.isAr ? 'نُسخت ${same.length} من أمس' : 'Copied ${same.length} from yesterday'),
+        behavior: SnackBarBehavior.floating,
+      ));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final c = widget.c;
+    return GestureDetector(
+      onTap: _copy,
+      behavior: HitTestBehavior.opaque,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4, horizontal: 2),
+        child: Row(mainAxisSize: MainAxisSize.min, children: [
+          if (_busy)
+            SizedBox(width: 12, height: 12,
+                child: CircularProgressIndicator(strokeWidth: 1.6, color: c.accent))
+          else
+            Icon(Icons.copy_rounded, size: 13, color: c.accent),
+          const SizedBox(width: 5),
+          Text(widget.loc.isAr ? 'انسخ من أمس' : 'Copy yesterday',
+              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w500, color: c.accent)),
+        ]),
       ),
     );
   }

@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
+import '../../data/recent_foods_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/meal.dart';
 import '../../theme/app_theme.dart';
@@ -45,8 +46,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
 
   void _save() {
     if (!_valid) return;
-    final repo = context.read<DiaryRepository>();
-    repo.addMeal(Meal(
+    final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: _name.text.trim(),
       calories: int.parse(_cal.text),
@@ -57,7 +57,9 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
       ),
       time: DateTime.now(),
       type: _type,
-    ));
+    );
+    context.read<DiaryRepository>().addMeal(meal);
+    context.read<RecentFoodsController>().record(meal);
     Haptics.light();
     Navigator.pop(context);
   }

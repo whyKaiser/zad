@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/food_seed.dart';
+import '../../data/recent_foods_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/food_item.dart';
 import '../../models/meal.dart';
@@ -13,6 +14,7 @@ import '../../services/open_food_facts_service.dart';
 import '../../theme/app_theme.dart';
 import 'barcode_scan_screen.dart';
 import 'custom_food_screen.dart';
+import 'photo_meal_screen.dart';
 
 class AddMealScreen extends StatefulWidget {
   final MealType defaultType;
@@ -44,6 +46,26 @@ class _AddMealScreenState extends State<AddMealScreen> {
     super.dispose();
   }
 
+  /// يسجّل الوجبة في اليوميات ويحفظها بالأخيرة — نقطة واحدة لكل مسارات الإضافة.
+  void _logMeal({
+    required String name,
+    required int calories,
+    required Macros macros,
+    required int grams,
+  }) {
+    final meal = Meal(
+      id: DateTime.now().microsecondsSinceEpoch.toString(),
+      name: name,
+      calories: calories,
+      macros: macros,
+      time: DateTime.now(),
+      type: _selectedType,
+    );
+    context.read<DiaryRepository>().addMeal(meal);
+    context.read<RecentFoodsController>().record(meal, grams: grams);
+    Haptics.light();
+  }
+
   void _openPortion(FoodItem item) {
     final repo = context.read<DiaryRepository>();
     showModalBottomSheet(
@@ -58,16 +80,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
         repo: repo,
         mealType: _selectedType,
         onAdd: (grams, servings) {
-          final v = item.forGrams((grams * servings).round());
-          repo.addMeal(Meal(
-            id: DateTime.now().microsecondsSinceEpoch.toString(),
-            name: item.nameAr,
-            calories: v.calories,
-            macros: v.macros,
-            time: DateTime.now(),
-            type: _selectedType,
-          ));
-          Haptics.light();
+          final total = (grams * servings).round();
+          final v = item.forGrams(total);
+          _logMeal(name: item.nameAr, calories: v.calories, macros: v.macros, grams: total);
           Navigator.pop(context);
           Navigator.pop(context);
         },
@@ -121,16 +136,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
         repo: repo,
         mealType: _selectedType,
         onAdd: (grams, servings) {
-          final v = item.forGrams((grams * servings).round());
-          repo.addMeal(Meal(
-            id: DateTime.now().microsecondsSinceEpoch.toString(),
-            name: off.name,
-            calories: v.calories,
-            macros: v.macros,
-            time: DateTime.now(),
-            type: _selectedType,
-          ));
-          Haptics.light();
+          final total = (grams * servings).round();
+          final v = item.forGrams(total);
+          _logMeal(name: off.name, calories: v.calories, macros: v.macros, grams: total);
           Navigator.pop(context);
           Navigator.pop(context);
         },
@@ -138,11 +146,32 @@ class _AddMealScreenState extends State<AddMealScreen> {
     );
   }
 
+  /// إضافة بنقرة واحدة من الأخيرة/المفضّلة — بلا أوراق ولا خطوات.
+  void _quickAdd(QuickFood f) {
+    _logMeal(name: f.name, calories: f.calories, macros: f.macros, grams: f.grams);
+    final loc = AppLocalizations.of(context);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(loc.isAr ? 'أُضيف «${f.name}»' : 'Added "${f.name}"'),
+      behavior: SnackBarBehavior.floating,
+      duration: const Duration(milliseconds: 1400),
+    ));
+  }
+
+  Widget _sectionHeader(dynamic c, IconData icon, String label) => Padding(
+        padding: const EdgeInsets.only(bottom: 8, top: 2),
+        child: Row(children: [
+          Icon(icon, size: 14, color: c.textTertiary),
+          const SizedBox(width: 6),
+          Text(label, style: TextStyle(fontSize: 12, color: c.textTertiary)),
+        ]),
+      );
+
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
     final results = searchFoods(_query);
+    final quick = context.watch<RecentFoodsController>();
 
     return Scaffold(
       backgroundColor: c.background,
@@ -157,6 +186,14 @@ class _AddMealScreenState extends State<AddMealScreen> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
                   const Spacer(),
                   IconButton(
+                    tooltip: loc.isAr ? 'صوّر وجبتك' : 'Snap meal',
+                    onPressed: () => Navigator.push(context, ZadPageRoute(
+                      page: PhotoMealScreen(mealType: _selectedType),
+                    )),
+                    icon: Icon(Icons.photo_camera_rounded, color: c.accent),
+                  ),
+                  IconButton(
+                    tooltip: loc.isAr ? 'مسح باركود' : 'Scan barcode',
                     onPressed: () => Navigator.push(context, ZadPageRoute(
                       page: BarcodeScanScreen(mealType: _selectedType),
                     )),
@@ -251,6 +288,33 @@ class _AddMealScreenState extends State<AddMealScreen> {
               child: ListView(
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 24),
                 children: [
+                  // الأخيرة والمفضّلة — تظهر فقط بلا بحث
+                  if (_query.isEmpty) ...[
+                    if (quick.favorites.isNotEmpty) ...[
+                      _sectionHeader(c, Icons.star_rounded, loc.isAr ? 'المفضّلة' : 'Favorites'),
+                      ...quick.favorites.take(5).map((f) => _QuickRow(
+                            food: f,
+                            isFavorite: true,
+                            onTap: () => _quickAdd(f),
+                            onStar: () => quick.toggleFavorite(f),
+                          )),
+                      const SizedBox(height: 6),
+                    ],
+                    if (quick.recents.isNotEmpty) ...[
+                      _sectionHeader(c, Icons.history_rounded, loc.isAr ? 'الأخيرة' : 'Recent'),
+                      ...quick.recents.take(8).map((f) => _QuickRow(
+                            food: f,
+                            isFavorite: quick.isFavorite(f),
+                            onTap: () => _quickAdd(f),
+                            onStar: () => quick.toggleFavorite(f),
+                          )),
+                      const SizedBox(height: 6),
+                    ],
+                    if (quick.recents.isNotEmpty)
+                      _sectionHeader(c, Icons.restaurant_menu_rounded,
+                          loc.isAr ? 'كل الأطعمة' : 'All foods'),
+                  ],
+
                   // local results
                   ...results.map((item) => _FoodRow(item: item, onTap: () => _openPortion(item))),
 
@@ -301,6 +365,71 @@ class _AddMealScreenState extends State<AddMealScreen> {
             ),
           ],
         ),
+      ),
+    );
+  }
+}
+
+// ─── Quick Row (recent / favorite) ────────────────────────────────────────────
+
+class _QuickRow extends StatelessWidget {
+  final QuickFood food;
+  final bool isFavorite;
+  final VoidCallback onTap;
+  final VoidCallback onStar;
+  const _QuickRow({
+    required this.food,
+    required this.isFavorite,
+    required this.onTap,
+    required this.onStar,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final loc = AppLocalizations.of(context);
+
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 8),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 11),
+        decoration: BoxDecoration(
+          color: c.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: isFavorite ? c.accent.withOpacity(0.4) : c.border),
+        ),
+        child: Row(children: [
+          GestureDetector(
+            onTap: () { Haptics.select(); onStar(); },
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: const EdgeInsets.all(2),
+              child: Icon(
+                isFavorite ? Icons.star_rounded : Icons.star_outline_rounded,
+                size: 20,
+                color: isFavorite ? c.accent : c.textTertiary,
+              ),
+            ),
+          ),
+          const SizedBox(width: 10),
+          Expanded(
+            child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Text(food.name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)),
+              Text('${food.grams} ${loc.grams}',
+                  style: TextStyle(fontSize: 11, color: c.textTertiary)),
+            ]),
+          ),
+          const SizedBox(width: 8),
+          Text('${food.calories}',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent)),
+          Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, color: c.textSecondary)),
+          const SizedBox(width: 8),
+          Icon(Icons.add_circle_rounded, size: 22, color: c.accent),
+        ]),
       ),
     );
   }

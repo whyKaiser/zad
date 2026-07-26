@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
+import '../../data/recent_foods_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/meal.dart';
 import '../../services/open_food_facts_service.dart';
@@ -38,6 +39,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
     }
 
     final repo = context.read<DiaryRepository>();
+    final quick = context.read<RecentFoodsController>();
     final loc = AppLocalizations.of(context);
     setState(() => _loading = false);
 
@@ -54,7 +56,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
         loc: loc, c: context.colors,
         onAdd: (grams) {
           final factor = grams / 100.0;
-          repo.addMeal(Meal(
+          final meal = Meal(
             id: DateTime.now().microsecondsSinceEpoch.toString(),
             name: results.name,
             calories: (results.calories * factor).round(),
@@ -65,7 +67,9 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
             ),
             time: DateTime.now(),
             type: widget.mealType,
-          ));
+          );
+          repo.addMeal(meal);
+          quick.record(meal, grams: grams);
           Haptics.light();
           Navigator.pop(sheetCtx);
           Navigator.pop(context);

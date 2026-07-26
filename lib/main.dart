@@ -7,12 +7,14 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
 import 'core/motion.dart';
+import 'data/activity_controller.dart';
 import 'data/daily_tasks_controller.dart';
 import 'data/diary_repository.dart';
 import 'data/meal_plan_controller.dart';
 import 'data/firestore_diary_repository.dart';
 import 'data/measurements_controller.dart';
 import 'data/points_controller.dart';
+import 'data/recent_foods_controller.dart';
 import 'data/unit_controller.dart';
 import 'models/meal.dart';
 import 'data/profile_controller.dart';
@@ -111,6 +113,8 @@ class ZadApp extends StatelessWidget {
           },
         ),
         ChangeNotifierProvider(create: (_) => MealPlanController()..load()),
+        ChangeNotifierProvider(create: (_) => RecentFoodsController()..load()),
+        ChangeNotifierProvider(create: (_) => ActivityController()..load()),
         Provider<FoodLookup>(create: (_) => FoodLookup()),
       ],
       child: Consumer2<ThemeController, LocaleController>(

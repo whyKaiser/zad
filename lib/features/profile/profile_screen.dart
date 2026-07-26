@@ -8,6 +8,7 @@ import '../../data/unit_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/user_profile.dart';
 import '../../theme/app_theme.dart';
+import '../activity/activity_screen.dart';
 import '../analytics/analytics_screen.dart';
 import '../analytics/monthly_calendar_screen.dart';
 import '../assistant/form_analyzer_screen.dart';
@@ -62,6 +63,8 @@ class ProfileScreen extends StatelessWidget {
                 () => Navigator.push(context, ZadPageRoute(page: const StreakScreen()))),
 
             _sectionLabel(c, loc.isAr ? 'التدريب' : 'Training'),
+            _row(context, c, Icons.directions_run_rounded, loc.isAr ? 'النشاط والحركة' : 'Activity',
+                () => Navigator.push(context, ZadPageRoute(page: const ActivityScreen()))),
             _row(context, c, Icons.fitness_center_rounded, loc.isAr ? 'مكتبة التمارين' : 'Exercise Library',
                 () => Navigator.push(context, ZadPageRoute(page: const ExerciseLibraryScreen()))),
             _row(context, c, Icons.event_note_rounded, loc.isAr ? 'برامج التدريب' : 'Workout Programs',

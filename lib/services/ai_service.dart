@@ -54,6 +54,8 @@ abstract class AiService {
 class GroqAiService implements AiService {
   static const _apiKey = String.fromEnvironment('GROQ_API_KEY');
   static const _model = 'llama-3.3-70b-versatile';
+  /// موديل الرؤية — يقرأ صور الأكل بنفس مفتاح Groq.
+  static const _visionModel = 'meta-llama/llama-4-scout-17b-16e-instruct';
   static final _endpoint =
       Uri.parse('https://api.groq.com/openai/v1/chat/completions');
 
@@ -67,7 +69,7 @@ class GroqAiService implements AiService {
   bool get isConfigured => _apiKey.isNotEmpty;
 
   @override
-  Set<AiTask> get capabilities => {AiTask.text};
+  Set<AiTask> get capabilities => {AiTask.text, AiTask.vision};
 
   @override
   Future<FoodEstimate> estimateFromText(String description) async {
@@ -99,7 +101,40 @@ class GroqAiService implements AiService {
   }
 
   @override
-  Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType = 'image/jpeg'}) {
-    throw UnsupportedError('Groq لا يدعم تحليل الصور هنا — استعمل مزوّد رؤية');
+  Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType = 'image/jpeg'}) async {
+    if (!isConfigured) {
+      throw StateError('GROQ_API_KEY غير مضبوط — مرّره عبر --dart-define');
+    }
+    final dataUri = 'data:$mimeType;base64,${base64Encode(bytes)}';
+    final res = await _client.post(
+      _endpoint,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $_apiKey',
+      },
+      body: jsonEncode({
+        'model': _visionModel,
+        'temperature': 0.3,
+        'response_format': {'type': 'json_object'},
+        'messages': [
+          {
+            'role': 'user',
+            'content': [
+              {'type': 'text', 'text': '${AiPrompts.system}\n\n${AiPrompts.estimateFromImage()}'},
+              {
+                'type': 'image_url',
+                'image_url': {'url': dataUri},
+              },
+            ],
+          },
+        ],
+      }),
+    ).timeout(const Duration(seconds: 30));
+    if (res.statusCode != 200) {
+      throw Exception('فشل نداء Groq (رؤية): ${res.statusCode} ${res.body}');
+    }
+    final body = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
+    final content = body['choices'][0]['message']['content'] as String;
+    return FoodEstimate.fromJson(jsonDecode(content) as Map<String, dynamic>);
   }
 }
