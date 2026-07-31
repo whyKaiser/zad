@@ -10,7 +10,7 @@ import 'ai_service.dart';
 ///   flutter run --dart-define=GEMINI_API_KEY=AIza_xxxx
 class GeminiAiService implements AiService {
   static const _apiKey = String.fromEnvironment('GEMINI_API_KEY');
-  static const _model = 'gemini-2.0-flash';
+  static const _model = 'gemini-flash-latest';
 
   final http.Client _client;
   GeminiAiService([http.Client? client]) : _client = client ?? http.Client();
