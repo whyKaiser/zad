@@ -55,4 +55,11 @@ class FoodItem {
 
   /// القيم للحصة النموذجية.
   ({int calories, Macros macros}) get typical => forGrams(typicalServingG);
+
+  /// الاسم بلغة الواجهة — يُستعمل عند التسجيل حتى لا تُخزَّن أسماء عربية
+  /// في يوميات مستخدم إنجليزي.
+  String name({required bool isAr}) => isAr ? nameAr : nameEn;
+
+  /// تسمية الحصة بلغة الواجهة.
+  String servingLabel({required bool isAr}) => isAr ? servingLabelAr : servingLabelEn;
 }

@@ -79,14 +79,15 @@ class MealPlanController extends ChangeNotifier {
     await _persist();
   }
 
-  List<String> shoppingList() {
+  /// قائمة الشراء مجمّعة بالصنف — بلغة الواجهة.
+  List<String> shoppingList({bool isAr = true}) {
     final map = <String, int>{};
     for (final e in _entries) {
       map[e.foodId] = (map[e.foodId] ?? 0) + e.grams;
     }
     return map.entries.map((kv) {
       final f = foodById(kv.key);
-      final name = f?.nameAr ?? kv.key;
+      final name = f?.name(isAr: isAr) ?? kv.key;
       return '$name — ${kv.value}g';
     }).toList();
   }

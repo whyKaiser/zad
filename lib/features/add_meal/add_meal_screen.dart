@@ -85,7 +85,11 @@ class _AddMealScreenState extends State<AddMealScreen> {
         onAdd: (grams, servings) {
           final total = (grams * servings).round();
           final v = item.forGrams(total);
-          _logMeal(name: item.nameAr, calories: v.calories, macros: v.macros, grams: total);
+          _logMeal(
+              name: item.name(isAr: AppLocalizations.of(context).isAr),
+              calories: v.calories,
+              macros: v.macros,
+              grams: total);
           Navigator.pop(context);
           Navigator.pop(context);
         },

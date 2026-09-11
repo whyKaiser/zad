@@ -11,6 +11,7 @@ import 'data/activity_controller.dart';
 import 'data/auth_controller.dart';
 import 'data/daily_tasks_controller.dart';
 import 'data/diary_repository.dart';
+import 'data/fasting_controller.dart';
 import 'data/firestore_diary_repository.dart';
 import 'data/local_diary_repository.dart';
 import 'data/meal_plan_controller.dart';
@@ -129,6 +130,7 @@ class ZadApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => MealPlanController()..load()),
         ChangeNotifierProvider(create: (_) => RecentFoodsController()..load()),
         ChangeNotifierProvider(create: (_) => ActivityController()..load()),
+        ChangeNotifierProvider(create: (_) => FastingController()..load()),
         ChangeNotifierProxyProvider4<DiaryRepository, WaterController, WeightController,
             PointsController, DailyTasksController>(
           create: (ctx) => DailyTasksController(

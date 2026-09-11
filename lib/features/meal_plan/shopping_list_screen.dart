@@ -21,7 +21,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
     final ctrl = context.watch<MealPlanController>();
-    final items = ctrl.shoppingList();
+    final items = ctrl.shoppingList(isAr: loc.isAr);
 
     return Scaffold(
       backgroundColor: c.background,

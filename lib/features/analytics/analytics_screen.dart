@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/profile_controller.dart';
 import '../../l10n/app_localizations.dart';
 import '../../models/meal.dart';
 import '../../theme/app_theme.dart';
+import 'weekly_report_screen.dart';
 
 class AnalyticsScreen extends StatefulWidget {
   const AnalyticsScreen({super.key});
@@ -103,7 +105,47 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               Text(loc.isAr ? 'آخر 7 أيام' : 'Last 7 days',
                       style: TextStyle(fontSize: 13, color: c.textSecondary))
                   .animate().fadeIn(delay: 80.ms),
-              const SizedBox(height: 24),
+              const SizedBox(height: 16),
+
+              // مدخل التقرير الذكي — قراءة الأسبوع بالعربي مع نصيحة واحدة
+              GestureDetector(
+                onTap: () {
+                  Haptics.select();
+                  Navigator.push(context,
+                      ZadPageRoute(page: const WeeklyReportScreen()));
+                },
+                child: Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: c.accent.withOpacity(0.10),
+                    borderRadius: BorderRadius.circular(18),
+                    border: Border.all(color: c.accent.withOpacity(0.35)),
+                  ),
+                  child: Row(children: [
+                    Icon(Icons.insights_rounded, color: c.accent, size: 22),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(loc.isAr ? 'تقرير الأسبوع الذكي' : 'Smart weekly report',
+                                style: TextStyle(
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.w600,
+                                    color: c.textPrimary)),
+                            const SizedBox(height: 2),
+                            Text(
+                                loc.isAr
+                                    ? 'قراءة لأسبوعك ونصيحة واحدة تنفّذها'
+                                    : 'A read on your week and one tip to act on',
+                                style: TextStyle(fontSize: 12, color: c.textSecondary)),
+                          ]),
+                    ),
+                    Icon(Icons.chevron_right_rounded, color: c.textTertiary),
+                  ]),
+                ),
+              ).animate().fadeIn(delay: 110.ms),
+              const SizedBox(height: 20),
 
               if (snap.connectionState == ConnectionState.waiting)
                 const Center(child: CircularProgressIndicator())

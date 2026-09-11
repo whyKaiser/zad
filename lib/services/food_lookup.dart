@@ -30,13 +30,13 @@ class FoodLookup {
   final AiRouter ai;
   FoodLookup({AiRouter? ai}) : ai = ai ?? AiRouter();
 
-  Future<FoodResult> estimate(String query, {num? grams}) async {
+  Future<FoodResult> estimate(String query, {num? grams, bool isAr = true}) async {
     // 1) قاعدة البذرة الموثّقة
     final item = findFood(query);
     if (item != null) {
       final v = grams != null ? item.forGrams(grams) : item.typical;
       return FoodResult(
-        name: item.nameAr,
+        name: item.name(isAr: isAr),
         calories: v.calories,
         macros: v.macros,
         source: EstimateSource.database,

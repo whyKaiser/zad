@@ -46,11 +46,13 @@ class _AssistantScreenState extends State<AssistantScreen> {
     _controller.clear();
 
     final entry = _Entry(text);
+    final isAr = AppLocalizations.of(context).isAr;
     setState(() => _entries.add(entry));
     _scrollToEnd();
 
     try {
-      final result = await context.read<FoodLookup>().estimate(text);
+      final result =
+          await context.read<FoodLookup>().estimate(text, isAr: isAr);
       setState(() {
         entry.result = result;
         entry.loading = false;

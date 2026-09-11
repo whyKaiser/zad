@@ -10,11 +10,13 @@ import '../../models/user_profile.dart';
 import '../../theme/app_theme.dart';
 import '../activity/activity_screen.dart';
 import '../analytics/analytics_screen.dart';
+import '../analytics/weekly_report_screen.dart';
 import '../analytics/monthly_calendar_screen.dart';
 import '../assistant/form_analyzer_screen.dart';
 import '../detraining/detraining_screen.dart';
 import '../fitness/exercise_library_screen.dart';
 import '../fitness/workout_programs_screen.dart';
+import '../fasting/fasting_screen.dart';
 import '../meal_plan/meal_plan_screen.dart';
 import '../progress/progress_photos_screen.dart';
 import '../settings/theme_switcher.dart';
@@ -57,6 +59,8 @@ class ProfileScreen extends StatelessWidget {
             _sectionLabel(c, loc.isAr ? 'الإحصاء' : 'Stats'),
             _row(context, c, Icons.bar_chart_rounded, loc.isAr ? 'إحصائيات الأسبوع' : 'Weekly stats',
                 () => Navigator.push(context, ZadPageRoute(page: const AnalyticsScreen()))),
+            _row(context, c, Icons.insights_rounded, loc.isAr ? 'تقرير الأسبوع الذكي' : 'Smart weekly report',
+                () => Navigator.push(context, ZadPageRoute(page: const WeeklyReportScreen()))),
             _row(context, c, Icons.calendar_month_rounded, loc.isAr ? 'تقويم التغذية' : 'Nutrition calendar',
                 () => Navigator.push(context, ZadPageRoute(page: const MonthlyCalendarScreen()))),
             _row(context, c, Icons.local_fire_department_rounded, loc.isAr ? 'الستريك والرانك' : 'Streak & Rank',
@@ -77,6 +81,9 @@ class ProfileScreen extends StatelessWidget {
             _sectionLabel(c, loc.isAr ? 'التغذية' : 'Nutrition'),
             _row(context, c, Icons.calendar_view_week_rounded, loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
                 () => Navigator.push(context, ZadPageRoute(page: const MealPlanScreen()))),
+            _row(context, c, Icons.hourglass_bottom_rounded,
+                loc.isAr ? 'الصيام المتقطّع' : 'Intermittent fasting',
+                () => Navigator.push(context, ZadPageRoute(page: const FastingScreen()))),
 
             _sectionLabel(c, loc.isAr ? 'الجسم' : 'Body'),
             _row(context, c, Icons.monitor_weight_outlined, loc.weightTracking,
