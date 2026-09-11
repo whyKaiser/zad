@@ -106,6 +106,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: Row(children: [
                 IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'إغلاق' : 'Close',
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, color: Colors.white),
                 ),
@@ -113,6 +114,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
                     style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white)),
                 const Spacer(),
                 IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'الفلاش' : 'Flash',
                   onPressed: () => _ctrl.toggleTorch(),
                   icon: const Icon(Icons.flashlight_on_rounded, color: Colors.white),
                 ),

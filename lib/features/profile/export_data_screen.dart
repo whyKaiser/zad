@@ -130,6 +130,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
           children: [
             Row(children: [
               IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),

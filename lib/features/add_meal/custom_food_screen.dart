@@ -98,6 +98,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
                 ),
                 const Spacer(),
                 IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'إغلاق' : 'Close',
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.close_rounded, color: c.textSecondary),
                 ),
@@ -115,7 +116,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
                       onTap: () { Haptics.select(); setState(() => _type = t); },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),
-                        margin: const EdgeInsets.only(right: 8),
+                        margin: const EdgeInsetsDirectional.only(end: 8),
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                         decoration: BoxDecoration(
                           color: sel ? c.accent.withOpacity(0.14) : c.surfaceVariant,

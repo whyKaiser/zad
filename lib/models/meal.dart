@@ -34,9 +34,16 @@ class Meal {
     this.type = MealType.snack,
   });
 
+  /// أقصى طول اسم يُخزَّن — يطابق حدّ قواعد Firestore.
+  /// أسماء Open Food Facts قد تتجاوزه، وتجاوزه يعني رفض الكتابة بصمت.
+  static const maxNameLength = 200;
+
+  static String _clampName(String s) =>
+      s.length <= maxNameLength ? s : s.substring(0, maxNameLength);
+
   Map<String, dynamic> toJson() => {
         'id': id,
-        'name': name,
+        'name': _clampName(name),
         'calories': calories,
         'protein': macros.protein,
         'carbs': macros.carbs,

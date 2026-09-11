@@ -3,6 +3,9 @@ rules_version = '2';
 // قواعد أمان Cloud Firestore لتطبيق زاد.
 // المبدأ: كل مستخدم يقرأ/يكتب سجل يومياته الغذائية الخاصة فقط، ولا أحد غيره.
 // المصادقة مجهولة (anonymous auth) — الهوية الوحيدة هي uid الجلسة.
+//
+// إضافة للملكية: نتحقق من شكل الوجبة وحجمها. بلا ذلك يستطيع عميل معدَّل
+// كتابة وثائق ضخمة أو حقول عشوائية داخل مساحته ويستنزف حصّة المشروع.
 service cloud.firestore {
   match /databases/{database}/documents {
 
@@ -10,18 +13,41 @@ service cloud.firestore {
       return request.auth != null && request.auth.uid == uid;
     }
 
+    function isValidMeal(d) {
+      return d.keys().hasOnly(
+               ['id', 'name', 'calories', 'protein', 'carbs', 'fat', 'time', 'type'])
+          && d.keys().hasAll(['id', 'name', 'calories', 'time'])
+          && d.id is string && d.id.size() > 0 && d.id.size() <= 64
+          // حد الاسم يمنع تخزين نصوص ضخمة في حقل وصفي
+          && d.name is string && d.name.size() > 0 && d.name.size() <= 200
+          && d.calories is int && d.calories >= 0 && d.calories <= 50000
+          && d.protein is int && d.protein >= 0 && d.protein <= 5000
+          && d.carbs is int && d.carbs >= 0 && d.carbs <= 5000
+          && d.fat is int && d.fat >= 0 && d.fat <= 5000
+          && d.time is string && d.time.size() <= 40
+          && d.type in ['breakfast', 'lunch', 'dinner', 'snack'];
+    }
+
     // وثيقة المستخدم نفسها — غير مستخدمة حالياً بالتطبيق، محجوزة لصاحبها فقط
     // احتياطًا لأي حقل يُضاف لاحقًا (اسم، تفضيلات، إلخ).
     match /users/{userId} {
-      allow read, write: if isOwner(userId);
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId) && request.resource.data.size() <= 50;
 
       // اليوميات: مجلد لكل يوم (dayKey بصيغة YYYY-MM-DD).
       match /diary/{dayKey} {
-        allow read, write: if isOwner(userId);
+        // المفتاح لازم يكون تاريخاً صالحاً — يمنع إنشاء مسارات عشوائية.
+        allow read: if isOwner(userId);
+        allow write: if isOwner(userId)
+                     && dayKey.matches('^\\d{4}-\\d{2}-\\d{2}$');
 
-        // الوجبات المسجلة داخل كل يوم — نفس صاحب الحساب فقط.
+        // الوجبات المسجلة داخل كل يوم — نفس صاحب الحساب فقط، وبشكل صحيح.
         match /meals/{mealId} {
-          allow read, write: if isOwner(userId);
+          allow read: if isOwner(userId);
+          allow delete: if isOwner(userId);
+          allow create, update: if isOwner(userId)
+                                && mealId.size() <= 64
+                                && isValidMeal(request.resource.data);
         }
       }
     }

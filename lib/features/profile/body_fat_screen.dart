@@ -106,6 +106,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
           children: [
             Row(children: [
               IconButton(onPressed: () => Navigator.pop(context),
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
               Text(loc.isAr ? 'نسبة الدهون (Navy)' : 'Body Fat % (Navy)',
                   style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),

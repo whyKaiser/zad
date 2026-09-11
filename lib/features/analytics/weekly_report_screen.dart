@@ -128,6 +128,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(children: [
               IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),

@@ -41,6 +41,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Row(children: [
                 IconButton(onPressed: () => Navigator.pop(context),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
@@ -68,7 +69,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                     onTap: () { Haptics.select(); setState(() => _dayIdx = i); },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(right: 8),
+                      margin: const EdgeInsetsDirectional.only(end: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                       decoration: BoxDecoration(
                         color: sel ? c.accent : c.surfaceVariant,
@@ -152,6 +153,7 @@ class _MealTypeSection extends StatelessWidget {
                 subtitle: Text('${e.grams}g · ${e.calories} ${loc.calorieUnit}',
                     style: TextStyle(fontSize: 12, color: c.textSecondary)),
                 trailing: IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'حذف' : 'Remove',
                   icon: Icon(Icons.remove_circle_outline, size: 18, color: c.textTertiary),
                   onPressed: () => ctrl.remove(e),
                 ),

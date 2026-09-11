@@ -105,6 +105,7 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
               child: Row(children: [
                 IconButton(
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
@@ -116,10 +117,12 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
                   ),
                 ),
                 IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'الشهر السابق' : 'Previous month',
                   onPressed: _prev,
                   icon: Icon(Icons.chevron_left_rounded, color: c.textPrimary),
                 ),
                 IconButton(
+                  tooltip: AppLocalizations.of(context).isAr ? 'الشهر التالي' : 'Next month',
                   onPressed: atCurrentMonth ? null : _next,
                   icon: Icon(Icons.chevron_right_rounded,
                       color: atCurrentMonth ? c.textTertiary : c.textPrimary),

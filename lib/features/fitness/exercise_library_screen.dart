@@ -31,6 +31,7 @@ class _ExerciseLibraryScreenState extends State<ExerciseLibraryScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Row(children: [
                 IconButton(
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
@@ -83,7 +84,7 @@ class _Chip extends StatelessWidget {
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
-        margin: const EdgeInsets.only(right: 8),
+        margin: const EdgeInsetsDirectional.only(end: 8),
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
         decoration: BoxDecoration(
           color: selected ? c.accent.withOpacity(0.14) : c.surfaceVariant,

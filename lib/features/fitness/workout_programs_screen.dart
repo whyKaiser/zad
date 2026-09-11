@@ -86,6 +86,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Row(children: [
                 IconButton(onPressed: () => Navigator.pop(context),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'برامج التدريب' : 'Workout Programs',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
@@ -104,7 +105,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                     onTap: () => setState(() => _selected = i),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(right: 8),
+                      margin: const EdgeInsetsDirectional.only(end: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
                         color: sel ? c.accent.withOpacity(0.14) : c.surfaceVariant,

@@ -207,6 +207,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                     icon: Icon(Icons.qr_code_scanner_rounded, color: c.accent),
                   ),
                   IconButton(
+                    tooltip: AppLocalizations.of(context).isAr ? 'إغلاق' : 'Close',
                     onPressed: () => Navigator.pop(context),
                     icon: Icon(Icons.close_rounded, color: c.textSecondary),
                   ),
@@ -225,7 +226,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                     onTap: () { Haptics.select(); setState(() => _selectedType = t); },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
-                      margin: const EdgeInsets.only(right: 8),
+                      margin: const EdgeInsetsDirectional.only(end: 8),
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                       decoration: BoxDecoration(
                         color: sel ? c.accent.withOpacity(0.14) : c.surfaceVariant,

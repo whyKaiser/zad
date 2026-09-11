@@ -43,6 +43,7 @@ class RecipesScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(children: [
               IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
@@ -285,7 +286,7 @@ class _LogRecipeSheetState extends State<_LogRecipeSheet> {
                   },
                   child: AnimatedContainer(
                     duration: const Duration(milliseconds: 180),
-                    margin: const EdgeInsets.only(right: 8),
+                    margin: const EdgeInsetsDirectional.only(end: 8),
                     padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                     decoration: BoxDecoration(
                       color: sel ? c.accent.withOpacity(0.14) : c.surfaceVariant,
@@ -413,6 +414,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(children: [
               IconButton(
+                tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
@@ -508,6 +510,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                           fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
                   const Spacer(),
                   IconButton(
+                    tooltip: AppLocalizations.of(context).isAr ? 'إنقاص' : 'Decrease',
                     onPressed: _servings > 1
                         ? () {
                             Haptics.select();
@@ -521,6 +524,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                       style: TextStyle(
                           fontSize: 18, fontWeight: FontWeight.w700, color: c.textPrimary)),
                   IconButton(
+                    tooltip: AppLocalizations.of(context).isAr ? 'زيادة' : 'Increase',
                     onPressed: _servings < 20
                         ? () {
                             Haptics.select();
@@ -582,6 +586,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                               ]),
                         ),
                         IconButton(
+                          tooltip: AppLocalizations.of(context).isAr ? 'إنقاص' : 'Decrease',
                           onPressed: () {
                             Haptics.light();
                             setState(() => _items.removeAt(i));

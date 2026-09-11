@@ -32,12 +32,14 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Row(children: [
                 IconButton(onPressed: () => Navigator.pop(context),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'قائمة الشراء' : 'Shopping List',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
                 const Spacer(),
                 if (items.isNotEmpty)
                   IconButton(
+                    tooltip: AppLocalizations.of(context).isAr ? 'انسخ القائمة' : 'Copy list',
                     onPressed: () {
                       final text = items.join('\n');
                       Clipboard.setData(ClipboardData(text: text));

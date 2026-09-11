@@ -73,6 +73,7 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
               child: Row(children: [
                 IconButton(onPressed: () => Navigator.pop(context),
+                  tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'محلّل الأداء' : 'Form Analyzer',
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
