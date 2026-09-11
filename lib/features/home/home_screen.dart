@@ -310,7 +310,18 @@ class _WaterCard extends StatelessWidget {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
     final water = context.watch<WaterController>();
-    return _GlassCard(
+    return GestureDetector(
+      onLongPress: () {
+        Haptics.select();
+        showModalBottomSheet(
+          context: context,
+          backgroundColor: c.surface,
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+          builder: (_) => const _WaterGoalSheet(),
+        );
+      },
+      child: _GlassCard(
       padding: const EdgeInsets.all(16),
       child: Row(children: [
         Icon(Icons.water_drop_rounded, color: c.macroCarbs, size: 22),
@@ -327,6 +338,7 @@ class _WaterCard extends StatelessWidget {
         const SizedBox(width: 8),
         _btn(context, c, Icons.add_rounded, () => context.read<WaterController>().add()),
       ]),
+      ),
     );
   }
 
@@ -662,6 +674,78 @@ class _GlassCard extends StatelessWidget {
         border: Border.all(color: c.border),
       ),
       child: child,
+    );
+  }
+}
+
+/// تغيير هدف الماء اليومي — يُفتح بضغطة مطوّلة على بطاقة الماء.
+class _WaterGoalSheet extends StatefulWidget {
+  const _WaterGoalSheet();
+
+  @override
+  State<_WaterGoalSheet> createState() => _WaterGoalSheetState();
+}
+
+class _WaterGoalSheetState extends State<_WaterGoalSheet> {
+  double? _value;
+
+  @override
+  Widget build(BuildContext context) {
+    final c = context.colors;
+    final loc = AppLocalizations.of(context);
+    final water = context.read<WaterController>();
+    final value = _value ??= water.goal.toDouble();
+
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          Container(
+            width: 40,
+            height: 4,
+            margin: const EdgeInsets.only(bottom: 18),
+            decoration: BoxDecoration(
+                color: c.textTertiary, borderRadius: BorderRadius.circular(4)),
+          ),
+          Row(children: [
+            Text(loc.isAr ? 'هدف الماء اليومي' : 'Daily water goal',
+                style: TextStyle(
+                    fontSize: 17, fontWeight: FontWeight.w600, color: c.textPrimary)),
+            const Spacer(),
+            Text('${value.round()} ${loc.cups}',
+                style: TextStyle(
+                    fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
+          ]),
+          Slider(
+            value: value,
+            min: WaterController.minGoal.toDouble(),
+            max: WaterController.maxGoal.toDouble(),
+            divisions: WaterController.maxGoal - WaterController.minGoal,
+            activeColor: c.accent,
+            inactiveColor: c.track,
+            onChanged: (v) => setState(() => _value = v),
+          ),
+          const SizedBox(height: 8),
+          SizedBox(
+            width: double.infinity,
+            child: TextButton(
+              onPressed: () {
+                water.setGoal(value.round());
+                Haptics.light();
+                Navigator.pop(context);
+              },
+              style: TextButton.styleFrom(
+                backgroundColor: c.accent,
+                foregroundColor: c.onAccent,
+                padding: const EdgeInsets.symmetric(vertical: 14),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+              child: Text(loc.save,
+                  style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600)),
+            ),
+          ),
+        ]),
+      ),
     );
   }
 }

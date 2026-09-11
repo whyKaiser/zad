@@ -40,6 +40,7 @@ class ChallengesScreen extends StatelessWidget {
       streakDays: repo.streakDays,
       waterCups: water.cups,
       underGoalToday: underGoal,
+      waterGoal: water.goal,
     );
 
     // build leaderboard with real "me" entry

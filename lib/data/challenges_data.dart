@@ -6,6 +6,7 @@ List<Challenge> buildChallenges({
   required int streakDays,
   required int waterCups,
   required bool underGoalToday,
+  int waterGoal = 8,
 }) {
   return [
     Challenge(
@@ -19,10 +20,10 @@ List<Challenge> buildChallenges({
     ),
     Challenge(
       id: 'water8',
-      titleAr: 'اشرب 8 أكواب ماء اليوم',
-      titleEn: 'Drink 8 cups of water today',
-      current: waterCups.clamp(0, 8),
-      target: 8,
+      titleAr: 'اشرب $waterGoal أكواب ماء اليوم',
+      titleEn: 'Drink $waterGoal cups of water today',
+      current: waterCups.clamp(0, waterGoal),
+      target: waterGoal,
       points: 20,
       icon: Icons.water_drop_rounded,
     ),

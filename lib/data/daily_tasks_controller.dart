@@ -75,6 +75,7 @@ class DailyTasksController extends ChangeNotifier {
     final goalCal = _diary.goal.calories;
     final consumed = _diary.consumedCalories;
     final waterCups = _water.cups;
+    final waterGoal = _water.goal;
     final hasWeightToday = _weight.entries.any((e) =>
         e.date.year == today.year &&
         e.date.month == today.month &&
@@ -115,12 +116,12 @@ class DailyTasksController extends ChangeNotifier {
       ),
       DailyTask(
         type: DailyTaskType.waterGoal,
-        titleAr: 'اشرب 8 أكواب ماء',
-        titleEn: 'Drink 8 cups of water',
+        titleAr: 'اشرب $waterGoal أكواب ماء',
+        titleEn: 'Drink $waterGoal cups of water',
         points: 20,
         icon: Icons.water_drop_outlined,
         current: waterCups,
-        target: 8,
+        target: waterGoal,
       ),
       DailyTask(
         type: DailyTaskType.stayUnderGoal,

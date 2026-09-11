@@ -6,9 +6,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 class WaterController extends ChangeNotifier {
   static const _countKey = 'zad_water_count';
   static const _dateKey = 'zad_water_date';
+  static const _goalKey = 'zad_water_goal';
 
-  final int goal = 8;
+  /// حدود معقولة — تمنع هدفاً صفرياً (قسمة على صفر) أو خيالياً.
+  static const minGoal = 4;
+  static const maxGoal = 20;
+
+  int _goal = 8;
   int _cups = 0;
+
+  /// هدف الأكواب اليومي. مصدر واحد تقرأ منه المهام والتحديات والواجهة.
+  int get goal => _goal;
   int get cups => _cups;
 
   String get _today => DateTime.now().toIso8601String().substring(0, 10);
@@ -18,6 +26,7 @@ class WaterController extends ChangeNotifier {
       final prefs = await SharedPreferences.getInstance();
       final savedDate = prefs.getString(_dateKey);
       _cups = savedDate == _today ? (prefs.getInt(_countKey) ?? 0) : 0;
+      _goal = (prefs.getInt(_goalKey) ?? 8).clamp(minGoal, maxGoal);
       notifyListeners();
     } catch (e) {
       debugPrint('WaterController load error: $e');
@@ -48,9 +57,23 @@ class WaterController extends ChangeNotifier {
     }
   }
 
+  /// يغيّر الهدف اليومي ويحفظه.
+  Future<void> setGoal(int value) async {
+    final next = value.clamp(minGoal, maxGoal);
+    if (next == _goal) return;
+    _goal = next;
+    notifyListeners();
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(_goalKey, next);
+    } catch (e) {
+      debugPrint('WaterController setGoal error: $e');
+    }
+  }
+
   Future<void> add() async {
     await _rolloverIfNewDay();
-    if (_cups >= goal + 4) return;
+    if (_cups >= _goal + 4) return;
     _cups++;
     notifyListeners();
     await _persist();
