@@ -30,9 +30,11 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
   Future<void> _analyze() async {
     final q = _ctrl.text.trim();
     if (q.isEmpty) return;
+    // اللغة تُلتقط قبل أول await — بعده استعمال context غير آمن.
+    final loc = AppLocalizations.of(context);
     setState(() { _loading = true; _response = ''; });
     if (_apiKey.isEmpty) {
-      setState(() { _response = 'مفتاح Groq غير مضبوط.'; _loading = false; });
+      setState(() { _response = loc.aiNotReady; _loading = false; });
       return;
     }
     try {
@@ -42,8 +44,18 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
           'model': _model,
           'temperature': 0.5,
           'messages': [
-            {'role': 'system', 'content': 'أنت متخصص في تحليل أداء التمارين الرياضية وتقنيات الحركة.'},
-            {'role': 'user', 'content': '''المستخدم يصف تمرينه: "$q"\nحلّل الوصف وقدّم:\n1. نقاط الأداء الصحيح\n2. أخطاء محتملة\n3. نصائح تحسين محددة\nأجب باختصار ووضوح بالعربية.'''},
+            {
+              'role': 'system',
+              'content': loc.isAr
+                  ? 'أنت متخصص في تحليل أداء التمارين الرياضية وتقنيات الحركة.'
+                  : 'You are a specialist in exercise form analysis and movement technique.',
+            },
+            {
+              'role': 'user',
+              'content': loc.isAr
+                  ? '''المستخدم يصف تمرينه: "$q"\nحلّل الوصف وقدّم:\n1. نقاط الأداء الصحيح\n2. أخطاء محتملة\n3. نصائح تحسين محددة\nأجب باختصار ووضوح بالعربية.'''
+                  : '''The user describes their exercise: "$q"\nAnalyse it and give:\n1. What they are doing right\n2. Likely form errors\n3. Specific fixes\nAnswer briefly and clearly in English.''',
+            },
           ],
         }),
       ).timeout(const Duration(seconds: 15));
@@ -52,10 +64,10 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
         final content = body['choices']?[0]?['message']?['content'] as String? ?? '';
         if (mounted) setState(() { _response = content; _loading = false; });
       } else {
-        if (mounted) setState(() { _response = 'خطأ ${res.statusCode}'; _loading = false; });
+        if (mounted) setState(() { _response = loc.tryAgain; _loading = false; });
       }
     } catch (e) {
-      if (mounted) setState(() { _response = 'تعذّر التحليل، حاول مجدداً.'; _loading = false; });
+      if (mounted) setState(() { _response = loc.tryAgain; _loading = false; });
     }
   }
 

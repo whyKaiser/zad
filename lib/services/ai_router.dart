@@ -1,4 +1,4 @@
-import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
 
 import 'ai_service.dart';
 import 'gemini_ai_service.dart';
@@ -13,19 +13,52 @@ class AiRouter {
   AiRouter({List<AiService>? providers})
       : _providers = providers ?? [GroqAiService(), GeminiAiService()];
 
-  AiService? _pick(AiTask task, List<String> priority) {
+  /// كل المزوّدات الصالحة للمهمة مرتّبة حسب الأفضلية — لا واحداً فقط،
+  /// وإلا فسقوط المزوّد الأول يُسقط الميزة كلها والمفتاح الثاني لا يُستعمل أبداً.
+  List<AiService> _candidates(AiTask task, List<String> priority) {
+    final out = <AiService>[];
     for (final preferred in priority) {
       for (final p in _providers) {
-        if (p.name == preferred && p.isConfigured && p.capabilities.contains(task)) {
-          return p;
+        if (p.name == preferred &&
+            p.isConfigured &&
+            p.capabilities.contains(task) &&
+            !out.contains(p)) {
+          out.add(p);
         }
       }
     }
-    // احتياطي: أي مزوّد مضبوط يدعم المهمة.
     for (final p in _providers) {
-      if (p.isConfigured && p.capabilities.contains(task)) return p;
+      if (p.isConfigured && p.capabilities.contains(task) && !out.contains(p)) {
+        out.add(p);
+      }
     }
-    return null;
+    return out;
+  }
+
+  AiService? _pick(AiTask task, List<String> priority) {
+    final c = _candidates(task, priority);
+    return c.isEmpty ? null : c.first;
+  }
+
+  /// يجرّب المزوّدات بالترتيب ويرجع أول نجاح. لو سقطت كلها رمى آخر خطأ.
+  Future<FoodEstimate> _tryEach(
+    AiTask task,
+    List<String> priority,
+    String noProviderMessage,
+    Future<FoodEstimate> Function(AiService) call,
+  ) async {
+    final candidates = _candidates(task, priority);
+    if (candidates.isEmpty) throw StateError(noProviderMessage);
+    Object lastError = StateError(noProviderMessage);
+    for (final p in candidates) {
+      try {
+        return await call(p);
+      } catch (e) {
+        debugPrint('AiRouter: ${p.name} فشل — $e');
+        lastError = e;
+      }
+    }
+    throw lastError;
   }
 
   bool get hasText => _pick(AiTask.text, const ['groq', 'gemini']) != null;
@@ -35,17 +68,21 @@ class AiRouter {
   String? providerFor(AiTask task) =>
       _pick(task, task == AiTask.vision ? const ['gemini', 'groq'] : const ['groq', 'gemini'])?.name;
 
-  Future<FoodEstimate> estimateFromText(String description) {
-    final p = _pick(AiTask.text, const ['groq', 'gemini']);
-    if (p == null) throw StateError('لا يوجد مزوّد نصي مضبوط — أضف GROQ_API_KEY أو GEMINI_API_KEY');
-    return p.estimateFromText(description);
-  }
+  Future<FoodEstimate> estimateFromText(String description) => _tryEach(
+        AiTask.text,
+        const ['groq', 'gemini'],
+        'لا يوجد مزوّد نصي مضبوط — أضف GROQ_API_KEY أو GEMINI_API_KEY',
+        (p) => p.estimateFromText(description),
+      );
 
-  Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType = 'image/jpeg'}) {
-    final p = _pick(AiTask.vision, const ['gemini', 'groq']);
-    if (p == null) throw StateError('لا يوجد مزوّد رؤية مضبوط — أضف GEMINI_API_KEY');
-    return p.estimateFromImage(bytes, mimeType: mimeType);
-  }
+  Future<FoodEstimate> estimateFromImage(Uint8List bytes,
+          {String mimeType = 'image/jpeg'}) =>
+      _tryEach(
+        AiTask.vision,
+        const ['gemini', 'groq'],
+        'لا يوجد مزوّد رؤية مضبوط — أضف GEMINI_API_KEY',
+        (p) => p.estimateFromImage(bytes, mimeType: mimeType),
+      );
 
   /// يغلق اتصالات كل المزوّدات — بدونه يتسرّب pool لكل فتح للشاشة.
   void close() {

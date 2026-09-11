@@ -28,7 +28,8 @@ class GeminiAiService implements AiService {
         'https://generativelanguage.googleapis.com/v1beta/models/$_model:generateContent?key=$_apiKey',
       );
 
-  Future<FoodEstimate> _send(List<Map<String, dynamic>> parts) async {
+  Future<FoodEstimate> _send(List<Map<String, dynamic>> parts,
+      {required Duration timeout}) async {
     if (!isConfigured) {
       throw StateError('GEMINI_API_KEY غير مضبوط — مرّره عبر --dart-define');
     }
@@ -41,13 +42,35 @@ class GeminiAiService implements AiService {
         ],
         'generationConfig': {'responseMimeType': 'application/json', 'temperature': 0.3},
       }),
-    );
+    ).timeout(timeout);
     if (res.statusCode != 200) {
       throw Exception('فشل نداء Gemini: ${res.statusCode} ${res.body}');
     }
     final body = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    final text = body['candidates'][0]['content']['parts'][0]['text'] as String;
-    return FoodEstimate.fromJson(jsonDecode(text) as Map<String, dynamic>);
+    // ردّ محجوب بفلتر الأمان يرجع `candidates` فاضية — لا نفهرس أعمى.
+    final cands = body['candidates'];
+    String? text;
+    if (cands is List && cands.isNotEmpty) {
+      final first = cands.first;
+      if (first is Map) {
+        final content = first['content'];
+        if (content is Map) {
+          final parts = content['parts'];
+          if (parts is List && parts.isNotEmpty) {
+            final part = parts.first;
+            if (part is Map) text = part['text'] as String?;
+          }
+        }
+      }
+    }
+    if (text == null || text.trim().isEmpty) {
+      throw Exception('ردّ Gemini فارغ أو محجوب');
+    }
+    final decoded = jsonDecode(text);
+    if (decoded is! Map<String, dynamic>) {
+      throw Exception('ردّ Gemini ليس JSON متوقّعاً');
+    }
+    return FoodEstimate.fromJson(decoded);
   }
 
   @override
@@ -58,7 +81,7 @@ class GeminiAiService implements AiService {
       _send([
         {'text': AiPrompts.system},
         {'text': AiPrompts.estimateFromText(description)},
-      ]);
+      ], timeout: AiTimeouts.text);
 
   @override
   Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType = 'image/jpeg'}) =>
@@ -68,5 +91,5 @@ class GeminiAiService implements AiService {
         {
           'inline_data': {'mime_type': mimeType, 'data': base64Encode(bytes)}
         },
-      ]);
+      ], timeout: AiTimeouts.vision);
 }

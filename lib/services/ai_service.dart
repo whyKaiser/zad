@@ -39,6 +39,12 @@ class FoodEstimate {
       );
 }
 
+/// مهل موحّدة: بدونها يعلّق المؤشّر للأبد على شبكة ميتة.
+class AiTimeouts {
+  static const text = Duration(seconds: 20);
+  static const vision = Duration(seconds: 45);
+}
+
 /// واجهة موحّدة لأي مزوّد AI. الـ router يختار بينها حسب المهمة.
 abstract class AiService {
   String get name;
@@ -94,13 +100,34 @@ class GroqAiService implements AiService {
           {'role': 'user', 'content': AiPrompts.estimateFromText(description)},
         ],
       }),
-    );
+    ).timeout(AiTimeouts.text);
+    return _parse(res);
+  }
+
+  /// استخراج دفاعي: ردّ محجوب أو `choices` فاضية كانت ترمي TypeError غامضاً
+  /// بدل رسالة تُفهم.
+  FoodEstimate _parse(http.Response res) {
     if (res.statusCode != 200) {
       throw Exception('فشل نداء Groq: ${res.statusCode} ${res.body}');
     }
     final body = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    final content = body['choices'][0]['message']['content'] as String;
-    return FoodEstimate.fromJson(jsonDecode(content) as Map<String, dynamic>);
+    final choices = body['choices'];
+    String? content;
+    if (choices is List && choices.isNotEmpty) {
+      final first = choices.first;
+      if (first is Map) {
+        final message = first['message'];
+        if (message is Map) content = message['content'] as String?;
+      }
+    }
+    if (content == null || content.trim().isEmpty) {
+      throw Exception('ردّ Groq فارغ أو محجوب');
+    }
+    final decoded = jsonDecode(content);
+    if (decoded is! Map<String, dynamic>) {
+      throw Exception('ردّ Groq ليس JSON متوقّعاً');
+    }
+    return FoodEstimate.fromJson(decoded);
   }
 
   @override
@@ -135,12 +162,7 @@ class GroqAiService implements AiService {
           },
         ],
       }),
-    ).timeout(const Duration(seconds: 30));
-    if (res.statusCode != 200) {
-      throw Exception('فشل نداء Groq (رؤية): ${res.statusCode} ${res.body}');
-    }
-    final body = jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>;
-    final content = body['choices'][0]['message']['content'] as String;
-    return FoodEstimate.fromJson(jsonDecode(content) as Map<String, dynamic>);
+    ).timeout(AiTimeouts.vision);
+    return _parse(res);
   }
 }
