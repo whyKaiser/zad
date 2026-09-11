@@ -136,7 +136,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
               ),
               Text(loc.isAr ? 'تصدير بياناتك' : 'Export your data',
                   style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]),
             const SizedBox(height: 6),
             Text(
@@ -212,7 +212,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
               loc.isAr
                   ? 'التصدير يتم على جهازك — لا يُرفع شيء لأي خادم.'
                   : 'Export happens on your device — nothing is uploaded anywhere.',
-              style: TextStyle(fontSize: 11, height: 1.6, color: c.textTertiary),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, height: 1.6, color: c.textTertiary),
             ),
           ],
         ),

@@ -134,7 +134,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
               ),
               Text(loc.isAr ? 'تقرير الأسبوع' : 'Weekly report',
                   style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]),
           ),
           Expanded(
@@ -238,7 +238,7 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                     loc.isAr
                         ? 'الأرقام من تسجيلك أنت. قراءة المدرّب استرشادية وليست نصيحة طبية.'
                         : 'Numbers come from your own logs. Coach notes are guidance, not medical advice.',
-                    style: TextStyle(fontSize: 11, height: 1.6, color: c.textTertiary),
+                    style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, height: 1.6, color: c.textTertiary),
                   ),
                 ],
               ],
@@ -260,9 +260,9 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
           child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Text(value,
                 style: TextStyle(
-                    fontSize: 20, fontWeight: FontWeight.w700, color: c.accent)),
+                    fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent)),
             const SizedBox(height: 2),
-            Text(label, style: TextStyle(fontSize: 11, color: c.textSecondary)),
+            Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
           ]),
         ),
       );

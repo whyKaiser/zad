@@ -234,7 +234,7 @@ class _ResultCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(approx ? loc.approximate : loc.verified,
-                    style: TextStyle(fontSize: 11, fontWeight: FontWeight.w500, color: badgeColor)),
+                    style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w500, color: badgeColor)),
               ),
             ],
           ),
@@ -244,7 +244,7 @@ class _ResultCard extends StatelessWidget {
             textBaseline: TextBaseline.alphabetic,
             children: [
               Text('${result.calories}',
-                  style: TextStyle(fontSize: 28, fontWeight: FontWeight.w700, color: c.accent)),
+                  style: TextStyle(fontSize: 28, letterSpacing: 28 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
               const SizedBox(width: 4),
               Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
             ],
@@ -260,7 +260,7 @@ class _ResultCard extends StatelessWidget {
           if (result.detail.isNotEmpty) ...[
             const SizedBox(height: 10),
             Text(result.detail,
-                style: TextStyle(fontSize: 11, color: c.textTertiary), maxLines: 2, overflow: TextOverflow.ellipsis),
+                style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 2, overflow: TextOverflow.ellipsis),
           ],
           const SizedBox(height: 14),
           SizedBox(

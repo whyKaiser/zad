@@ -36,7 +36,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'قائمة الشراء' : 'Shopping List',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
                 const Spacer(),
                 if (items.isNotEmpty)
                   IconButton(

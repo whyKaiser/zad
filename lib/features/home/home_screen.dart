@@ -209,7 +209,7 @@ class _DateStripState extends State<_DateStrip> {
                       Text(
                         weekdays[d.weekday % 7],
                         style: TextStyle(
-                          fontSize: 11,
+                          fontSize: 11, letterSpacing: 11 * 0.01,
                           color: isSel ? c.onAccent.withOpacity(0.8) : c.textSecondary,
                         ),
                       ),
@@ -252,7 +252,7 @@ class _TopBar extends StatelessWidget {
           children: [
             Text(AppLocalizations.of(context).greeting,
                 style: TextStyle(fontSize: 13, color: c.textSecondary)),
-            Text(name, style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500, color: c.textPrimary)),
+            Text(name, style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w500, color: c.textPrimary)),
           ],
         ),
         const Spacer(),
@@ -605,7 +605,7 @@ class _MealRow extends StatelessWidget {
           Text('${meal.calories}',
               style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent)),
           Text(' ${loc.calorieUnit}',
-              style: TextStyle(fontSize: 11, color: c.textSecondary)),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
         ]),
       ),
     );
@@ -639,7 +639,7 @@ class _StreakRankCard extends StatelessWidget {
         child: Row(children: [
           Icon(Icons.local_fire_department_rounded, size: 22, color: c.accent2),
           const SizedBox(width: 8),
-          Text('$streak', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.accent2)),
+          Text('$streak', style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent2)),
           const SizedBox(width: 4),
           Text(loc.isAr ? 'يوم' : 'days',
               style: TextStyle(fontSize: 13, color: c.textSecondary)),
@@ -652,7 +652,7 @@ class _StreakRankCard extends StatelessWidget {
           ),
           const SizedBox(width: 6),
           Text('$points ${loc.points}',
-              style: TextStyle(fontSize: 11, color: c.textTertiary)),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
           const SizedBox(width: 4),
           Icon(Icons.chevron_right_rounded, size: 18, color: c.textTertiary),
         ]),

@@ -41,7 +41,7 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
               Expanded(
                 child: Text(loc.comebackTitle,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ),
             ]),
             const SizedBox(height: 4),
@@ -102,8 +102,8 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
                         Text(loc.startAtLabel, style: TextStyle(fontSize: 13, color: c.textSecondary)),
                         const SizedBox(height: 4),
                         Text('${est.startWeightPct}%',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: c.accent)),
-                        Text(loc.ofPrevious, style: TextStyle(fontSize: 11, color: c.textTertiary)),
+                            style: TextStyle(fontSize: 24, letterSpacing: 24 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
+                        Text(loc.ofPrevious, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
                       ]),
                     ),
                     Container(width: 1, height: 48, color: c.border),
@@ -113,7 +113,7 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
                         Text(loc.recoveryTime, style: TextStyle(fontSize: 13, color: c.textSecondary)),
                         const SizedBox(height: 4),
                         Text('${est.recoveryWeeks} ${loc.weeksUnit}',
-                            style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: c.accent2)),
+                            style: TextStyle(fontSize: 24, letterSpacing: 24 * -0.02, fontWeight: FontWeight.w700, color: c.accent2)),
                       ]),
                     ),
                   ]),
@@ -145,7 +145,7 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
   Widget _loss(c, String label, int pct, Color color) => Expanded(
         child: Column(children: [
           Text('−$pct%',
-              style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: color)),
+              style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, fontWeight: FontWeight.w700, color: color)),
           const SizedBox(height: 4),
           Text(label, style: TextStyle(fontSize: 12, color: c.textSecondary)),
         ]),

@@ -128,7 +128,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
                 Text(loc.isAr ? 'صوّر وجبتك' : 'Snap your meal',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ]),
             ),
             Expanded(
@@ -244,14 +244,14 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
               borderRadius: BorderRadius.circular(8),
             ),
             child: Text(loc.approximate,
-                style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: c.macroCarbs)),
+                style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w600, color: c.macroCarbs)),
           ),
         ]),
         const SizedBox(height: 14),
         Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic,
             children: [
           Text('$cal',
-              style: TextStyle(fontSize: 34, fontWeight: FontWeight.w700, color: c.accent)),
+              style: TextStyle(fontSize: 34, letterSpacing: 34 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
           const SizedBox(width: 5),
           Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
         ]),
@@ -279,7 +279,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
         Text(loc.isAr
                 ? 'راجع الرقم قبل الحفظ — التقدير من الصورة ليس دقيقاً كالقاعدة الموثّقة.'
                 : 'Review before saving — photo estimates are less precise than the verified database.',
-            style: TextStyle(fontSize: 11, height: 1.5, color: c.textTertiary)),
+            style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, height: 1.5, color: c.textTertiary)),
         const SizedBox(height: 14),
         SizedBox(
           width: double.infinity,
@@ -307,7 +307,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
           ),
           child: Column(children: [
             Text('$value', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: color)),
-            Text(label, style: TextStyle(fontSize: 10, color: c.textSecondary)),
+            Text(label, style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textSecondary)),
           ]),
         ),
       );

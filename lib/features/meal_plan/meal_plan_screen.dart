@@ -44,7 +44,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
                 const Spacer(),
                 TextButton.icon(
                   onPressed: () {

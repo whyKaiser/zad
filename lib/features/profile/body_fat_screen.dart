@@ -109,7 +109,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
               Text(loc.isAr ? 'نسبة الدهون (Navy)' : 'Body Fat % (Navy)',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]),
             const SizedBox(height: 20),
 
@@ -121,7 +121,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                 ),
                 child: Column(children: [
                   Text('${_result!.toStringAsFixed(1)}%',
-                      style: TextStyle(fontSize: 48, fontWeight: FontWeight.w800,
+                      style: TextStyle(fontSize: 48, letterSpacing: 48 * -0.025, fontWeight: FontWeight.w800,
                           color: _color(_result!, profile!.gender, c))),
                   const SizedBox(height: 8),
                   Text(_category(_result!, profile.gender),

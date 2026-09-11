@@ -90,7 +90,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
                 Text(loc.isAr ? 'برامج التدريب' : 'Workout Programs',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ]),
             ),
             // program selector
@@ -154,7 +154,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                       collapsedIconColor: c.textTertiary,
                       children: exercises.map((ex) => ListTile(
                         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
-                        leading: Text(ex.muscle.emoji, style: const TextStyle(fontSize: 20)),
+                        leading: Text(ex.muscle.emoji, style: const TextStyle(fontSize: 20, letterSpacing: 20 * -0.01)),
                         title: Text(loc.isAr ? ex.nameAr : ex.nameEn,
                             style: TextStyle(fontSize: 14, color: c.textPrimary)),
                         trailing: Text('${ex.sets}×${ex.reps}',

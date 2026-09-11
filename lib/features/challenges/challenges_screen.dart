@@ -68,14 +68,14 @@ class ChallengesScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 800),
                     curve: Curves.easeOutCubic,
                     builder: (_, v, __) => Text('$v',
-                        style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: c.accent)),
+                        style: TextStyle(fontSize: 32, letterSpacing: 32 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
                   ),
                   Text(loc.points, style: TextStyle(fontSize: 13, color: c.textSecondary)),
                 ]),
                 const Spacer(),
                 Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
                   Row(children: [
-                    Text(rank.emoji, style: const TextStyle(fontSize: 20)),
+                    Text(rank.emoji, style: const TextStyle(fontSize: 20, letterSpacing: 20 * -0.01)),
                     const SizedBox(width: 8),
                     Text(loc.isAr ? rank.nameAr : rank.nameEn,
                         style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
@@ -287,7 +287,7 @@ class _LeaderRow extends StatelessWidget {
         Text('${entry.points}',
             style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.accent)),
         const SizedBox(width: 4),
-        Text(loc.points, style: TextStyle(fontSize: 11, color: c.textTertiary)),
+        Text(loc.points, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
       ]),
     );
   }

@@ -190,7 +190,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
               child: Row(
                 children: [
                   Text(loc.addMeal,
-                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
                   const Spacer(),
                   IconButton(
                     tooltip: loc.isAr ? 'صوّر وجبتك' : 'Snap meal',
@@ -428,13 +428,13 @@ class _QuickRow extends StatelessWidget {
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)),
               Text('${food.grams} ${loc.grams}',
-                  style: TextStyle(fontSize: 11, color: c.textTertiary)),
+                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
             ]),
           ),
           const SizedBox(width: 8),
           Text('${food.calories}',
               style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent)),
-          Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, color: c.textSecondary)),
+          Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textSecondary)),
           const SizedBox(width: 8),
           Icon(Icons.add_circle_rounded, size: 22, color: c.accent),
         ]),
@@ -590,7 +590,7 @@ class _PortionSheetState extends State<_PortionSheet> {
               textBaseline: TextBaseline.alphabetic,
               children: [
                 Text('${v.calories}',
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.w700, color: c.accent)),
+                    style: TextStyle(fontSize: 32, letterSpacing: 32 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
                 const SizedBox(width: 4),
                 Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
               ],
@@ -776,7 +776,7 @@ class _DailyBar extends StatelessWidget {
               style: TextStyle(fontSize: 12, color: c.textSecondary)),
           const SizedBox(width: 4),
           Text('${(after * 100).round()}%',
-              style: TextStyle(fontSize: 11, fontWeight: FontWeight.w600, color: color)),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w600, color: color)),
         ]),
         const SizedBox(height: 4),
         Stack(

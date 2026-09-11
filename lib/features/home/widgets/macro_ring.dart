@@ -57,9 +57,9 @@ class MacroRing extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(label,
-                style: TextStyle(fontSize: 11, color: c.textSecondary)),
+                style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
             Text('/ $target ${loc.grams}',
-                style: TextStyle(fontSize: 10, color: c.textTertiary)),
+                style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
           ],
         );
       },

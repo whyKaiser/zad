@@ -39,7 +39,7 @@ class StreakScreen extends StatelessWidget {
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
               Text(loc.isAr ? 'الستريك والرانك' : 'Streak & Rank',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]).animate().fadeIn(duration: 300.ms),
             const SizedBox(height: 20),
 
@@ -60,7 +60,7 @@ class StreakScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 1000),
                     curve: Curves.easeOutCubic,
                     builder: (_, v, __) => Text('${v.round()}',
-                        style: TextStyle(fontSize: 56, fontWeight: FontWeight.w800, color: c.textPrimary, height: 1)),
+                        style: TextStyle(fontSize: 56, letterSpacing: 56 * -0.025, fontWeight: FontWeight.w800, color: c.textPrimary, height: 1)),
                   ),
                   Text(loc.isAr ? 'يوم متتالي' : 'day streak',
                       style: TextStyle(fontSize: 16, color: c.textSecondary)),
@@ -83,7 +83,7 @@ class StreakScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
-                    Text(rank.emoji, style: const TextStyle(fontSize: 28)),
+                    Text(rank.emoji, style: const TextStyle(fontSize: 28, letterSpacing: 28 * -0.02)),
                     const SizedBox(width: 12),
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(loc.isAr ? rank.nameAr : rank.nameEn,
@@ -146,7 +146,7 @@ class StreakScreen extends StatelessWidget {
                   ),
                 ),
                 child: Row(children: [
-                  Text(r.emoji, style: TextStyle(fontSize: 22, color: unlocked ? null : c.textTertiary.withOpacity(0.4))),
+                  Text(r.emoji, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, color: unlocked ? null : c.textTertiary.withOpacity(0.4))),
                   const SizedBox(width: 12),
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(loc.isAr ? r.nameAr : r.nameEn,
@@ -155,7 +155,7 @@ class StreakScreen extends StatelessWidget {
                           color: unlocked ? c.textPrimary : c.textTertiary,
                         )),
                     Text('${r.minPoints}+ ${loc.points}',
-                        style: TextStyle(fontSize: 11, color: c.textTertiary)),
+                        style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
                   ])),
                   if (isCurrentRank)
                     Container(
@@ -165,7 +165,7 @@ class StreakScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Text(loc.isAr ? 'أنت هنا' : 'You',
-                          style: TextStyle(fontSize: 10, color: c.onAccent, fontWeight: FontWeight.w600)),
+                          style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.onAccent, fontWeight: FontWeight.w600)),
                     )
                   else if (!unlocked)
                     Icon(Icons.lock_outline_rounded, size: 16, color: c.textTertiary),

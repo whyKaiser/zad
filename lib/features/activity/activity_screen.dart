@@ -45,7 +45,7 @@ class ActivityScreen extends StatelessWidget {
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
                 Text(loc.isAr ? 'النشاط والحركة' : 'Activity',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ]),
             ),
             Padding(
@@ -65,7 +65,7 @@ class ActivityScreen extends StatelessWidget {
                     duration: const Duration(milliseconds: 800),
                     curve: Curves.easeOutCubic,
                     builder: (_, v, __) => Text('$v',
-                        style: TextStyle(fontSize: 40, fontWeight: FontWeight.w800,
+                        style: TextStyle(fontSize: 40, letterSpacing: 40 * -0.025, fontWeight: FontWeight.w800,
                             color: c.textPrimary, height: 1)),
                   ),
                   Text(loc.isAr ? 'سعرة محروقة اليوم' : 'calories burned today',
@@ -162,7 +162,7 @@ class ActivityScreen extends StatelessWidget {
                               Text('${e.calories}',
                                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: c.accent2)),
                               Text(' ${loc.calorieUnit}',
-                                  style: TextStyle(fontSize: 10, color: c.textTertiary)),
+                                  style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
                             ]),
                           ),
                         ).animate().fadeIn(delay: (i * 22).ms, duration: 300.ms);
@@ -230,7 +230,7 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary)),
             const Spacer(),
             Text('$cals ${loc.calorieUnit}',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.accent2)),
+                style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent2)),
           ]),
         ),
         const SizedBox(height: 12),
@@ -283,7 +283,7 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
                 loc.isAr
                     ? 'محسوبة على وزن ${weight.toStringAsFixed(0)} كجم بمعادلة MET المعتمدة.'
                     : 'Calculated for ${weight.toStringAsFixed(0)} kg using standard MET values.',
-                style: TextStyle(fontSize: 11, height: 1.5, color: c.textTertiary),
+                style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, height: 1.5, color: c.textTertiary),
               ),
               const SizedBox(height: 20),
               SizedBox(

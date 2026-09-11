@@ -99,7 +99,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
             padding: const EdgeInsets.fromLTRB(20, 12, 20, 120),
             children: [
               Text(loc.isAr ? 'إحصائيات الأسبوع' : 'Weekly stats',
-                      style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: c.textPrimary))
+                      style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, fontWeight: FontWeight.w700, color: c.textPrimary))
                   .animate().fadeIn(duration: 400.ms),
               const SizedBox(height: 4),
               Text(loc.isAr ? 'آخر 7 أيام' : 'Last 7 days',
@@ -276,7 +276,7 @@ class _WeekBarChart extends StatelessWidget {
                           if (d.calories > 0)
                             Text(
                               '${(d.calories / 1000).toStringAsFixed(1)}k',
-                              style: TextStyle(fontSize: 9, color: c.textTertiary),
+                              style: TextStyle(fontSize: 9, letterSpacing: 9 * 0.02, color: c.textTertiary),
                             ),
                           const SizedBox(height: 2),
                           Flexible(
@@ -312,7 +312,7 @@ class _WeekBarChart extends StatelessWidget {
               Container(width: 12, height: 2, color: c.accent.withOpacity(0.5)),
               const SizedBox(width: 6),
               Text('${AppLocalizations.of(context).isAr ? 'الهدف' : 'Goal'} $goal',
-                  style: TextStyle(fontSize: 11, color: c.textTertiary)),
+                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
             ]),
           ),
           Row(
@@ -321,7 +321,7 @@ class _WeekBarChart extends StatelessWidget {
                 weekdays[d.date.weekday % 7],
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 11,
+                  fontSize: 11, letterSpacing: 11 * 0.01,
                   color: d.date.day == today.day ? c.accent : c.textSecondary,
                   fontWeight: d.date.day == today.day ? FontWeight.w700 : FontWeight.w400,
                 ),
@@ -356,15 +356,15 @@ class _SummaryCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(label, style: TextStyle(fontSize: 11, color: c.textSecondary)),
+          Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
           const SizedBox(height: 6),
           Row(
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(value, style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700, color: color)),
+              Text(value, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, fontWeight: FontWeight.w700, color: color)),
               const SizedBox(width: 3),
-              Text(unit, style: TextStyle(fontSize: 11, color: c.textTertiary)),
+              Text(unit, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
             ],
           ),
         ],
@@ -419,7 +419,7 @@ class _MacroRow extends StatelessWidget {
         ])),
         const SizedBox(width: 10),
         Text('${data.calories}', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.accent)),
-        Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, color: c.textTertiary)),
+        Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
       ]),
     );
   }

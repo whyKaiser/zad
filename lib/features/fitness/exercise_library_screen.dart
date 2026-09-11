@@ -37,7 +37,7 @@ class _ExerciseLibraryScreenState extends State<ExerciseLibraryScreen> {
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
                 Text(loc.isAr ? 'مكتبة التمارين' : 'Exercise Library',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ]),
             ),
             SizedBox(
@@ -122,7 +122,7 @@ class _ExCard extends StatelessWidget {
             color: c.accent.withOpacity(0.12),
             borderRadius: BorderRadius.circular(12),
           ),
-          child: Center(child: Text(ex.muscle.emoji, style: const TextStyle(fontSize: 22))),
+          child: Center(child: Text(ex.muscle.emoji, style: const TextStyle(fontSize: 22, letterSpacing: 22 * -0.01))),
         ),
         const SizedBox(width: 14),
         Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -140,7 +140,7 @@ class _ExCard extends StatelessWidget {
           Text('${ex.sets}×${ex.reps}',
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: c.accent)),
           Text(loc.isAr ? 'ج×ت' : 'S×R',
-              style: TextStyle(fontSize: 10, color: c.textTertiary)),
+              style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
         ]),
       ]),
     );

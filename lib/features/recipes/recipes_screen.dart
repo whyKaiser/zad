@@ -49,7 +49,7 @@ class RecipesScreen extends StatelessWidget {
               ),
               Text(loc.isAr ? 'وصفاتي' : 'My recipes',
                   style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]),
           ),
           Expanded(
@@ -153,7 +153,7 @@ class _RecipeCard extends StatelessWidget {
                   style: TextStyle(
                       fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
               Text(' ${loc.calorieUnit}',
-                  style: TextStyle(fontSize: 11, color: c.textSecondary)),
+                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
             ]),
             const SizedBox(height: 4),
             Text(
@@ -202,7 +202,7 @@ class _RecipeCard extends StatelessWidget {
             color: color.withOpacity(0.12), borderRadius: BorderRadius.circular(7)),
         child: Text('$label $v',
             style: TextStyle(
-                fontSize: 11, fontWeight: FontWeight.w500, color: color)),
+                fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w500, color: color)),
       );
 
   void _logSheet(BuildContext context, Recipe r) {
@@ -424,7 +424,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                         ? (loc.isAr ? 'وصفة جديدة' : 'New recipe')
                         : (loc.isAr ? 'تعديل الوصفة' : 'Edit recipe'),
                     style: TextStyle(
-                        fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                        fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ),
               TextButton(
                 onPressed: _valid ? _save : null,
@@ -582,7 +582,7 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                                         fontSize: 14, color: c.textPrimary)),
                                 Text('${item.grams} ${loc.grams} · ${item.calories} ${loc.calorieUnit}',
                                     style: TextStyle(
-                                        fontSize: 11, color: c.textSecondary)),
+                                        fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
                               ]),
                         ),
                         IconButton(
@@ -710,7 +710,7 @@ class _PickIngredientSheetState extends State<_PickIngredientSheet> {
                               color: sel ? c.accent : c.textPrimary)),
                     ),
                     Text('${f.kcalPer100g} / 100${loc.grams}',
-                        style: TextStyle(fontSize: 11, color: c.textSecondary)),
+                        style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
                   ]),
                 ),
               );

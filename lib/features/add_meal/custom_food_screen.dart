@@ -94,7 +94,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
               Row(children: [
                 Text(
                   loc.isAr ? 'طعام مخصص' : 'Custom food',
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary),
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary),
                 ),
                 const Spacer(),
                 IconButton(

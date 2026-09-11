@@ -104,7 +104,7 @@ class _WeightScreenState extends State<WeightScreen> with SingleTickerProviderSt
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
                 Text(loc.weightTracking,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
               ]),
             ),
             TabBar(
@@ -401,7 +401,7 @@ class _MeasChip extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(mainAxisSize: MainAxisSize.min, children: [
       Text(value.toStringAsFixed(1), style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: c.accent)),
-      Text(label, style: TextStyle(fontSize: 11, color: c.textSecondary)),
+      Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
     ]);
   }
 }
@@ -489,7 +489,7 @@ class _LogWeightSheetState extends State<_LogWeightSheet> {
             Text(loc.logWeight, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary)),
             const Spacer(),
             Text('${disp.toStringAsFixed(1)} $unit',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.accent)),
+                style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent)),
           ]),
           Slider(
             value: _kg, min: _minKg, max: _maxKg, divisions: 440, // خطوة ٠٫٥ كجم

@@ -67,7 +67,7 @@ class _FastingScreenState extends State<FastingScreen> {
               ),
               Text(loc.isAr ? 'الصيام المتقطّع' : 'Intermittent fasting',
                   style: TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]),
             const SizedBox(height: 8),
 
@@ -87,7 +87,7 @@ class _FastingScreenState extends State<FastingScreen> {
                       Text(
                         f.isFasting ? _fmt(f.elapsed) : '--:--:--',
                         style: TextStyle(
-                          fontSize: 32,
+                          fontSize: 32, letterSpacing: 32 * -0.025,
                           fontWeight: FontWeight.w700,
                           color: c.textPrimary,
                           fontFeatures: const [FontFeature.tabularFigures()],
@@ -251,7 +251,7 @@ class _FastingScreenState extends State<FastingScreen> {
                             color: c.textPrimary),
                       ),
                       Text(' / ${s.targetHours}س',
-                          style: TextStyle(fontSize: 11, color: c.textTertiary)),
+                          style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
                     ]),
                   )),
             ],
@@ -263,7 +263,7 @@ class _FastingScreenState extends State<FastingScreen> {
                       'أو عندك سكري أو تاريخ اضطراب أكل.'
                   : 'Intermittent fasting is not for everyone. Consult a professional if you '
                       'are pregnant, nursing, diabetic, or have a history of disordered eating.',
-              style: TextStyle(fontSize: 11, height: 1.7, color: c.textTertiary),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, height: 1.7, color: c.textTertiary),
             ),
           ],
         ),

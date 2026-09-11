@@ -231,7 +231,7 @@ class _MacroChip extends StatelessWidget {
     return Column(children: [
       Text(value, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700,
           color: highlight ? c.accent : c.textPrimary)),
-      Text(label, style: TextStyle(fontSize: 11, color: c.textSecondary)),
+      Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
     ]);
   }
 }

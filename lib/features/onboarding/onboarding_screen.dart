@@ -59,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           padding: const EdgeInsets.fromLTRB(20, 24, 20, 32),
           children: [
             Text(loc.welcome,
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.w700, color: c.textPrimary)),
+                style: TextStyle(fontSize: 24, letterSpacing: 24 * -0.02, fontWeight: FontWeight.w700, color: c.textPrimary)),
             const SizedBox(height: 6),
             Text(loc.onboardingSub, style: TextStyle(fontSize: 14, color: c.textSecondary)),
             const SizedBox(height: 26),
@@ -113,7 +113,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                   Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary)),
                   const Spacer(),
                   Text('${_draft.targetCalories}',
-                      style: TextStyle(fontSize: 26, fontWeight: FontWeight.w700, color: c.accent)),
+                      style: TextStyle(fontSize: 26, letterSpacing: 26 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
                   const SizedBox(width: 4),
                   Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
                 ],

@@ -26,7 +26,7 @@ class RestaurantsScreen extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 120),
         children: [
           Text(loc.nearbyRestaurants,
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary))
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary))
               .animate().fadeIn(duration: 350.ms),
           const SizedBox(height: 12),
           Container(
@@ -41,7 +41,7 @@ class RestaurantsScreen extends StatelessWidget {
               const SizedBox(width: 10),
               Text(loc.remainingToday, style: TextStyle(fontSize: 14, color: c.textSecondary)),
               const Spacer(),
-              Text('$remaining', style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.accent)),
+              Text('$remaining', style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent)),
               const SizedBox(width: 4),
               Text(loc.calorieUnit, style: TextStyle(fontSize: 12, color: c.textSecondary)),
             ]),
@@ -56,7 +56,7 @@ class RestaurantsScreen extends StatelessWidget {
           const SizedBox(height: 8),
           Text('${loc.approximate} · ${loc.calorieUnit}',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 11, color: c.textTertiary)),
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
         ],
       ),
     );
@@ -105,7 +105,7 @@ class _RestaurantCard extends StatelessWidget {
               Expanded(
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   if (fits)
-                    Text(loc.suggestMeal, style: TextStyle(fontSize: 11, color: c.accent2)),
+                    Text(loc.suggestMeal, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.accent2)),
                   if (dish != null)
                     Padding(
                       padding: const EdgeInsets.only(top: 2),
@@ -117,7 +117,7 @@ class _RestaurantCard extends StatelessWidget {
               Text('$cals',
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w700, color: fits ? c.accent : c.textSecondary)),
               const SizedBox(width: 4),
-              Text(loc.calorieUnit, style: TextStyle(fontSize: 11, color: c.textSecondary)),
+              Text(loc.calorieUnit, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
             ]),
           ),
         ],

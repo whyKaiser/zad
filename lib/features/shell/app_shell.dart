@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 
 import '../../core/motion.dart';
@@ -74,10 +76,17 @@ class _AppShellState extends State<AppShell> {
               child: const Icon(Icons.add_rounded, size: 28),
             )
           : null,
-      bottomNavigationBar: Container(
+      // شريط سفلي شفّاف يمرّ المحتوى تحته — طبقة عائمة لا شريط مصمت.
+      // Apple: الأسطح الشفافة تنقل الهرمية بلا أن تسرق التركيز.
+      extendBody: true,
+      bottomNavigationBar: ClipRect(
+        child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+          child: Container(
         decoration: BoxDecoration(
-          color: c.surface,
-          border: Border(top: BorderSide(color: c.border)),
+          color: c.surface.withOpacity(0.82),
+          // حافّة علوية فاتحة = ضوء ينكسر على المادة
+          border: Border(top: BorderSide(color: c.border.withOpacity(0.7))),
         ),
         child: SafeArea(
           top: false,
@@ -111,7 +120,7 @@ class _AppShellState extends State<AppShell> {
                         AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 250),
                           style: TextStyle(
-                            fontSize: 10,
+                            fontSize: 10, letterSpacing: 10 * 0.02,
                             fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                             color: selected ? c.accent : c.textTertiary,
                           ),
@@ -124,6 +133,8 @@ class _AppShellState extends State<AppShell> {
               }),
             ),
           ),
+        ),
+      ),
         ),
       ),
     );
