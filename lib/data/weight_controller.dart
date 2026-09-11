@@ -51,6 +51,14 @@ class WeightController extends ChangeNotifier {
     await _persist();
   }
 
+  /// يُعيد إدخالاً حُذف بتاريخه الأصلي — لا كإدخال جديد بتاريخ اليوم.
+  Future<void> restore(WeightEntry entry) async {
+    _entries.add(entry);
+    _entries.sort((a, b) => a.date.compareTo(b.date));
+    notifyListeners();
+    await _persist();
+  }
+
   Future<void> remove(WeightEntry entry) async {
     _entries.remove(entry);
     notifyListeners();

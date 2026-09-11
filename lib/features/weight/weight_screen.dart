@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
+import '../../core/undo.dart';
 import '../../data/measurements_controller.dart';
 import '../../data/profile_controller.dart';
 import '../../data/unit_controller.dart';
@@ -222,7 +223,15 @@ class _WeightTab extends StatelessWidget {
                   ),
                   onDismissed: (_) {
                     Haptics.light();
-                    context.read<WeightController>().remove(e);
+                    final ctrl = context.read<WeightController>();
+                    ctrl.remove(e);
+                    showUndoBar(
+                      context,
+                      message: loc.isAr
+                          ? 'حُذف تسجيل ${unit.toDisplay(e.kg).toStringAsFixed(1)}'
+                          : 'Removed ${unit.toDisplay(e.kg).toStringAsFixed(1)} entry',
+                      onUndo: () => ctrl.restore(e),
+                    );
                   },
                   child: Container(
                     margin: const EdgeInsets.only(bottom: 8),

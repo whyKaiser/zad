@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import '../../core/dates.dart';
 import '../../core/motion.dart';
+import '../../core/undo.dart';
 import '../../data/activity_controller.dart';
 import '../../data/diary_repository.dart';
 import '../../data/points_controller.dart';
@@ -582,15 +583,11 @@ class _MealRow extends StatelessWidget {
         Haptics.light();
         final repo = context.read<DiaryRepository>();
         repo.removeMeal(meal);
-        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-          content: Text(loc.isAr ? 'حُذفت «${meal.name}»' : 'Deleted "${meal.name}"'),
-          behavior: SnackBarBehavior.floating,
-          duration: const Duration(seconds: 3),
-          action: SnackBarAction(
-            label: loc.isAr ? 'تراجع' : 'Undo',
-            onPressed: () => repo.addMeal(meal),
-          ),
-        ));
+        showUndoBar(
+          context,
+          message: loc.isAr ? 'حُذفت «${meal.name}»' : 'Deleted "${meal.name}"',
+          onUndo: () => repo.addMeal(meal),
+        );
       },
       child: Container(
         padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),

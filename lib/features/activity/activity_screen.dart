@@ -4,6 +4,7 @@ import 'package:intl/intl.dart' as intl;
 import 'package:provider/provider.dart';
 
 import '../../core/motion.dart';
+import '../../core/undo.dart';
 import '../../data/activity_controller.dart';
 import '../../data/profile_controller.dart';
 import '../../data/weight_controller.dart';
@@ -127,7 +128,15 @@ class ActivityScreen extends StatelessWidget {
                           ),
                           onDismissed: (_) {
                             Haptics.light();
-                            context.read<ActivityController>().remove(e);
+                            final ctrl = context.read<ActivityController>();
+                            ctrl.remove(e);
+                            showUndoBar(
+                              context,
+                              message: loc.isAr
+                                  ? 'حُذف «${e.name}»'
+                                  : 'Deleted "${e.name}"',
+                              onUndo: () => ctrl.add(e),
+                            );
                           },
                           child: Container(
                             margin: const EdgeInsets.only(bottom: 10),
