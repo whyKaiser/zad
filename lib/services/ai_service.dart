@@ -47,6 +47,9 @@ abstract class AiService {
 
   Future<FoodEstimate> estimateFromText(String description);
   Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType});
+
+  /// يحرّر اتصالات HTTP المفتوحة. يُستدعى من dispose الشاشة.
+  void close();
 }
 
 /// Groq (مجاني/سريع — Llama). نص فقط. API متوافق مع OpenAI.
@@ -99,6 +102,9 @@ class GroqAiService implements AiService {
     final content = body['choices'][0]['message']['content'] as String;
     return FoodEstimate.fromJson(jsonDecode(content) as Map<String, dynamic>);
   }
+
+  @override
+  void close() => _client.close();
 
   @override
   Future<FoodEstimate> estimateFromImage(Uint8List bytes, {String mimeType = 'image/jpeg'}) async {

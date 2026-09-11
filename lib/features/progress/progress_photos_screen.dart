@@ -35,6 +35,9 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
       final parts = s.split('|');
       if (parts.length == 2) {
         final file = File(parts[0]);
+        // متعمّد غير متزامن: الفحص يتم لعدة ملفات عند فتح الشاشة،
+        // والنسخة المتزامنة تُجمّد الواجهة.
+        // ignore: avoid_slow_async_io
         if (await file.exists()) {
           entries.add(_PhotoEntry(path: parts[0], date: DateTime.parse(parts[1])));
         }
@@ -149,7 +152,7 @@ class _PhotoCard extends StatelessWidget {
           actions: [
             TextButton(onPressed: () => Navigator.pop(context), child: Text(loc.isAr ? 'إلغاء' : 'Cancel')),
             TextButton(onPressed: () { Navigator.pop(context); onDelete(); },
-                child: Text(loc.isAr ? 'حذف' : 'Delete', style: const TextStyle(color: Colors.red))),
+                child: Text(loc.isAr ? 'حذف' : 'Delete', style: TextStyle(color: context.colors.danger))),
           ],
         ),
       ),

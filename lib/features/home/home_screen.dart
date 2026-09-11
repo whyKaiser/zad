@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/dates.dart';
 import '../../core/motion.dart';
 import '../../data/activity_controller.dart';
 import '../../data/diary_repository.dart';
@@ -22,9 +23,6 @@ import 'widgets/macro_ring.dart';
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  static bool _isSameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
-
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
@@ -37,8 +35,8 @@ class HomeScreen extends StatelessWidget {
     final goalMacros = profile?.targetMacros ?? repo.goal.macros;
     final consumedCal = repo.consumedCalories;
     // النشاط يُضاف للميزانية فقط في اليوم الحالي.
-    final isToday = _isSameDay(repo.selectedDate, DateTime.now());
-    final burned = isToday ? context.watch<ActivityController>().burnedToday : 0;
+    final viewingToday = isToday(repo.selectedDate);
+    final burned = viewingToday ? context.watch<ActivityController>().burnedToday : 0;
     final goalCalories = baseGoal + burned;
     final remaining = (goalCalories - consumedCal).clamp(0, goalCalories);
     final name = profile?.name ?? repo.userName;
@@ -181,8 +179,8 @@ class _DateStripState extends State<_DateStrip> {
             itemCount: _dates.length,
             itemBuilder: (_, i) {
               final d = _dates[i];
-              final isToday = _isToday(d);
-              final isSel = _isSameDay(d, sel);
+              final dayIsToday = isToday(d);
+              final isSel = isSameDay(d, sel);
               return GestureDetector(
                 onTap: () {
                   Haptics.select();
@@ -196,8 +194,8 @@ class _DateStripState extends State<_DateStrip> {
                     color: isSel ? c.accent : c.surface,
                     borderRadius: BorderRadius.circular(16),
                     border: Border.all(
-                      color: isSel ? c.accent : (isToday ? c.accent.withOpacity(0.5) : c.border),
-                      width: isToday && !isSel ? 1.5 : 1,
+                      color: isSel ? c.accent : (dayIsToday ? c.accent.withOpacity(0.5) : c.border),
+                      width: dayIsToday && !isSel ? 1.5 : 1,
                     ),
                   ),
                   child: Column(
@@ -230,13 +228,6 @@ class _DateStripState extends State<_DateStrip> {
     );
   }
 
-  bool _isToday(DateTime d) {
-    final now = DateTime.now();
-    return d.year == now.year && d.month == now.month && d.day == now.day;
-  }
-
-  bool _isSameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
 }
 
 // ─── Top Bar ─────────────────────────────────────────────────────────────────
@@ -496,8 +487,9 @@ class _CopyYesterdayButtonState extends State<_CopyYesterdayButton> {
     final repo = context.read<DiaryRepository>();
     final messenger = ScaffoldMessenger.of(context);
     try {
-      final yesterday = DateTime.now().subtract(const Duration(days: 1));
-      final all = await repo.getMealsForDay(yesterday);
+      // اليوم السابق لليوم *المعروض* — لا ليوم أمس دائماً.
+      final source = repo.selectedDate.subtract(const Duration(days: 1));
+      final all = await repo.getMealsForDay(source);
       final same = all.where((m) => m.type == widget.type).toList();
       if (!mounted) return;
       if (same.isEmpty) {
@@ -515,7 +507,7 @@ class _CopyYesterdayButtonState extends State<_CopyYesterdayButton> {
           name: m.name,
           calories: m.calories,
           macros: m.macros,
-          time: DateTime.now(),
+          time: mealTimeFor(repo.selectedDate),
           type: m.type,
         ));
       }
@@ -566,7 +558,7 @@ class _MealRow extends StatelessWidget {
       background: Container(
         alignment: AlignmentDirectional.centerEnd,
         padding: const EdgeInsetsDirectional.only(end: 20),
-        color: Colors.red.withOpacity(0.85),
+        color: c.danger,
         child: const Icon(Icons.delete_outline_rounded, color: Colors.white, size: 22),
       ),
       onDismissed: (_) {

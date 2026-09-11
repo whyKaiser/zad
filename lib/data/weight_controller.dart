@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,15 +24,23 @@ class WeightController extends ChangeNotifier {
   double? get latest => _entries.isEmpty ? null : _entries.last.kg;
 
   Future<void> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_prefsKey);
-    if (raw != null) {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_prefsKey);
+      if (raw == null) return;
       final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
       _entries
         ..clear()
         ..addAll(list.map(WeightEntry.fromMap));
       _entries.sort((a, b) => a.date.compareTo(b.date));
       notifyListeners();
+    } catch (e) {
+      // سجلّ تالف يعطّل تتبّع الوزن للأبد — نمسحه ونكمل.
+      debugPrint('WeightController load error: $e');
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove(_prefsKey);
+      } catch (_) {}
     }
   }
 
@@ -49,7 +58,11 @@ class WeightController extends ChangeNotifier {
   }
 
   Future<void> _persist() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_prefsKey, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_prefsKey, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    } catch (e) {
+      debugPrint('WeightController persist error: $e');
+    }
   }
 }

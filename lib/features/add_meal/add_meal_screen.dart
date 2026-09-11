@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/dates.dart';
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/food_seed.dart';
@@ -53,15 +54,17 @@ class _AddMealScreenState extends State<AddMealScreen> {
     required Macros macros,
     required int grams,
   }) {
+    final repo = context.read<DiaryRepository>();
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: name,
       calories: calories,
       macros: macros,
-      time: DateTime.now(),
+      // الوقت يتبع اليوم المعروض — تسجيل ليوم سابق لا يأخذ طابع اليوم.
+      time: mealTimeFor(repo.selectedDate),
       type: _selectedType,
     );
-    context.read<DiaryRepository>().addMeal(meal);
+    repo.addMeal(meal);
     context.read<RecentFoodsController>().record(meal, grams: grams);
     Haptics.light();
   }
@@ -535,7 +538,8 @@ class _PortionSheet extends StatefulWidget {
 }
 
 class _PortionSheetState extends State<_PortionSheet> {
-  late double _grams = widget.item.typicalServingG.toDouble();
+  // صنف حصته النموذجية خارج المدى (مثل ٧٥٠غ) كان يُسقط الورقة.
+  late double _grams = widget.item.typicalServingG.toDouble().clamp(10.0, 500.0);
   int _servings = 1;
 
   @override

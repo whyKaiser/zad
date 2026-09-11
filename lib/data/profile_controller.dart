@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,8 +24,12 @@ class ProfileController extends ChangeNotifier {
       try {
         _profile = UserProfile.fromJson(saved);
         notifyListeners();
-      } catch (_) {
-        // ملف تالف — نتجاهله ونعيد onboarding.
+      } catch (e) {
+        // ملف تالف — نمسحه ونعيد onboarding بدل فشل متكرر كل إقلاع.
+        debugPrint('ProfileController load error: $e');
+        try {
+          await prefs.remove(_prefsKey);
+        } catch (_) {}
       }
     }
   }

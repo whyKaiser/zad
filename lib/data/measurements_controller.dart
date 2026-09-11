@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -51,22 +52,33 @@ class MeasurementsController extends ChangeNotifier {
   BodyMeasurement? get latest => _entries.isEmpty ? null : _entries.last;
 
   Future<void> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    if (raw != null) {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_key);
+      if (raw == null) return;
       final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
       _entries
         ..clear()
         ..addAll(list.map(BodyMeasurement.fromMap));
       _entries.sort((a, b) => a.date.compareTo(b.date));
       notifyListeners();
+    } catch (e) {
+      debugPrint('MeasurementsController load error: $e');
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove(_key);
+      } catch (_) {}
     }
   }
 
   Future<void> add(BodyMeasurement m) async {
     _entries.add(m);
     notifyListeners();
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_key, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    } catch (e) {
+      debugPrint('MeasurementsController persist error: $e');
+    }
   }
 }

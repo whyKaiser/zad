@@ -18,6 +18,8 @@ class AppColors extends ThemeExtension<AppColors> {
   final Color macroProtein;
   final Color macroCarbs;
   final Color macroFat;
+  /// لون الإجراءات المدمّرة (حذف) — موحّد عبر الثيمات الأربعة.
+  final Color danger;
 
   const AppColors({
     required this.background,
@@ -34,6 +36,7 @@ class AppColors extends ThemeExtension<AppColors> {
     required this.macroProtein,
     required this.macroCarbs,
     required this.macroFat,
+    required this.danger,
   });
 
   @override
@@ -52,6 +55,7 @@ class AppColors extends ThemeExtension<AppColors> {
     Color? macroProtein,
     Color? macroCarbs,
     Color? macroFat,
+    Color? danger,
   }) {
     return AppColors(
       background: background ?? this.background,
@@ -68,6 +72,7 @@ class AppColors extends ThemeExtension<AppColors> {
       macroProtein: macroProtein ?? this.macroProtein,
       macroCarbs: macroCarbs ?? this.macroCarbs,
       macroFat: macroFat ?? this.macroFat,
+      danger: danger ?? this.danger,
     );
   }
 
@@ -89,6 +94,7 @@ class AppColors extends ThemeExtension<AppColors> {
       macroProtein: Color.lerp(macroProtein, other.macroProtein, t)!,
       macroCarbs: Color.lerp(macroCarbs, other.macroCarbs, t)!,
       macroFat: Color.lerp(macroFat, other.macroFat, t)!,
+      danger: Color.lerp(danger, other.danger, t)!,
     );
   }
 }
@@ -126,6 +132,7 @@ const AppColors _energy = AppColors(
   macroProtein: Color(0xFFC6FF3A),
   macroCarbs: Color(0xFFFFC24B),
   macroFat: Color(0xFFFF5B4A),
+  danger: Color(0xFFE5484D),
 );
 
 const AppColors _luxe = AppColors(
@@ -143,6 +150,7 @@ const AppColors _luxe = AppColors(
   macroProtein: Color(0xFFD4AF37),
   macroCarbs: Color(0xFFE8C36B),
   macroFat: Color(0xFFC9A24B),
+  danger: Color(0xFFD14B4B),
 );
 
 const AppColors _clean = AppColors(
@@ -160,6 +168,7 @@ const AppColors _clean = AppColors(
   macroProtein: Color(0xFF1D9E75),
   macroCarbs: Color(0xFF2F80ED),
   macroFat: Color(0xFFF59E0B),
+  danger: Color(0xFFDC2626),
 );
 
 const AppColors _gulf = AppColors(
@@ -177,4 +186,5 @@ const AppColors _gulf = AppColors(
   macroProtein: Color(0xFF1B5E3F),
   macroCarbs: Color(0xFFC9A24B),
   macroFat: Color(0xFFC36A3C),
+  danger: Color(0xFFA83232),
 );

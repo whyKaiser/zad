@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/dates.dart';
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/recent_foods_controller.dart';
@@ -46,6 +47,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
 
   void _save() {
     if (!_valid) return;
+    final repo = context.read<DiaryRepository>();
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: _name.text.trim(),
@@ -55,10 +57,10 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
         carbs: int.tryParse(_carbs.text) ?? 0,
         fat: int.tryParse(_fat.text) ?? 0,
       ),
-      time: DateTime.now(),
+      time: mealTimeFor(repo.selectedDate),
       type: _type,
     );
-    context.read<DiaryRepository>().addMeal(meal);
+    repo.addMeal(meal);
     context.read<RecentFoodsController>().record(meal);
     Haptics.light();
     Navigator.pop(context);

@@ -20,37 +20,62 @@ class AnalyticsScreen extends StatefulWidget {
 class _AnalyticsScreenState extends State<AnalyticsScreen> {
   late Future<List<_DayData>> _weekFuture;
   DiaryRepository? _prevRepo;
+  String _prevSignature = '';
+
+  /// بصمة تتغيّر مع كل تعديل على يوميات اليوم — بها نعرف متى نعيد الجلب
+  /// بدل إعادة الجلب مع كل رسم (قراءات Firestore مكلفة) أو عدمه إطلاقاً.
+  String _signatureOf(DiaryRepository repo) {
+    final now = DateTime.now();
+    final sel = repo.selectedDate;
+    final viewingToday =
+        sel.year == now.year && sel.month == now.month && sel.day == now.day;
+    final todayPart = viewingToday
+        ? '${repo.todayMeals.length}:${repo.consumedCalories}'
+        : 'other';
+    return '${now.year}-${now.month}-${now.day}|$todayPart';
+  }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final repo = context.read<DiaryRepository>();
-    if (!identical(_prevRepo, repo)) {
+    final repo = context.watch<DiaryRepository>();
+    final sig = _signatureOf(repo);
+    if (!identical(_prevRepo, repo) || sig != _prevSignature) {
       _prevRepo = repo;
-      _weekFuture = _loadWeekData();
+      _prevSignature = sig;
+      _weekFuture = _loadWeekData(repo);
     }
   }
 
-  Future<List<_DayData>> _loadWeekData() async {
-    final repo = context.read<DiaryRepository>();
+  Future<List<_DayData>> _loadWeekData(DiaryRepository repo) async {
     final today = DateTime.now();
     final days = List.generate(7, (i) => today.subtract(Duration(days: 6 - i)));
-    final result = <_DayData>[];
-    for (final d in days) {
-      List<Meal> meals;
-      final isToday = d.year == today.year && d.month == today.month && d.day == today.day;
-      if (isToday) {
-        meals = repo.todayMeals;
-      } else {
-        meals = await repo.getMealsForDay(d);
+
+    bool isToday(DateTime d) =>
+        d.year == today.year && d.month == today.month && d.day == today.day;
+
+    // جلب متوازٍ — 6 نداءات متتابعة كانت تُبطئ فتح الشاشة بلا داعٍ.
+    final lists = await Future.wait(days.map((d) async {
+      if (isToday(d)) {
+        final sel = repo.selectedDate;
+        // وجبات اليوم متاحة فوراً فقط إن كانت هي المعروضة حالياً.
+        if (sel.year == d.year && sel.month == d.month && sel.day == d.day) {
+          return repo.todayMeals;
+        }
       }
-      final cal = meals.fold(0, (acc, m) => acc + m.calories);
-      final prot = meals.fold(0, (acc, m) => acc + m.macros.protein);
-      final carbs = meals.fold(0, (acc, m) => acc + m.macros.carbs);
-      final fat = meals.fold(0, (acc, m) => acc + m.macros.fat);
-      result.add(_DayData(date: d, calories: cal, protein: prot, carbs: carbs, fat: fat));
-    }
-    return result;
+      return repo.getMealsForDay(d);
+    }));
+
+    return [
+      for (var i = 0; i < days.length; i++)
+        _DayData(
+          date: days[i],
+          calories: lists[i].fold(0, (acc, m) => acc + m.calories),
+          protein: lists[i].fold(0, (acc, m) => acc + m.macros.protein),
+          carbs: lists[i].fold(0, (acc, m) => acc + m.macros.carbs),
+          fat: lists[i].fold(0, (acc, m) => acc + m.macros.fat),
+        ),
+    ];
   }
 
   @override

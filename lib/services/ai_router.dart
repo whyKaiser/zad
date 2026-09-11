@@ -46,4 +46,11 @@ class AiRouter {
     if (p == null) throw StateError('لا يوجد مزوّد رؤية مضبوط — أضف GEMINI_API_KEY');
     return p.estimateFromImage(bytes, mimeType: mimeType);
   }
+
+  /// يغلق اتصالات كل المزوّدات — بدونه يتسرّب pool لكل فتح للشاشة.
+  void close() {
+    for (final p in _providers) {
+      p.close();
+    }
+  }
 }

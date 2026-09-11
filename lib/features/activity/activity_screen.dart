@@ -119,7 +119,7 @@ class ActivityScreen extends StatelessWidget {
                             padding: const EdgeInsetsDirectional.only(end: 20),
                             margin: const EdgeInsets.only(bottom: 10),
                             decoration: BoxDecoration(
-                              color: Colors.red.withOpacity(0.85),
+                              color: c.danger,
                               borderRadius: BorderRadius.circular(14),
                             ),
                             child: const Icon(Icons.delete_outline_rounded, color: Colors.white, size: 20),

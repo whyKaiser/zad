@@ -308,7 +308,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
                 const SizedBox(height: 20),
                 _slider(c, '${loc.ageQ}: ${_age.round()}', _age, 15, 80, (v) => setState(() => _age = v)),
                 _slider(c, '${loc.heightQ}: ${_height.round()} cm', _height, 140, 210, (v) => setState(() => _height = v)),
-                _slider(c, '${loc.weightQ}: ${_weight.toStringAsFixed(1)} kg', _weight, 40, 160, (v) => setState(() => _weight = v)),
+                _slider(c, '${loc.weightQ}: ${_weight.toStringAsFixed(1)} kg', _weight, 30, 250, (v) => setState(() => _weight = v)),
                 const SizedBox(height: 16),
                 _label(c, loc.activityQ),
                 Wrap(spacing: 10, runSpacing: 10, children: [
@@ -370,7 +370,15 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
         padding: const EdgeInsets.only(bottom: 6),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)),
-          Slider(value: value, min: min, max: max, activeColor: c.accent, inactiveColor: c.track, onChanged: onChanged),
+          // Slider يرمي إن خرجت القيمة عن المدى (وزن مسجَّل خارج نطاق الشريط).
+          Slider(
+            value: value.clamp(min, max),
+            min: min,
+            max: max,
+            activeColor: c.accent,
+            inactiveColor: c.track,
+            onChanged: onChanged,
+          ),
         ]),
       );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/dates.dart';
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/recent_foods_controller.dart';
@@ -65,7 +66,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
               carbs: (results.macros.carbs * factor).round(),
               fat: (results.macros.fat * factor).round(),
             ),
-            time: DateTime.now(),
+            time: mealTimeFor(repo.selectedDate),
             type: widget.mealType,
           );
           repo.addMeal(meal);

@@ -51,6 +51,9 @@ class GeminiAiService implements AiService {
   }
 
   @override
+  void close() => _client.close();
+
+  @override
   Future<FoodEstimate> estimateFromText(String description) =>
       _send([
         {'text': AiPrompts.system},

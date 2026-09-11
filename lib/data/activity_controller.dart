@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+
+import '../core/dates.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// نشاط رياضي بقيمة MET معتمدة (Compendium of Physical Activities).
@@ -90,11 +92,8 @@ class ActivityController extends ChangeNotifier {
 
   List<ActivityEntry> get entries => List.unmodifiable(_entries);
 
-  static bool _sameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
-
   List<ActivityEntry> forDay(DateTime day) =>
-      _entries.where((e) => _sameDay(e.date, day)).toList();
+      _entries.where((e) => isSameDay(e.date, day)).toList();
 
   /// إجمالي المحروق في يوم معيّن.
   int burnedOn(DateTime day) =>

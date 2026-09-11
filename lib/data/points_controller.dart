@@ -33,14 +33,21 @@ class PointsController extends ChangeNotifier {
   int get total => _history.fold(0, (acc, e) => acc + e.amount);
 
   Future<void> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    if (raw != null) {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_key);
+      if (raw == null) return;
       final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
       _history
         ..clear()
         ..addAll(list.map(PointEntry.fromMap));
       notifyListeners();
+    } catch (e) {
+      debugPrint('PointsController load error: $e');
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove(_key);
+      } catch (_) {}
     }
   }
 

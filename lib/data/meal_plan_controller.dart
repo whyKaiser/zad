@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -48,12 +49,19 @@ class MealPlanController extends ChangeNotifier {
       _entries.where((e) => e.dayKey == dayKey).toList();
 
   Future<void> load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    if (raw != null) {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_key);
+      if (raw == null) return;
       final list = (jsonDecode(raw) as List).cast<Map<String, dynamic>>();
       _entries = list.map(MealPlanEntry.fromMap).toList();
       notifyListeners();
+    } catch (e) {
+      debugPrint('MealPlanController load error: $e');
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove(_key);
+      } catch (_) {}
     }
   }
 
@@ -84,7 +92,11 @@ class MealPlanController extends ChangeNotifier {
   }
 
   Future<void> _persist() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_key, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_key, jsonEncode(_entries.map((e) => e.toMap()).toList()));
+    } catch (e) {
+      debugPrint('MealPlanController persist error: $e');
+    }
   }
 }

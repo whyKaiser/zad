@@ -24,7 +24,13 @@ class AppLocalizations {
   String _(String ar, String en) => isAr ? ar : en;
 
   // عام
-  String get greeting => _('مساء الخير', 'Good evening');
+  /// تحية تتبع ساعة اليوم — كانت ثابتة على "مساء الخير" حتى في الصباح.
+  String get greeting {
+    final h = DateTime.now().hour;
+    if (h < 12) return _('صباح الخير', 'Good morning');
+    if (h < 17) return _('طاب يومك', 'Good afternoon');
+    return _('مساء الخير', 'Good evening');
+  }
   String get caloriesLeft => _('سعرة متبقية', 'kcal left');
   String get calorieUnit => _('سعرة', 'kcal');
   String get todayMeals => _('وجبات اليوم', "Today's meals");
@@ -53,7 +59,7 @@ class AppLocalizations {
   String get tabHome => _('الرئيسية', 'Home');
   String get tabAnalytics => _('الإحصاء', 'Stats');
   String get tabAssistant => _('المساعد', 'Assistant');
-  String get tabMap => _('الخريطة', 'Map');
+  String get tabMap => _('مطاعم', 'Dining');
   String get tabChallenges => _('التحديات', 'Challenges');
 
   // رانك / نقاط
@@ -134,7 +140,8 @@ class AppLocalizations {
   String get save => _('حفظ', 'Save');
 
   // المطاعم
-  String get nearbyRestaurants => _('مطاعم قريبة', 'Nearby restaurants');
+  /// اقتراحات من سلاسل معروفة — لا تعتمد على الموقع (بلا GPS/خرائط).
+  String get nearbyRestaurants => _('اقتراحات مطاعم', 'Dining suggestions');
   String get suggestMeal => _('اقترح وجبة تناسبني', 'Suggest a meal for me');
   String get remainingToday => _('متبقّي اليوم', 'Remaining today');
   String get away => _('يبعد', 'away');

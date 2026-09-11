@@ -6,6 +6,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
+import '../../core/dates.dart';
 import '../../core/motion.dart';
 import '../../data/diary_repository.dart';
 import '../../data/recent_foods_controller.dart';
@@ -35,6 +36,12 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
   String? _error;
   FoodEstimate? _result;
   double _portion = 1.0;
+
+  @override
+  void dispose() {
+    _ai.close();
+    super.dispose();
+  }
 
   Future<void> _pick(ImageSource source) async {
     try {
@@ -82,6 +89,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
   void _save() {
     final r = _result;
     if (r == null) return;
+    final repo = context.read<DiaryRepository>();
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: r.name.isEmpty ? 'وجبة من صورة' : r.name,
@@ -91,10 +99,10 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
         carbs: (r.carbs * _portion).round(),
         fat: (r.fat * _portion).round(),
       ),
-      time: DateTime.now(),
+      time: mealTimeFor(repo.selectedDate),
       type: widget.mealType,
     );
-    context.read<DiaryRepository>().addMeal(meal);
+    repo.addMeal(meal);
     context.read<RecentFoodsController>().record(meal);
     Haptics.light();
     Navigator.pop(context);

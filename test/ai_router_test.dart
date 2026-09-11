@@ -22,9 +22,21 @@ class _Fake implements AiService {
   @override
   Future<FoodEstimate> estimateFromImage(Uint8List b, {String mimeType = 'image/jpeg'}) async =>
       FoodEstimate(name: name, calories: 0, protein: 0, carbs: 0, fat: 0);
+
+  bool closed = false;
+  @override
+  void close() => closed = true;
 }
 
 void main() {
+  test('close يغلق كل المزوّدات', () {
+    final a = _Fake('groq', isConfigured: true, capabilities: {AiTask.text});
+    final b = _Fake('gemini', isConfigured: true, capabilities: {AiTask.vision});
+    AiRouter(providers: [a, b]).close();
+    expect(a.closed, isTrue);
+    expect(b.closed, isTrue);
+  });
+
   test('النص يروح لـ Groq لما الاثنان مضبوطان', () {
     final r = AiRouter(providers: [
       _Fake('groq', isConfigured: true, capabilities: {AiTask.text}),

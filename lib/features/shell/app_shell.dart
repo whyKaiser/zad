@@ -24,7 +24,7 @@ class _AppShellState extends State<AppShell> {
     Icons.home_rounded,
     Icons.bar_chart_rounded,
     Icons.auto_awesome_rounded,
-    Icons.place_rounded,
+    Icons.restaurant_rounded,
     Icons.emoji_events_rounded,
   ];
 

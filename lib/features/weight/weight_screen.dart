@@ -214,7 +214,7 @@ class _WeightTab extends StatelessWidget {
                     padding: const EdgeInsetsDirectional.only(end: 20),
                     margin: const EdgeInsets.only(bottom: 8),
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.85),
+                      color: c.danger,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: const Icon(Icons.delete_outline_rounded, color: Colors.white, size: 20),
@@ -459,10 +459,15 @@ class _LogWeightSheet extends StatefulWidget {
 class _LogWeightSheetState extends State<_LogWeightSheet> {
   late double _kg;
 
+  // حدود السلايدر — تطابق حدود التخزين في WeightController.
+  static const _minKg = 30.0;
+  static const _maxKg = 250.0;
+
   @override
   void initState() {
     super.initState();
-    _kg = widget.startKg;
+    // Slider يرمي إن خرجت القيمة عن المدى — نحصرها بدل إسقاط الشاشة.
+    _kg = widget.startKg.clamp(_minKg, _maxKg);
   }
 
   @override
@@ -486,7 +491,7 @@ class _LogWeightSheetState extends State<_LogWeightSheet> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.w700, color: c.accent)),
           ]),
           Slider(
-            value: _kg, min: 35, max: 180, divisions: 290,
+            value: _kg, min: _minKg, max: _maxKg, divisions: 440, // خطوة ٠٫٥ كجم
             activeColor: c.accent, inactiveColor: c.track,
             onChanged: (v) => setState(() => _kg = v),
           ),

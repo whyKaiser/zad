@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 
+import 'package:zad/data/auth_controller.dart';
 import 'package:zad/main.dart';
 import 'package:zad/data/profile_controller.dart';
 import 'package:zad/l10n/app_localizations.dart';
@@ -19,10 +20,10 @@ const _sample = UserProfile(
 );
 
 ZadApp _app(ProfileController profile) => ZadApp(
+      authController: AuthController(), // بلا Firebase: يبقى بلا uid — مسار محلي
       themeController: ThemeController(),
       localeController: LocaleController(),
       profileController: profile,
-      userId: 'test-user',
     );
 
 void main() {

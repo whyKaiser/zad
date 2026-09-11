@@ -37,6 +37,7 @@ dependencies:
   flutter_local_notifications: ^17.2.2  # Water reminders
   image_picker: ^1.1.2            # Progress photos
   path_provider: ^2.1.4           # حفظ صور محلياً
+  timezone: ^0.9.4                # جدولة التذكيرات بالتوقيت المحلي
 
 dev_dependencies:
   flutter_test:

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../core/dates.dart';
 import '../models/meal.dart';
 
 abstract class DiaryRepository extends ChangeNotifier {
@@ -20,14 +21,40 @@ abstract class DiaryRepository extends ChangeNotifier {
   void addMeal(Meal meal);
   void removeMeal(Meal meal);
   Future<List<Meal>> getMealsForDay(DateTime date);
+
+  /// مجموع سعرات كل يوم في مدى (شامل الطرفين) — مفتاحه [dayKey].
+  /// الأيام المستقبلية تُتجاهل. الجلب متوازٍ لأن كل يوم استعلام مستقل.
+  Future<Map<String, int>> getCaloriesForRange(DateTime from, DateTime to) async {
+    final now = DateTime.now();
+    final start = DateTime(from.year, from.month, from.day);
+    final end = DateTime(to.year, to.month, to.day);
+    final days = <DateTime>[];
+    for (var d = start;
+        !d.isAfter(end);
+        d = DateTime(d.year, d.month, d.day + 1)) {
+      if (d.isAfter(DateTime(now.year, now.month, now.day))) break;
+      days.add(d);
+    }
+    final lists = await Future.wait(days.map(getMealsForDay));
+    return {
+      for (var i = 0; i < days.length; i++)
+        dayKey(days[i]): lists[i].fold(0, (acc, m) => acc + m.calories),
+    };
+  }
 }
 
-class MockDiaryRepository extends ChangeNotifier implements DiaryRepository {
-  @override
-  final String userName = 'عبدالله';
+/// يوميات في الذاكرة. **فارغة افتراضياً** — البيانات التجريبية تُطلب صراحةً
+/// في الاختبارات فقط، حتى لا يرى مستخدم حقيقي وجبات لم يسجّلها.
+class MockDiaryRepository extends DiaryRepository {
+  MockDiaryRepository({bool seeded = false}) {
+    if (seeded) _allMeals.addAll(_demoMeals);
+  }
 
   @override
-  final int streakDays = 12;
+  final String userName = '';
+
+  @override
+  int get streakDays => 0;
 
   @override
   final DailyGoal goal = const DailyGoal(
@@ -46,7 +73,9 @@ class MockDiaryRepository extends ChangeNotifier implements DiaryRepository {
     notifyListeners();
   }
 
-  final List<Meal> _allMeals = [
+  final List<Meal> _allMeals = [];
+
+  static final List<Meal> _demoMeals = [
     Meal(
       id: '1',
       name: 'بيض مقلي وخبز',

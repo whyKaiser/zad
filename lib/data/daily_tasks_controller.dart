@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../core/dates.dart';
 import '../models/meal.dart';
 import 'diary_repository.dart';
 import 'points_controller.dart';
@@ -45,6 +47,7 @@ class DailyTasksController extends ChangeNotifier {
   final Set<String> _awardedToday = {};
   String _todayKey = '';
   bool _awardsLoaded = false;
+  bool _disposed = false;
 
   DailyTasksController({
     required DiaryRepository diary,
@@ -59,6 +62,12 @@ class DailyTasksController extends ChangeNotifier {
   }
 
   List<DailyTask> get tasks => _buildTasks();
+
+  /// هل مصادر البيانات نفسها؟ يمنع إعادة بناء المتحكّم بلا داعٍ من ProxyProvider.
+  bool usesSameSources(DiaryRepository diary) => identical(_diary, diary);
+
+  /// المهام تخصّ اليوم فقط — تصفّح يوم سابق لا يمنح نقاطاً.
+  bool get _viewingToday => isToday(_diary.selectedDate);
 
   List<DailyTask> _buildTasks() {
     final today = DateTime.now();
@@ -145,6 +154,9 @@ class DailyTasksController extends ChangeNotifier {
 
   void checkAndAward() {
     if (!_awardsLoaded) return;
+    // تصفّح يوم سابق يعرض مهامه لكنه لا يمنح نقاطاً — يمنع تكديس النقاط.
+    if (!_viewingToday) return;
+
     final today = DateTime.now();
     final todayKey = '${today.year}-${today.month}-${today.day}';
     if (_todayKey != todayKey) {
@@ -152,34 +164,79 @@ class DailyTasksController extends ChangeNotifier {
       _todayKey = todayKey;
     }
 
+    var awarded = false;
     for (final task in tasks) {
       if (task.isDone && !_awardedToday.contains(task.type.name)) {
         _awardedToday.add(task.type.name);
         _points.addPoints(task.points, task.type.name);
-        _saveAwarded();
+        awarded = true;
       }
     }
-    notifyListeners();
+    if (awarded) {
+      _saveAwarded(); // كتابة واحدة بدل واحدة لكل مهمة
+      _notifyAfterBuild();
+    }
+  }
+
+  /// `checkAndAward` يُستدعى من ProxyProvider أثناء البناء —
+  /// الإشعار المباشر يرمي "setState during build".
+  void _notifyAfterBuild() {
+    if (_disposed) return;
+    SchedulerBinding? binding;
+    try {
+      binding = SchedulerBinding.instance;
+    } catch (_) {
+      binding = null; // بلا binding (اختبار وحدة) — الإشعار المباشر آمن
+    }
+    final phase = binding?.schedulerPhase;
+    if (binding != null &&
+        (phase == SchedulerPhase.persistentCallbacks ||
+            phase == SchedulerPhase.midFrameMicrotasks)) {
+      binding.addPostFrameCallback((_) {
+        if (!_disposed) notifyListeners();
+      });
+    } else {
+      notifyListeners();
+    }
   }
 
   Future<void> _loadAwarded() async {
     final today = DateTime.now();
     _todayKey = '${today.year}-${today.month}-${today.day}';
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_key);
-    if (raw != null) {
-      final map = jsonDecode(raw) as Map<String, dynamic>;
-      if (map['key'] == _todayKey) {
-        _awardedToday.addAll((map['awarded'] as List).cast<String>());
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_key);
+      if (raw != null) {
+        final map = jsonDecode(raw) as Map<String, dynamic>;
+        if (map['key'] == _todayKey) {
+          _awardedToday.addAll((map['awarded'] as List).cast<String>());
+        }
       }
+    } catch (e) {
+      // سجلّ تالف: نبدأ يوماً نظيفاً بدل تعطيل المهام للأبد.
+      debugPrint('DailyTasks load error: $e');
+      try {
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.remove(_key);
+      } catch (_) {}
     }
     _awardsLoaded = true;
-    notifyListeners();
+    _notifyAfterBuild();
   }
 
   Future<void> _saveAwarded() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(
-        _key, jsonEncode({'key': _todayKey, 'awarded': _awardedToday.toList()}));
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(
+          _key, jsonEncode({'key': _todayKey, 'awarded': _awardedToday.toList()}));
+    } catch (e) {
+      debugPrint('DailyTasks save error: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }

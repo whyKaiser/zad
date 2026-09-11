@@ -186,7 +186,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           children: [
             Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)),
             Slider(
-              value: value,
+              value: value.clamp(min, max),
               min: min,
               max: max,
               activeColor: c.accent,
