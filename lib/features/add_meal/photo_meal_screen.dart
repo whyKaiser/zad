@@ -62,7 +62,9 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
       });
       await _analyze();
     } catch (e) {
-      if (mounted) setState(() => _error = 'تعذّر فتح الصورة');
+      if (mounted) {
+        setState(() => _error = AppLocalizations.of(context).couldNotOpenImage);
+      }
     }
   }
 
@@ -79,9 +81,8 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
       if (!mounted) return;
       setState(() {
         _loading = false;
-        _error = _ai.hasVision
-            ? 'ما قدرت أحلّل الصورة. جرّب صورة أوضح للطبق.'
-            : 'خدمة التحليل غير مفعّلة على هذه النسخة.';
+        final loc = AppLocalizations.of(context);
+        _error = _ai.hasVision ? loc.photoAnalysisFailed : loc.visionNotEnabled;
       });
     }
   }
@@ -92,7 +93,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
     final repo = context.read<DiaryRepository>();
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
-      name: r.name.isEmpty ? 'وجبة من صورة' : r.name,
+      name: r.name.isEmpty ? AppLocalizations.of(context).mealFromPhoto : r.name,
       calories: (r.calories * _portion).round(),
       macros: Macros(
         protein: (r.protein * _portion).round(),

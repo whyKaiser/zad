@@ -125,6 +125,42 @@ class AppLocalizations {
   String get bmiLabel => _('مؤشر الكتلة', 'BMI');
   String get noWeightYet => _('ما فيه سجلّات وزن بعد', 'No weight logs yet');
   String get kg => _('كجم', 'kg');
+  String get meters => _('م', 'm');
+  String get cm => _('سم', 'cm');
+  /// اختصارا الساعة والدقيقة — كانا عربيَّين ثابتين في شاشة الصيام.
+  String get hourShort => _('س', 'h');
+  String get minuteShort => _('د', 'm');
+
+  // تحليل الصورة
+  String get photoAnalysisFailed => _(
+      'ما قدرت أحلّل الصورة. جرّب صورة أوضح للطبق.',
+      "Couldn't analyse the photo. Try a clearer shot of the plate.");
+  String get visionNotEnabled => _(
+      'خدمة التحليل غير مفعّلة على هذه النسخة.',
+      'Photo analysis is not enabled in this build.');
+
+  /// فئات نسبة دهون الجسم — كانت تُعرض بالعربية والإنجليزية معاً دائماً.
+  String bodyFatCategory(double bf, bool isMale) {
+    if (isMale) {
+      if (bf < 6) return _('أساسي', 'Essential');
+      if (bf < 14) return _('رياضي', 'Athletic');
+      if (bf < 18) return _('لياقة', 'Fitness');
+      if (bf < 25) return _('متوسط', 'Average');
+      return _('سمنة', 'Obese');
+    }
+    if (bf < 14) return _('أساسي', 'Essential');
+    if (bf < 21) return _('رياضية', 'Athletic');
+    if (bf < 25) return _('لياقة', 'Fitness');
+    if (bf < 32) return _('متوسط', 'Average');
+    return _('سمنة', 'Obese');
+  }
+
+  // إضافة وجبة: باركود وصورة
+  String get productNotFound =>
+      _('ما وُجد المنتج في قاعدة البيانات', 'Product not found in the database');
+  String get retry => _('حاول مجدداً', 'Try again');
+  String get couldNotOpenImage => _('تعذّر فتح الصورة', 'Could not open the image');
+  String get mealFromPhoto => _('وجبة من صورة', 'Meal from photo');
   String bmiCategory(double bmi) {
     if (bmi < 18.5) return _('نقص', 'Underweight');
     if (bmi < 25) return _('طبيعي', 'Normal');

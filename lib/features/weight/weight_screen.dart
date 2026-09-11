@@ -444,7 +444,7 @@ class _MeasRow extends StatelessWidget {
               Text(loc.isAr ? f.$3 : f.$4,
                   style: TextStyle(fontSize: 13, color: c.textSecondary)),
               const SizedBox(width: 4),
-              Text('${v.toStringAsFixed(1)} سم',
+              Text('${v.toStringAsFixed(1)} ${loc.cm}',
                   style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.textPrimary)),
             ]);
           }).toList(),
@@ -633,7 +633,7 @@ class _LogMeasurementsSheetState extends State<_LogMeasurementsSheet> {
             decoration: InputDecoration(
               hintText: '0.0',
               hintStyle: TextStyle(color: c.textTertiary),
-              suffixText: 'سم',
+              suffixText: AppLocalizations.of(context).cm,
               suffixStyle: TextStyle(color: c.textTertiary, fontSize: 12),
               filled: true, fillColor: c.surface,
               contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),

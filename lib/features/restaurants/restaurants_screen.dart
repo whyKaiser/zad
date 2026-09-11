@@ -95,7 +95,8 @@ class _RestaurantCard extends StatelessWidget {
             const Spacer(),
             Icon(Icons.place_outlined, size: 14, color: c.textTertiary),
             const SizedBox(width: 2),
-            Text('${restaurant.distanceM} م', style: TextStyle(fontSize: 12, color: c.textSecondary)),
+            Text('${restaurant.distanceM} ${loc.meters}',
+                style: TextStyle(fontSize: 12, color: c.textSecondary)),
           ]),
           const SizedBox(height: 12),
           Container(

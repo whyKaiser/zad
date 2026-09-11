@@ -596,9 +596,9 @@ class _UnitToggleRow extends StatelessWidget {
               border: Border.all(color: c.border),
             ),
             child: Row(mainAxisSize: MainAxisSize.min, children: [
-              _pill(c, 'كجم', unit.useKg),
+              _pill(c, loc.kg, unit.useKg),
               const SizedBox(width: 4),
-              _pill(c, 'lbs', !unit.useKg),
+              _pill(c, loc.lbs, !unit.useKg),
             ]),
           ),
         ),

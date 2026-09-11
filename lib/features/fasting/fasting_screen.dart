@@ -244,13 +244,14 @@ class _FastingScreenState extends State<FastingScreen> {
                           style: TextStyle(fontSize: 13, color: c.textSecondary)),
                       const Spacer(),
                       Text(
-                        '${s.duration.inHours}س ${s.duration.inMinutes % 60}د',
+                        '${s.duration.inHours}${loc.hourShort} '
+                        '${s.duration.inMinutes % 60}${loc.minuteShort}',
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
                             color: c.textPrimary),
                       ),
-                      Text(' / ${s.targetHours}س',
+                      Text(' / ${s.targetHours}${loc.hourShort}',
                           style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
                     ]),
                   )),

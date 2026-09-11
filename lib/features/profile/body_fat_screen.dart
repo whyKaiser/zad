@@ -65,21 +65,8 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
     }
   }
 
-  String _category(double bf, Gender g) {
-    if (g == Gender.male) {
-      if (bf < 6) return 'رياضي محترف / Essential';
-      if (bf < 14) return 'رياضي / Athletic';
-      if (bf < 18) return 'لياقة / Fitness';
-      if (bf < 25) return 'متوسط / Average';
-      return 'سمنة / Obese';
-    } else {
-      if (bf < 14) return 'رياضية محترفة / Essential';
-      if (bf < 21) return 'رياضية / Athletic';
-      if (bf < 25) return 'لياقة / Fitness';
-      if (bf < 32) return 'متوسط / Average';
-      return 'سمنة / Obese';
-    }
-  }
+  String _category(BuildContext context, double bf, Gender g) =>
+      AppLocalizations.of(context).bodyFatCategory(bf, g == Gender.male);
 
   Color _color(double bf, Gender g, c) {
     final isHigh = g == Gender.male ? bf >= 25 : bf >= 32;
@@ -124,7 +111,7 @@ class _BodyFatScreenState extends State<BodyFatScreen> {
                       style: TextStyle(fontSize: 48, letterSpacing: 48 * -0.025, fontWeight: FontWeight.w800,
                           color: _color(_result!, profile!.gender, c))),
                   const SizedBox(height: 8),
-                  Text(_category(_result!, profile.gender),
+                  Text(_category(context, _result!, profile.gender),
                       style: TextStyle(fontSize: 14, color: c.textSecondary)),
                   const SizedBox(height: 16),
                   _FatBar(value: _result! / 60, color: _color(_result!, profile.gender, c), c: c),

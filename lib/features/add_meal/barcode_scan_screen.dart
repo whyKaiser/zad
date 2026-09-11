@@ -28,6 +28,8 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
 
   Future<void> _onBarcode(String code) async {
     if (!_scanning) return;
+    // تُلتقط قبل أول await — بعده استعمال context غير آمن.
+    final loc = AppLocalizations.of(context);
     setState(() { _scanning = false; _loading = true; _error = null; });
     _ctrl.stop();
 
@@ -35,13 +37,12 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
     if (!mounted) return;
 
     if (results == null) {
-      setState(() { _loading = false; _error = 'ما وُجد المنتج في قاعدة البيانات'; _scanning = false; });
+      setState(() { _loading = false; _error = loc.productNotFound; _scanning = false; });
       return;
     }
 
     final repo = context.read<DiaryRepository>();
     final quick = context.read<RecentFoodsController>();
-    final loc = AppLocalizations.of(context);
     setState(() => _loading = false);
 
     if (!mounted) return;
@@ -138,7 +139,7 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
                 const SizedBox(height: 12),
                 TextButton(
                   onPressed: () => setState(() { _error = null; _scanning = true; _ctrl.start(); }),
-                  child: const Text('حاول مجدداً', style: TextStyle(color: Colors.white)),
+                  child: Text(loc.retry, style: const TextStyle(color: Colors.white)),
                 ),
               ],
               if (!_loading && _error == null)
