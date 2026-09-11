@@ -38,6 +38,7 @@ dependencies:
   image_picker: ^1.1.2            # Progress photos
   path_provider: ^2.1.4           # حفظ صور محلياً
   timezone: ^0.9.4                # جدولة التذكيرات بالتوقيت المحلي
+  share_plus: ^10.0.2             # مشاركة ملفات التصدير
 
 dev_dependencies:
   flutter_test:

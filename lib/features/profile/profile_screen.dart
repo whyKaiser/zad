@@ -24,6 +24,7 @@ import '../../services/notification_service.dart';
 import '../streak/streak_screen.dart';
 import '../weight/weight_screen.dart';
 import 'body_fat_screen.dart';
+import 'export_data_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -103,6 +104,8 @@ class ProfileScreen extends StatelessWidget {
             _row(context, c, Icons.palette_outlined, '${loc.appearance} · ${loc.language}',
                 () => showThemeSwitcher(context)),
             const _WaterReminderRow(),
+            _row(context, c, Icons.download_rounded, loc.isAr ? 'تصدير بياناتك' : 'Export your data',
+                () => Navigator.push(context, ZadPageRoute(page: const ExportDataScreen()))),
             _row(context, c, Icons.info_outline_rounded, loc.about, () => _about(context, loc)),
           ],
         ),
