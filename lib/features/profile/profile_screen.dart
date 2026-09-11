@@ -19,6 +19,7 @@ import '../fitness/workout_programs_screen.dart';
 import '../fasting/fasting_screen.dart';
 import '../meal_plan/meal_plan_screen.dart';
 import '../progress/progress_photos_screen.dart';
+import '../recipes/recipes_screen.dart';
 import '../settings/theme_switcher.dart';
 import '../../services/notification_service.dart';
 import '../streak/streak_screen.dart';
@@ -80,6 +81,8 @@ class ProfileScreen extends StatelessWidget {
                 () => Navigator.push(context, ZadPageRoute(page: const DetrainingScreen()))),
 
             _sectionLabel(c, loc.isAr ? 'التغذية' : 'Nutrition'),
+            _row(context, c, Icons.menu_book_rounded, loc.isAr ? 'وصفاتي' : 'My recipes',
+                () => Navigator.push(context, ZadPageRoute(page: const RecipesScreen()))),
             _row(context, c, Icons.calendar_view_week_rounded, loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
                 () => Navigator.push(context, ZadPageRoute(page: const MealPlanScreen()))),
             _row(context, c, Icons.hourglass_bottom_rounded,

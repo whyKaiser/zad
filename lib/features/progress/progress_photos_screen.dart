@@ -21,6 +21,11 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
   List<_PhotoEntry> _photos = [];
   final _picker = ImagePicker();
 
+  /// مجلّد الصور الحالي. **لا نخزّن مسارات مطلقة**: مسار حاوية التطبيق
+  /// يتغيّر بعد التحديث على iOS فتختفي كل الصور. نخزّن الاسم فقط ونركّبه هنا.
+  String? _dir;
+  bool _busy = false;
+
   @override
   void initState() {
     super.initState();
@@ -28,43 +33,129 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
   }
 
   Future<void> _load() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getStringList(_key) ?? [];
-    final entries = <_PhotoEntry>[];
-    for (final s in raw) {
-      final parts = s.split('|');
-      if (parts.length == 2) {
-        final file = File(parts[0]);
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      _dir = dir.path;
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getStringList(_key) ?? const [];
+      final entries = <_PhotoEntry>[];
+      for (final s in raw) {
+        final parts = s.split('|');
+        if (parts.length != 2) continue;
+        final date = DateTime.tryParse(parts[1]);
+        if (date == null) continue;
+        // توافق مع النسخة القديمة التي خزّنت مساراً كاملاً.
+        final name = parts[0].split(RegExp(r'[/\\]')).last;
+        final file = File('${dir.path}/$name');
         // متعمّد غير متزامن: الفحص يتم لعدة ملفات عند فتح الشاشة،
         // والنسخة المتزامنة تُجمّد الواجهة.
         // ignore: avoid_slow_async_io
         if (await file.exists()) {
-          entries.add(_PhotoEntry(path: parts[0], date: DateTime.parse(parts[1])));
+          entries.add(_PhotoEntry(name: name, date: date));
         }
       }
+      entries.sort((a, b) => b.date.compareTo(a.date));
+      if (mounted) setState(() => _photos = entries);
+      // نعيد الكتابة بالصيغة الجديدة (أسماء فقط) لترحيل السجلات القديمة.
+      await _persist();
+    } catch (e) {
+      debugPrint('progress photos load error: $e');
     }
-    if (mounted) setState(() => _photos = entries..sort((a, b) => b.date.compareTo(a.date)));
   }
 
-  Future<void> _addPhoto() async {
-    final picked = await _picker.pickImage(source: ImageSource.gallery, imageQuality: 75);
-    if (picked == null) return;
-    final dir = await getApplicationDocumentsDirectory();
-    final ts = DateTime.now();
-    final dest = '${dir.path}/progress_${ts.millisecondsSinceEpoch}.jpg';
-    await File(picked.path).copy(dest);
-    final entry = _PhotoEntry(path: dest, date: ts);
-    _photos.insert(0, entry);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_key, _photos.map((e) => '${e.path}|${e.date.toIso8601String()}').toList());
-    if (mounted) setState(() {});
+  Future<void> _persist() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setStringList(
+        _key,
+        _photos.map((e) => '${e.name}|${e.date.toIso8601String()}').toList(),
+      );
+    } catch (e) {
+      debugPrint('progress photos persist error: $e');
+    }
+  }
+
+  Future<void> _addPhoto(ImageSource source) async {
+    if (_busy) return;
+    setState(() => _busy = true);
+    final loc = AppLocalizations.of(context);
+    final messenger = ScaffoldMessenger.of(context);
+    try {
+      final picked =
+          await _picker.pickImage(source: source, imageQuality: 75, maxWidth: 1600);
+      if (picked == null) return;
+      final dir = _dir ?? (await getApplicationDocumentsDirectory()).path;
+      _dir = dir;
+      final ts = DateTime.now();
+      final name = 'progress_${ts.millisecondsSinceEpoch}.jpg';
+      await File(picked.path).copy('$dir/$name');
+      _photos.insert(0, _PhotoEntry(name: name, date: ts));
+      await _persist();
+      if (mounted) setState(() {});
+    } catch (e) {
+      debugPrint('addPhoto error: $e');
+      messenger.showSnackBar(SnackBar(
+        content: Text(loc.isAr ? 'تعذّر حفظ الصورة' : 'Could not save the photo'),
+        behavior: SnackBarBehavior.floating,
+      ));
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
+  }
+
+  /// اختيار المصدر — التصوير الآن أهم من المعرض لصور التقدّم.
+  void _pickSource() {
+    final loc = AppLocalizations.of(context);
+    final c = context.colors;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: c.surface,
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24))),
+      builder: (sheetCtx) => SafeArea(
+        child: Column(mainAxisSize: MainAxisSize.min, children: [
+          const SizedBox(height: 12),
+          Container(
+            width: 40,
+            height: 4,
+            decoration: BoxDecoration(
+                color: c.textTertiary, borderRadius: BorderRadius.circular(4)),
+          ),
+          ListTile(
+            leading: Icon(Icons.photo_camera_rounded, color: c.accent),
+            title: Text(loc.isAr ? 'التقط صورة' : 'Take a photo',
+                style: TextStyle(color: c.textPrimary)),
+            onTap: () {
+              Navigator.pop(sheetCtx);
+              _addPhoto(ImageSource.camera);
+            },
+          ),
+          ListTile(
+            leading: Icon(Icons.photo_library_outlined, color: c.accent),
+            title: Text(loc.isAr ? 'من المعرض' : 'From gallery',
+                style: TextStyle(color: c.textPrimary)),
+            onTap: () {
+              Navigator.pop(sheetCtx);
+              _addPhoto(ImageSource.gallery);
+            },
+          ),
+          const SizedBox(height: 8),
+        ]),
+      ),
+    );
   }
 
   Future<void> _delete(_PhotoEntry e) async {
     _photos.remove(e);
-    try { await File(e.path).delete(); } catch (_) {}
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setStringList(_key, _photos.map((x) => '${x.path}|${x.date.toIso8601String()}').toList());
+    final dir = _dir;
+    if (dir != null) {
+      try {
+        await File('$dir/${e.name}').delete();
+      } catch (_) {
+        // الملف مفقود أصلاً — يكفي شطبه من السجل.
+      }
+    }
+    await _persist();
     if (mounted) setState(() {});
   }
 
@@ -87,8 +178,8 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                     style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: c.textPrimary)),
                 const Spacer(),
                 IconButton(
-                  onPressed: _addPhoto,
-                  icon: Icon(Icons.add_photo_alternate_outlined, color: c.accent),
+                  onPressed: _busy ? null : _pickSource,
+                  icon: Icon(Icons.add_a_photo_outlined, color: c.accent),
                 ),
               ]),
             ),
@@ -102,7 +193,7 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                             style: TextStyle(color: c.textSecondary, fontSize: 15)),
                         const SizedBox(height: 8),
                         TextButton.icon(
-                          onPressed: _addPhoto,
+                          onPressed: _busy ? null : _pickSource,
                           icon: Icon(Icons.add, color: c.accent),
                           label: Text(loc.isAr ? 'أضف صورة' : 'Add photo',
                               style: TextStyle(color: c.accent)),
@@ -116,6 +207,7 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                       ),
                       itemCount: _photos.length,
                       itemBuilder: (_, i) => _PhotoCard(
+                        dir: _dir ?? '',
                         entry: _photos[i],
                         loc: loc, c: c,
                         onDelete: () => _delete(_photos[i]),
@@ -130,17 +222,24 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
 }
 
 class _PhotoEntry {
-  final String path;
+  /// اسم الملف فقط — المسار يُركَّب وقت العرض من مجلّد التطبيق الحالي.
+  final String name;
   final DateTime date;
-  _PhotoEntry({required this.path, required this.date});
+  _PhotoEntry({required this.name, required this.date});
 }
 
 class _PhotoCard extends StatelessWidget {
+  final String dir;
   final _PhotoEntry entry;
   final AppLocalizations loc;
   final dynamic c;
   final VoidCallback onDelete;
-  const _PhotoCard({required this.entry, required this.loc, required this.c, required this.onDelete});
+  const _PhotoCard(
+      {required this.dir,
+      required this.entry,
+      required this.loc,
+      required this.c,
+      required this.onDelete});
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +258,15 @@ class _PhotoCard extends StatelessWidget {
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
         child: Stack(fit: StackFit.expand, children: [
-          Image.file(File(entry.path), fit: BoxFit.cover),
+          Image.file(
+            File('$dir/${entry.name}'),
+            fit: BoxFit.cover,
+            // ملف محذوف من خارج التطبيق يجب ألا يكسر الشبكة كاملة.
+            errorBuilder: (_, __, ___) => Container(
+              color: c.surfaceVariant as Color,
+              child: Icon(Icons.broken_image_outlined, color: c.textTertiary as Color),
+            ),
+          ),
           Positioned(
             bottom: 0, left: 0, right: 0,
             child: Container(

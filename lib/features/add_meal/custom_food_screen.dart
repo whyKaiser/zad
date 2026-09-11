@@ -42,6 +42,15 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
     super.dispose();
   }
 
+  // حدود واقعية — تمنع أرقاماً خيالية تفسد الإحصائيات والمتوسطات.
+  static const _maxCalories = 10000;
+  static const _maxMacroGrams = 2000;
+
+  int get _calories => (int.tryParse(_cal.text) ?? 0).clamp(0, _maxCalories);
+
+  int _macro(TextEditingController ctrl) =>
+      (int.tryParse(ctrl.text) ?? 0).clamp(0, _maxMacroGrams);
+
   bool get _valid =>
       _name.text.trim().isNotEmpty && int.tryParse(_cal.text) != null;
 
@@ -51,11 +60,11 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
     final meal = Meal(
       id: DateTime.now().microsecondsSinceEpoch.toString(),
       name: _name.text.trim(),
-      calories: int.parse(_cal.text),
+      calories: _calories,
       macros: Macros(
-        protein: int.tryParse(_protein.text) ?? 0,
-        carbs: int.tryParse(_carbs.text) ?? 0,
-        fat: int.tryParse(_fat.text) ?? 0,
+        protein: _macro(_protein),
+        carbs: _macro(_carbs),
+        fat: _macro(_fat),
       ),
       time: mealTimeFor(repo.selectedDate),
       type: _type,

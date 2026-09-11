@@ -19,6 +19,7 @@ import 'data/measurements_controller.dart';
 import 'data/points_controller.dart';
 import 'data/profile_controller.dart';
 import 'data/recent_foods_controller.dart';
+import 'data/recipe_controller.dart';
 import 'data/unit_controller.dart';
 import 'data/water_controller.dart';
 import 'data/weight_controller.dart';
@@ -131,6 +132,7 @@ class ZadApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => RecentFoodsController()..load()),
         ChangeNotifierProvider(create: (_) => ActivityController()..load()),
         ChangeNotifierProvider(create: (_) => FastingController()..load()),
+        ChangeNotifierProvider(create: (_) => RecipeController()..load()),
         ChangeNotifierProxyProvider4<DiaryRepository, WaterController, WeightController,
             PointsController, DailyTasksController>(
           create: (ctx) => DailyTasksController(
