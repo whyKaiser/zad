@@ -136,9 +136,14 @@ class _DateStripState extends State<_DateStrip> {
     super.initState();
     final today = DateTime.now();
     _dates = List.generate(_days, (i) => today.subtract(Duration(days: _days - 1 - i)));
-    _scroll = ScrollController(
-      initialScrollOffset: (_days - 1) * 64.0,
-    );
+    _scroll = ScrollController();
+    // اليوم آخر عنصر. إزاحة ثابتة محسوبة يدوياً تخطئ العرض وتنكسر مع RTL،
+    // فنقفز لنهاية المحتوى بعد أول تخطيط — تعمل في الاتجاهين وبأي عرض.
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_scroll.hasClients) {
+        _scroll.jumpTo(_scroll.position.maxScrollExtent);
+      }
+    });
   }
 
   @override
