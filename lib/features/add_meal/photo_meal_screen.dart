@@ -206,7 +206,7 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
   }
 
   Widget _sourceBtn(dynamic c, IconData icon, String label, VoidCallback onTap, bool primary) =>
-      GestureDetector(
+      ZadTap(
         onTap: () { Haptics.select(); onTap(); },
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 14),

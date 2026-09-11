@@ -166,7 +166,7 @@ class _FastingScreenState extends State<FastingScreen> {
             const SizedBox(height: 10),
             ...kFastingPlans.map((p) {
               final sel = p.id == f.plan.id;
-              return GestureDetector(
+              return ZadTap(
                 onTap: f.isFasting
                     ? null // تغيير الهدف أثناء الصيام يفسد الحساب
                     : () {

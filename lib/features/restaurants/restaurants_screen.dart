@@ -45,7 +45,7 @@ class RestaurantsScreen extends StatelessWidget {
               const SizedBox(width: 4),
               Text(loc.calorieUnit, style: TextStyle(fontSize: 12, color: c.textSecondary)),
             ]),
-          ).animate().fadeIn(delay: 80.ms),
+          ).animate().fadeIn(delay: 36.ms),
           const SizedBox(height: 18),
           ...List.generate(kNearbyRestaurants.length, (i) {
             return _RestaurantCard(restaurant: kNearbyRestaurants[i], remaining: remaining, loc: loc)

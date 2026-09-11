@@ -112,7 +112,7 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
                   scrollDirection: Axis.horizontal,
                   children: MealType.values.map((t) {
                     final sel = t == _type;
-                    return GestureDetector(
+                    return ZadTap(
                       onTap: () { Haptics.select(); setState(() => _type = t); },
                       child: AnimatedContainer(
                         duration: const Duration(milliseconds: 200),

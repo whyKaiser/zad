@@ -95,7 +95,7 @@ class ChallengesScreen extends StatelessWidget {
           const SizedBox(height: 20),
 
           // daily tasks card
-          GestureDetector(
+          ZadTap(
             onTap: () {
               Haptics.select();
               Navigator.push(context, ZadPageRoute(page: const DailyTasksScreen()));
@@ -143,15 +143,15 @@ class ChallengesScreen extends StatelessWidget {
                 Icon(Icons.chevron_right_rounded, color: c.textTertiary),
               ]),
             ),
-          ).animate().fadeIn(delay: 80.ms),
+          ).animate().fadeIn(delay: 36.ms),
 
           Text(loc.activeChallenges,
                   style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: c.textPrimary))
-              .animate().fadeIn(delay: 150.ms),
+              .animate().fadeIn(delay: 68.ms),
           const SizedBox(height: 12),
           ...challenges.asMap().entries.map((e) => _ChallengeCard(challenge: e.value, loc: loc)
               .animate()
-              .fadeIn(delay: (200 + e.key * 80).ms, duration: 400.ms)
+              .fadeIn(delay: (70 + e.key * 28).ms, duration: 400.ms)
               .slideX(begin: 0.1, curve: Curves.easeOutCubic)),
           const SizedBox(height: 24),
           Row(children: [
@@ -159,11 +159,11 @@ class ChallengesScreen extends StatelessWidget {
                 style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: c.textPrimary)),
             const Spacer(),
             Text(loc.weeklyLeague, style: TextStyle(fontSize: 12, color: c.textSecondary)),
-          ]).animate().fadeIn(delay: 300.ms),
+          ]).animate().fadeIn(delay: 135.ms),
           const SizedBox(height: 12),
           ...ranked.asMap().entries.map((e) => _LeaderRow(ranked: e.value, loc: loc)
               .animate()
-              .fadeIn(delay: (360 + e.key * 60).ms, duration: 350.ms)),
+              .fadeIn(delay: (120 + e.key * 22).ms, duration: 350.ms)),
         ],
       ),
     );

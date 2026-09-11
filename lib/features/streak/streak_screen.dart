@@ -68,7 +68,7 @@ class StreakScreen extends StatelessWidget {
                   _streakCalendar(c, streak),
                 ],
               ),
-            ).animate().fadeIn(delay: 100.ms, duration: 500.ms).slideY(begin: 0.15),
+            ).animate().fadeIn(delay: 45.ms, duration: 500.ms).slideY(begin: 0.15),
             const SizedBox(height: 16),
 
             // rank card
@@ -122,13 +122,13 @@ class StreakScreen extends StatelessWidget {
                         style: TextStyle(fontSize: 14, color: c.accent2)),
                 ],
               ),
-            ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
+            ).animate().fadeIn(delay: 90.ms, duration: 400.ms),
             const SizedBox(height: 20),
 
             // all ranks
             Text(loc.isAr ? 'جميع الرانكات' : 'All ranks',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: c.textPrimary))
-                .animate().fadeIn(delay: 280.ms),
+                .animate().fadeIn(delay: 126.ms),
             const SizedBox(height: 12),
             ...Rank.values.asMap().entries.map((e) {
               final r = e.value;
@@ -170,7 +170,7 @@ class StreakScreen extends StatelessWidget {
                   else if (!unlocked)
                     Icon(Icons.lock_outline_rounded, size: 16, color: c.textTertiary),
                 ]),
-              ).animate().fadeIn(delay: (300 + e.key * 40).ms);
+              ).animate().fadeIn(delay: (110 + e.key * 18).ms);
             }),
           ],
         ),

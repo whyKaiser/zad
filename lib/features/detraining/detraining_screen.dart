@@ -151,7 +151,7 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
         ]),
       );
 
-  Widget _chip(c, String label, bool selected, VoidCallback onTap) => GestureDetector(
+  Widget _chip(c, String label, bool selected, VoidCallback onTap) => ZadTap(
         onTap: () {
           Haptics.select();
           onTap();

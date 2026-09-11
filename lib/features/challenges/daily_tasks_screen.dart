@@ -84,7 +84,7 @@ class DailyTasksScreen extends StatelessWidget {
                   ),
                 ]),
               ),
-            ).animate().fadeIn(delay: 80.ms),
+            ).animate().fadeIn(delay: 36.ms),
 
             Expanded(
               child: ListView.builder(
@@ -94,7 +94,7 @@ class DailyTasksScreen extends StatelessWidget {
                   final task = tasks[i];
                   return _TaskCard(task: task, loc: loc, c: c)
                       .animate()
-                      .fadeIn(delay: (120 + i * 60).ms, duration: 350.ms)
+                      .fadeIn(delay: (50 + i * 24).ms, duration: 350.ms)
                       .slideY(begin: 0.1, curve: Curves.easeOutCubic);
                 },
               ),

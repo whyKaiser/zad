@@ -104,11 +104,11 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
               const SizedBox(height: 4),
               Text(loc.isAr ? 'آخر 7 أيام' : 'Last 7 days',
                       style: TextStyle(fontSize: 13, color: c.textSecondary))
-                  .animate().fadeIn(delay: 80.ms),
+                  .animate().fadeIn(delay: 36.ms),
               const SizedBox(height: 16),
 
               // مدخل التقرير الذكي — قراءة الأسبوع بالعربي مع نصيحة واحدة
-              GestureDetector(
+              ZadTap(
                 onTap: () {
                   Haptics.select();
                   Navigator.push(context,
@@ -144,14 +144,14 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     Icon(Icons.chevron_right_rounded, color: c.textTertiary),
                   ]),
                 ),
-              ).animate().fadeIn(delay: 110.ms),
+              ).animate().fadeIn(delay: 50.ms),
               const SizedBox(height: 20),
 
               if (snap.connectionState == ConnectionState.waiting)
                 const Center(child: CircularProgressIndicator())
               else ...[
                 _WeekBarChart(data: weekData, goal: goalCal)
-                    .animate().fadeIn(delay: 140.ms, duration: 500.ms),
+                    .animate().fadeIn(delay: 63.ms, duration: 500.ms),
                 const SizedBox(height: 24),
 
                 Row(children: [
@@ -168,7 +168,7 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     unit: '/ 7',
                     color: c.accent2,
                   )),
-                ]).animate().fadeIn(delay: 220.ms),
+                ]).animate().fadeIn(delay: 99.ms),
                 const SizedBox(height: 12),
                 Row(children: [
                   Expanded(child: _SummaryCard(
@@ -191,12 +191,12 @@ class _AnalyticsScreenState extends State<AnalyticsScreen> {
                     unit: loc.grams,
                     color: c.macroFat,
                   )),
-                ]).animate().fadeIn(delay: 280.ms),
+                ]).animate().fadeIn(delay: 126.ms),
                 const SizedBox(height: 24),
 
                 Text(loc.isAr ? 'توزيع الماكروز' : 'Macro breakdown',
                         style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: c.textPrimary))
-                    .animate().fadeIn(delay: 320.ms),
+                    .animate().fadeIn(delay: 140.ms),
                 const SizedBox(height: 12),
                 ...weekData.asMap().entries.map((e) => _MacroRow(
                       data: e.value,

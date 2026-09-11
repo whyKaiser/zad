@@ -53,7 +53,7 @@ class HomeScreen extends StatelessWidget {
           _DateStrip(
             selected: repo.selectedDate,
             onSelect: (d) => context.read<DiaryRepository>().selectDate(d),
-          ).animate().fadeIn(delay: 60.ms, duration: 350.ms),
+          ).animate().fadeIn(delay: 27.ms, duration: 350.ms),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -73,22 +73,22 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
-          ).animate().fadeIn(delay: 120.ms, duration: 500.ms).slideY(begin: 0.15, curve: Curves.easeOutCubic),
+          ).animate().fadeIn(delay: 54.ms, duration: 500.ms).slideY(begin: 0.15, curve: Curves.easeOutCubic),
           const SizedBox(height: 16),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: _StreakRankCard(streak: repo.streakDays),
-          ).animate().fadeIn(delay: 180.ms, duration: 400.ms),
+          ).animate().fadeIn(delay: 81.ms, duration: 400.ms),
           const SizedBox(height: 12),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: _WaterCard(),
-          ).animate().fadeIn(delay: 200.ms, duration: 400.ms),
+          ).animate().fadeIn(delay: 90.ms, duration: 400.ms),
           const SizedBox(height: 12),
           const Padding(
             padding: EdgeInsets.symmetric(horizontal: 20),
             child: _ActivityCard(),
-          ).animate().fadeIn(delay: 230.ms, duration: 400.ms),
+          ).animate().fadeIn(delay: 104.ms, duration: 400.ms),
           const SizedBox(height: 20),
           ..._buildMealSections(context, c, loc, repo),
         ],
@@ -98,7 +98,7 @@ class HomeScreen extends StatelessWidget {
 
   List<Widget> _buildMealSections(BuildContext context, c, AppLocalizations loc, DiaryRepository repo) {
     final widgets = <Widget>[];
-    var delay = 280;
+    var delay = 90;
     for (final type in MealType.values) {
       final meals = repo.todayMeals.where((m) => m.type == type).toList();
       widgets.add(
@@ -108,7 +108,7 @@ class HomeScreen extends StatelessWidget {
         ).animate().fadeIn(delay: delay.ms, duration: 350.ms).slideY(begin: 0.1, curve: Curves.easeOutCubic),
       );
       widgets.add(const SizedBox(height: 12));
-      delay += 60;
+      delay += 26;
     }
     return widgets;
   }
@@ -186,7 +186,7 @@ class _DateStripState extends State<_DateStrip> {
               final d = _dates[i];
               final dayIsToday = isToday(d);
               final isSel = isSameDay(d, sel);
-              return GestureDetector(
+              return ZadTap(
                 onTap: () {
                   Haptics.select();
                   widget.onSelect(d);
@@ -258,7 +258,7 @@ class _TopBar extends StatelessWidget {
         const Spacer(),
         _StreakChip(days: streak),
         const SizedBox(width: 10),
-        GestureDetector(
+        ZadTap(
           onTap: () {
             Haptics.select();
             Navigator.push(context, ZadPageRoute(page: const ProfileScreen()));
@@ -315,7 +315,7 @@ class _WaterCard extends StatelessWidget {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
     final water = context.watch<WaterController>();
-    return GestureDetector(
+    return ZadTap(
       onLongPress: () {
         Haptics.select();
         showModalBottomSheet(
@@ -347,7 +347,7 @@ class _WaterCard extends StatelessWidget {
     );
   }
 
-  Widget _btn(BuildContext context, c, IconData icon, VoidCallback onTap) => GestureDetector(
+  Widget _btn(BuildContext context, c, IconData icon, VoidCallback onTap) => ZadTap(
         onTap: () {
           Haptics.select();
           onTap();
@@ -372,7 +372,7 @@ class _ActivityCard extends StatelessWidget {
     final loc = AppLocalizations.of(context);
     final burned = context.watch<ActivityController>().burnedToday;
 
-    return GestureDetector(
+    return ZadTap(
       onTap: () {
         Haptics.select();
         Navigator.push(context, ZadPageRoute(page: const ActivityScreen()));
@@ -446,7 +446,7 @@ class _MealSection extends StatelessWidget {
                 Text('$_totalCal ${loc.calorieUnit}',
                     style: TextStyle(fontSize: 13, color: c.textSecondary)),
               const SizedBox(width: 8),
-              GestureDetector(
+              ZadTap(
                 onTap: () {
                   Haptics.select();
                   Navigator.push(context, ZadPageRoute(
@@ -541,7 +541,7 @@ class _CopyYesterdayButtonState extends State<_CopyYesterdayButton> {
   @override
   Widget build(BuildContext context) {
     final c = widget.c;
-    return GestureDetector(
+    return ZadTap(
       onTap: _copy,
       behavior: HitTestBehavior.opaque,
       child: Padding(
@@ -624,7 +624,7 @@ class _StreakRankCard extends StatelessWidget {
     final points = context.watch<PointsController>().total;
     final rank = rankFromPoints(points);
     final loc = AppLocalizations.of(context);
-    return GestureDetector(
+    return ZadTap(
       onTap: () {
         Haptics.select();
         Navigator.push(context, ZadPageRoute(page: const StreakScreen()));

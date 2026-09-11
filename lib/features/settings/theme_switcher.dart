@@ -111,7 +111,7 @@ class _PaletteTile extends StatelessWidget {
     final c = context.colors;
     final pc = palette.colors;
 
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 250),
@@ -152,7 +152,7 @@ class _LangChip extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     return Expanded(
-      child: GestureDetector(
+      child: ZadTap(
         onTap: onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 250),

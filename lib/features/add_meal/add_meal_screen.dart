@@ -222,7 +222,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
                 scrollDirection: Axis.horizontal,
                 children: MealType.values.map((t) {
                   final sel = t == _selectedType;
-                  return GestureDetector(
+                  return ZadTap(
                     onTap: () { Haptics.select(); setState(() => _selectedType = t); },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -266,7 +266,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
             const SizedBox(height: 8),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: GestureDetector(
+              child: ZadTap(
                 onTap: () {
                   Haptics.select();
                   Navigator.push(context, ZadPageRoute(
@@ -397,7 +397,7 @@ class _QuickRow extends StatelessWidget {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
 
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 8),
@@ -408,7 +408,7 @@ class _QuickRow extends StatelessWidget {
           border: Border.all(color: isFavorite ? c.accent.withOpacity(0.4) : c.border),
         ),
         child: Row(children: [
-          GestureDetector(
+          ZadTap(
             onTap: () { Haptics.select(); onStar(); },
             behavior: HitTestBehavior.opaque,
             child: Padding(
@@ -456,7 +456,7 @@ class _FoodRow extends StatelessWidget {
     final loc = AppLocalizations.of(context);
     final t = item.typical;
 
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
@@ -499,7 +499,7 @@ class _OFFRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final c = context.colors;
     final loc = AppLocalizations.of(context);
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.only(bottom: 10),
@@ -730,7 +730,7 @@ class _CounterBtn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap != null ? () { Haptics.select(); onTap!(); } : null,
       child: Container(
         width: 36, height: 36,

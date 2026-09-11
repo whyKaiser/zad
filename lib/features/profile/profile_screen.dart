@@ -119,7 +119,7 @@ class ProfileScreen extends StatelessWidget {
 
   Widget _headerCard(BuildContext context, c, AppLocalizations loc, UserProfile p) {
     final initial = p.name.isNotEmpty ? p.name.characters.first : '?';
-    return GestureDetector(
+    return ZadTap(
       onTap: () {
         Haptics.select();
         showModalBottomSheet(
@@ -163,7 +163,7 @@ class ProfileScreen extends StatelessWidget {
         child: Text(label, style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: c.textTertiary)),
       );
 
-  Widget _row(BuildContext context, c, IconData icon, String label, VoidCallback onTap) => GestureDetector(
+  Widget _row(BuildContext context, c, IconData icon, String label, VoidCallback onTap) => ZadTap(
         onTap: () {
           Haptics.select();
           onTap();
@@ -365,7 +365,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(t, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)));
 
-  Widget _chip(c, String label, bool selected, VoidCallback onTap) => GestureDetector(
+  Widget _chip(c, String label, bool selected, VoidCallback onTap) => ZadTap(
       onTap: () { Haptics.select(); onTap(); },
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
@@ -469,7 +469,7 @@ class _GoalSheetState extends State<_GoalSheet> {
     );
   }
 
-  Widget _chip(c, String label, bool selected, VoidCallback onTap) => GestureDetector(
+  Widget _chip(c, String label, bool selected, VoidCallback onTap) => ZadTap(
         onTap: () {
           Haptics.select();
           onTap();
@@ -585,7 +585,7 @@ class _UnitToggleRow extends StatelessWidget {
         const SizedBox(width: 12),
         Text(loc.unitToggle, style: TextStyle(fontSize: 15, color: c.textPrimary)),
         const Spacer(),
-        GestureDetector(
+        ZadTap(
           onTap: () { Haptics.select(); unit.toggle(); },
           child: AnimatedContainer(
             duration: const Duration(milliseconds: 200),

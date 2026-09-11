@@ -165,7 +165,7 @@ class ActivityScreen extends StatelessWidget {
                                   style: TextStyle(fontSize: 10, color: c.textTertiary)),
                             ]),
                           ),
-                        ).animate().fadeIn(delay: (i * 50).ms, duration: 300.ms);
+                        ).animate().fadeIn(delay: (i * 22).ms, duration: 300.ms);
                       },
                     ),
             ),
@@ -241,7 +241,7 @@ class _AddActivitySheetState extends State<_AddActivitySheet> {
             children: [
               Wrap(spacing: 8, runSpacing: 8, children: [
                 for (final a in kActivities)
-                  GestureDetector(
+                  ZadTap(
                     onTap: () { Haptics.select(); setState(() => _type = a); },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 180),

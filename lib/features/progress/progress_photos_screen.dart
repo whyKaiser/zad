@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart' as intl;
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../core/motion.dart';
 
 import '../../l10n/app_localizations.dart';
 import '../../theme/app_theme.dart';
@@ -245,7 +246,7 @@ class _PhotoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    return ZadTap(
       onLongPress: () => showDialog(
         context: context,
         builder: (_) => AlertDialog(

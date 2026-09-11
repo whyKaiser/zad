@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../core/motion.dart';
 
 import '../../data/exercise_data.dart';
 import '../../l10n/app_localizations.dart';
@@ -101,7 +102,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                 itemCount: _programs.length,
                 itemBuilder: (_, i) {
                   final sel = i == _selected;
-                  return GestureDetector(
+                  return ZadTap(
                     onTap: () => setState(() => _selected = i),
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -160,7 +161,7 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                             style: TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: c.accent)),
                       )).toList(),
                     ),
-                  ).animate().fadeIn(delay: (di * 80).ms);
+                  ).animate().fadeIn(delay: (di * 28).ms);
                 },
               ),
             ),

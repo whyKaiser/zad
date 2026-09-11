@@ -328,7 +328,7 @@ class _InputBar extends StatelessWidget {
             ),
           ),
           const SizedBox(width: 10),
-          GestureDetector(
+          ZadTap(
             onTap: onSend,
             child: Container(
               width: 46, height: 46,

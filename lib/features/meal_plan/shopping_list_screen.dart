@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import '../../core/motion.dart';
 
 import '../../data/meal_plan_controller.dart';
 import '../../l10n/app_localizations.dart';
@@ -62,7 +63,7 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                       itemCount: items.length,
                       itemBuilder: (_, i) {
                         final done = _checked.contains(i);
-                        return GestureDetector(
+                        return ZadTap(
                           onTap: () => setState(() => done ? _checked.remove(i) : _checked.add(i)),
                           child: AnimatedContainer(
                             duration: const Duration(milliseconds: 200),

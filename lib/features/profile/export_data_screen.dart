@@ -162,7 +162,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                 const SizedBox(height: 10),
                 Wrap(spacing: 8, children: [
                   for (final d in [30, 90, 365])
-                    GestureDetector(
+                    ZadTap(
                       onTap: () {
                         Haptics.select();
                         setState(() => _days = d);
@@ -222,7 +222,7 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
 
   Widget _tile(dynamic c, AppLocalizations loc, _ExportKind kind, IconData icon,
           String title, String subtitle) =>
-      GestureDetector(
+      ZadTap(
         onTap: () => _export(kind),
         child: Container(
           margin: const EdgeInsets.only(bottom: 10),

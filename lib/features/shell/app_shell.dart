@@ -87,7 +87,7 @@ class _AppShellState extends State<AppShell> {
               children: List.generate(_icons.length, (i) {
                 final selected = i == _index;
                 return Expanded(
-                  child: GestureDetector(
+                  child: ZadTap(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       if (i == _index) return;

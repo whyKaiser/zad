@@ -75,7 +75,7 @@ class RecipesScreen extends StatelessWidget {
                     itemCount: recipes.length,
                     itemBuilder: (_, i) => _RecipeCard(recipe: recipes[i])
                         .animate()
-                        .fadeIn(delay: (i * 50).ms, duration: 300.ms),
+                        .fadeIn(delay: (i * 22).ms, duration: 300.ms),
                   ),
           ),
         ]),
@@ -126,7 +126,7 @@ class _RecipeCard extends StatelessWidget {
             BoxDecoration(color: c.danger, borderRadius: BorderRadius.circular(16)),
         child: const Icon(Icons.delete_outline_rounded, color: Colors.white),
       ),
-      child: GestureDetector(
+      child: ZadTap(
         onTap: () {
           Haptics.select();
           Navigator.push(context,
@@ -170,7 +170,7 @@ class _RecipeCard extends StatelessWidget {
               const SizedBox(width: 8),
               _macro(c, loc.fat, m.fat, c.macroFat),
               const Spacer(),
-              GestureDetector(
+              ZadTap(
                 onTap: () => _logSheet(context, recipe),
                 child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
@@ -279,7 +279,7 @@ class _LogRecipeSheetState extends State<_LogRecipeSheet> {
               scrollDirection: Axis.horizontal,
               children: MealType.values.map((t) {
                 final sel = t == _type;
-                return GestureDetector(
+                return ZadTap(
                   onTap: () {
                     Haptics.select();
                     setState(() => _type = t);
@@ -684,7 +684,7 @@ class _PickIngredientSheetState extends State<_PickIngredientSheet> {
             itemBuilder: (_, i) {
               final f = results[i];
               final sel = f.id == _selectedId;
-              return GestureDetector(
+              return ZadTap(
                 onTap: () {
                   Haptics.select();
                   setState(() {

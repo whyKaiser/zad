@@ -157,7 +157,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.circular(14), borderSide: BorderSide(color: c.accent)),
       );
 
-  Widget _chip(c, String label, bool selected, VoidCallback onTap) => GestureDetector(
+  Widget _chip(c, String label, bool selected, VoidCallback onTap) => ZadTap(
         onTap: () {
           Haptics.select();
           onTap();

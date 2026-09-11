@@ -65,7 +65,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                 itemCount: _days.length,
                 itemBuilder: (_, i) {
                   final sel = i == _dayIdx;
-                  return GestureDetector(
+                  return ZadTap(
                     onTap: () { Haptics.select(); setState(() => _dayIdx = i); },
                     child: AnimatedContainer(
                       duration: const Duration(milliseconds: 200),
@@ -93,7 +93,7 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                   return _MealTypeSection(
                     type: type, entries: typeEntries, dayKey: dayKey,
                     loc: loc, c: c, ctrl: ctrl,
-                  ).animate().fadeIn(delay: (MealType.values.indexOf(type) * 80).ms);
+                  ).animate().fadeIn(delay: (MealType.values.indexOf(type) * 28).ms);
                 }).toList(),
               ),
             ),
@@ -130,7 +130,7 @@ class _MealTypeSection extends StatelessWidget {
               Text(loc.mealTypeLabel(type),
                   style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent)),
               const Spacer(),
-              GestureDetector(
+              ZadTap(
                 onTap: () => _addEntry(context),
                 child: Icon(Icons.add_circle_outline_rounded, color: c.accent, size: 22),
               ),

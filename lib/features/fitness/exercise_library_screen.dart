@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../core/motion.dart';
 
 import '../../data/exercise_data.dart';
 import '../../l10n/app_localizations.dart';
@@ -61,7 +62,7 @@ class _ExerciseLibraryScreenState extends State<ExerciseLibraryScreen> {
                 padding: const EdgeInsets.fromLTRB(16, 4, 16, 40),
                 itemCount: filtered.length,
                 itemBuilder: (context, i) => _ExCard(ex: filtered[i], loc: loc)
-                    .animate().fadeIn(delay: (i * 40).ms, duration: 300.ms),
+                    .animate().fadeIn(delay: (i * 20).ms, duration: 300.ms),
               ),
             ),
           ],
@@ -80,7 +81,7 @@ class _Chip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
-    return GestureDetector(
+    return ZadTap(
       onTap: onTap,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
