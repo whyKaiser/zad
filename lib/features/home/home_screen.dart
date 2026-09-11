@@ -660,6 +660,12 @@ class _StreakRankCard extends StatelessWidget {
 
 // ─── Glass Card ──────────────────────────────────────────────────────────────
 
+/// بطاقة بسطح مرتفع قليلاً عن الخلفية.
+///
+/// كانت مسطّحة تماماً رغم الاسم. الآن تكتسب عمقاً من تدرّج خفيف جداً
+/// وحافّة علوية أفتح — ضوء ينكسر على حافة المادة، كما تفعل أسطح Apple.
+/// بلا blur: الضبابية على كل بطاقة تكلفة رسم بلا مقابل بصري هنا،
+/// وهي محجوزة للطبقات العائمة فوق محتوى متحرّك (الشريط السفلي).
 class _GlassCard extends StatelessWidget {
   final Widget child;
   final EdgeInsetsGeometry padding;
@@ -668,12 +674,24 @@ class _GlassCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final c = context.colors;
+    final lifted = Color.lerp(c.surface, c.textPrimary, 0.03) ?? c.surface;
     return Container(
       padding: padding,
       decoration: BoxDecoration(
-        color: c.surface,
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [lifted, c.surface],
+        ),
         borderRadius: BorderRadius.circular(22),
         border: Border.all(color: c.border),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.10),
+            blurRadius: 18,
+            offset: const Offset(0, 6),
+          ),
+        ],
       ),
       child: child,
     );

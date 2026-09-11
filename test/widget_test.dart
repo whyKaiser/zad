@@ -36,15 +36,19 @@ void main() {
   testWidgets('مع ملف جاهز: يعرض الرئيسية', (tester) async {
     await tester.pumpWidget(_app(ProfileController.seeded(_sample)));
     await tester.pumpAndSettle();
-    expect(find.text('مساء الخير'), findsOneWidget);
+    // التحية تتبع الساعة — نشتقّها بدل تثبيتها، وإلا سقط الاختبار حسب وقت التشغيل.
+    expect(find.text(AppLocalizations(const Locale('ar')).greeting), findsOneWidget);
     expect(find.text('عبدالله'), findsOneWidget); // اسم المستخدم في الشريط العلوي
   });
 
   test('الترجمة تتبدّل بين العربي والإنجليزي', () {
     final ar = AppLocalizations(const Locale('ar'));
     final en = AppLocalizations(const Locale('en'));
-    expect(ar.greeting, 'مساء الخير');
-    expect(en.greeting, 'Good evening');
+    expect(ar.greetingAt(DateTime(2026, 1, 1, 8)), 'صباح الخير');
+    expect(ar.greetingAt(DateTime(2026, 1, 1, 14)), 'طاب يومك');
+    expect(ar.greetingAt(DateTime(2026, 1, 1, 21)), 'مساء الخير');
+    expect(en.greetingAt(DateTime(2026, 1, 1, 8)), 'Good morning');
+    expect(en.greetingAt(DateTime(2026, 1, 1, 21)), 'Good evening');
     expect(ar.tabChallenges, 'التحديات');
     expect(en.tabChallenges, 'Challenges');
   });

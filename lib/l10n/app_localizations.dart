@@ -25,8 +25,11 @@ class AppLocalizations {
 
   // عام
   /// تحية تتبع ساعة اليوم — كانت ثابتة على "مساء الخير" حتى في الصباح.
-  String get greeting {
-    final h = DateTime.now().hour;
+  String get greeting => greetingAt(DateTime.now());
+
+  /// منفصلة عن الساعة لتكون قابلة للاختبار في الأوقات الثلاثة كلها.
+  String greetingAt(DateTime now) {
+    final h = now.hour;
     if (h < 12) return _('صباح الخير', 'Good morning');
     if (h < 17) return _('طاب يومك', 'Good afternoon');
     return _('مساء الخير', 'Good evening');

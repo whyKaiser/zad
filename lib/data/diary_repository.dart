@@ -75,13 +75,21 @@ class MockDiaryRepository extends DiaryRepository {
 
   final List<Meal> _allMeals = [];
 
+  /// منتصف ليل اليوم — مرساة ثابتة للأوقات التجريبية.
+  /// `DateTime.now().subtract(hours)` كان يقع في **أمس** لو شُغّل قبل الفجر،
+  /// فتظهر يوميات اليوم فارغة رغم `seeded: true`.
+  static DateTime _at({int daysAgo = 0, required int hour}) {
+    final n = DateTime.now();
+    return DateTime(n.year, n.month, n.day - daysAgo, hour);
+  }
+
   static final List<Meal> _demoMeals = [
     Meal(
       id: '1',
       name: 'بيض مقلي وخبز',
       calories: 320,
       macros: const Macros(protein: 18, carbs: 28, fat: 14),
-      time: DateTime.now().subtract(const Duration(hours: 5)),
+      time: _at(hour: 8),
       type: MealType.breakfast,
     ),
     Meal(
@@ -89,7 +97,7 @@ class MockDiaryRepository extends DiaryRepository {
       name: 'صدر دجاج مشوي وأرز',
       calories: 450,
       macros: const Macros(protein: 45, carbs: 40, fat: 6),
-      time: DateTime.now().subtract(const Duration(hours: 2)),
+      time: _at(hour: 13),
       type: MealType.lunch,
     ),
     Meal(
@@ -97,7 +105,7 @@ class MockDiaryRepository extends DiaryRepository {
       name: 'تمر وحليب',
       calories: 180,
       macros: const Macros(protein: 6, carbs: 30, fat: 4),
-      time: DateTime.now().subtract(const Duration(days: 1, hours: 3)),
+      time: _at(daysAgo: 1, hour: 9),
       type: MealType.snack,
     ),
     Meal(
@@ -105,7 +113,7 @@ class MockDiaryRepository extends DiaryRepository {
       name: 'شاورما دجاج',
       calories: 520,
       macros: const Macros(protein: 38, carbs: 55, fat: 14),
-      time: DateTime.now().subtract(const Duration(days: 1, hours: 6)),
+      time: _at(daysAgo: 1, hour: 19),
       type: MealType.dinner,
     ),
   ];

@@ -37,6 +37,24 @@ ThemeData buildTheme(ZadPalette palette) {
       displayColor: c.textPrimary,
     ),
     iconTheme: IconThemeData(color: c.textPrimary),
+
+    // السلايدر الافتراضي يُظهر فقاعة قيمة وعلامات تقسيم تزاحم الإصبع،
+    // والقيمة معروضة أصلاً فوق كل سلايدر في التطبيق. نُبقي المسار نظيفاً
+    // ونكبّر الإبهام قليلاً ليقع تحت الإصبع بلا تردّد.
+    sliderTheme: SliderThemeData(
+      trackHeight: 4,
+      activeTrackColor: c.accent,
+      inactiveTrackColor: c.track,
+      thumbColor: c.accent,
+      overlayColor: c.accent.withOpacity(0.12),
+      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
+      overlayShape: const RoundSliderOverlayShape(overlayRadius: 22),
+      // بلا علامات تقسيم ولا فقاعة — القيمة ظاهرة في العنوان.
+      tickMarkShape: SliderTickMarkShape.noTickMark,
+      showValueIndicator: ShowValueIndicator.never,
+      trackShape: const RoundedRectSliderTrackShape(),
+    ),
+
     extensions: [c],
   );
 }
