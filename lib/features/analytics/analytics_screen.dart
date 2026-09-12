@@ -311,8 +311,8 @@ class _WeekBarChart extends StatelessWidget {
             child: Row(children: [
               Container(width: 12, height: 2, color: c.accent.withOpacity(0.5)),
               const SizedBox(width: 6),
-              Text('${AppLocalizations.of(context).isAr ? 'الهدف' : 'Goal'} $goal',
-                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
+              Flexible(child: Text('${AppLocalizations.of(context).isAr ? 'الهدف' : 'Goal'} $goal',
+                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
           ),
           Row(
@@ -362,9 +362,9 @@ class _SummaryCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text(value, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, fontWeight: FontWeight.w700, color: color)),
+              Flexible(child: Text(value, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, fontWeight: FontWeight.w700, color: color), maxLines: 1, overflow: TextOverflow.ellipsis)),
               const SizedBox(width: 3),
-              Text(unit, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
+              Flexible(child: Text(unit, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ],
           ),
         ],
@@ -394,7 +394,7 @@ class _MacroRow extends StatelessWidget {
         padding: const EdgeInsets.only(bottom: 8),
         child: Row(children: [
           SizedBox(width: 32, child: Text(day, style: TextStyle(fontSize: 13, color: c.textTertiary))),
-          Text(loc.isAr ? 'لا يوجد تسجيل' : 'No log', style: TextStyle(fontSize: 13, color: c.textTertiary)),
+          Flexible(child: Text(loc.isAr ? 'لا يوجد تسجيل' : 'No log', style: TextStyle(fontSize: 13, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
       );
     }
@@ -418,8 +418,8 @@ class _MacroRow extends StatelessWidget {
           _bar(data.fat, goal.fat, c.macroFat),
         ])),
         const SizedBox(width: 10),
-        Text('${data.calories}', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.accent)),
-        Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
+        Flexible(child: Text('${data.calories}', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
+        Flexible(child: Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
       ]),
     );
   }

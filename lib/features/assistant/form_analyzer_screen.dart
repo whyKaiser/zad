@@ -87,8 +87,8 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
                 IconButton(onPressed: () => Navigator.pop(context),
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-                Text(loc.isAr ? 'محلّل الأداء' : 'Form Analyzer',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                Flexible(child: Text(loc.isAr ? 'محلّل الأداء' : 'Form Analyzer',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
             ),
             Expanded(
@@ -104,8 +104,8 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
                       Row(children: [
                         Icon(Icons.tips_and_updates_outlined, size: 16, color: c.accent),
                         const SizedBox(width: 8),
-                        Text(loc.isAr ? 'كيف تستخدمه' : 'How to use',
-                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.accent)),
+                        Flexible(child: Text(loc.isAr ? 'كيف تستخدمه' : 'How to use',
+                            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                       ]),
                       const SizedBox(height: 8),
                       Text(
@@ -159,8 +159,8 @@ class _FormAnalyzerScreenState extends State<FormAnalyzerScreen> {
                         Row(children: [
                           Icon(Icons.psychology_outlined, size: 18, color: c.accent),
                           const SizedBox(width: 8),
-                          Text(loc.isAr ? 'تحليل الأداء' : 'Analysis',
-                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent)),
+                          Flexible(child: Text(loc.isAr ? 'تحليل الأداء' : 'Analysis',
+                              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                         ]),
                         const SizedBox(height: 12),
                         Text(_response, style: TextStyle(fontSize: 14, color: c.textPrimary, height: 1.6)),

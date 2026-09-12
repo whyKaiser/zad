@@ -41,6 +41,7 @@ Future<LocalDiaryRepository> pumpScreen(
   Locale locale = const Locale('ar'),
   Size size = const Size(420, 1000),
   LocalDiaryRepository? repo,
+  double textScale = 1.0,
 }) async {
   tester.view.physicalSize = size;
   tester.view.devicePixelRatio = 1.0;
@@ -95,6 +96,11 @@ Future<LocalDiaryRepository> pumpScreen(
           GlobalCupertinoLocalizations.delegate,
         ],
         theme: buildTheme(ZadPalette.energy),
+        builder: (context, child) => MediaQuery.withClampedTextScaling(
+          minScaleFactor: textScale,
+          maxScaleFactor: textScale,
+          child: child!,
+        ),
         home: screen,
       ),
     ),

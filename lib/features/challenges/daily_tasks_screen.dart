@@ -33,9 +33,8 @@ class DailyTasksScreen extends StatelessWidget {
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
-                Text(loc.isAr ? 'مهام اليوم' : "Today's tasks",
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                const Spacer(),
+                Expanded(child: Text(loc.isAr ? 'مهام اليوم' : "Today's tasks",
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
@@ -64,13 +63,11 @@ class DailyTasksScreen extends StatelessWidget {
                 ),
                 child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                   Row(children: [
-                    Text(
+                    Expanded(child: Text(
                       loc.isAr ? '$done / ${tasks.length} مهمة مكتملة' : '$done / ${tasks.length} tasks done',
-                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary),
-                    ),
-                    const Spacer(),
-                    Text(tasks.isEmpty ? '0%' : '${(done / tasks.length * 100).round()}%',
-                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: c.accent)),
+                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                    Flexible(child: Text(tasks.isEmpty ? '0%' : '${(done / tasks.length * 100).round()}%',
+                        style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   ]),
                   const SizedBox(height: 10),
                   ClipRRect(

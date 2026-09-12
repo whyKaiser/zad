@@ -36,8 +36,8 @@ class _ExerciseLibraryScreenState extends State<ExerciseLibraryScreen> {
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
-                Text(loc.isAr ? 'مكتبة التمارين' : 'Exercise Library',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                Flexible(child: Text(loc.isAr ? 'مكتبة التمارين' : 'Exercise Library',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
             ),
             SizedBox(

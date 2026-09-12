@@ -43,9 +43,8 @@ class _MealPlanScreenState extends State<MealPlanScreen> {
                 IconButton(onPressed: () => Navigator.pop(context),
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-                Text(loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                const Spacer(),
+                Expanded(child: Text(loc.isAr ? 'خطة الوجبات' : 'Meal Plan',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 TextButton.icon(
                   onPressed: () {
                     Haptics.select();
@@ -127,9 +126,8 @@ class _MealTypeSection extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(16, 12, 16, 4),
             child: Row(children: [
-              Text(loc.mealTypeLabel(type),
-                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent)),
-              const Spacer(),
+              Expanded(child: Text(loc.mealTypeLabel(type),
+                  style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ZadTap(
                 onTap: () => _addEntry(context),
                 child: Icon(Icons.add_circle_outline_rounded, color: c.accent, size: 22),
@@ -227,7 +225,7 @@ class _AddEntrySheetState extends State<_AddEntrySheet> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(children: [
-              Text('${_grams}g', style: TextStyle(fontSize: 14, color: c.textPrimary)),
+              Flexible(child: Text('${_grams}g', style: TextStyle(fontSize: 14, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               Expanded(child: Slider(value: _grams.toDouble(), min: 25, max: 400, divisions: 15,
                   activeColor: c.accent, inactiveColor: c.track,
                   onChanged: (v) => setState(() => _grams = v.round()))),

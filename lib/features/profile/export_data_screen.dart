@@ -134,9 +134,9 @@ class _ExportDataScreenState extends State<ExportDataScreen> {
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
-              Text(loc.isAr ? 'تصدير بياناتك' : 'Export your data',
+              Flexible(child: Text(loc.isAr ? 'تصدير بياناتك' : 'Export your data',
                   style: TextStyle(
-                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
             const SizedBox(height: 6),
             Text(

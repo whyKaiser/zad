@@ -57,8 +57,14 @@ class MacroRing extends StatelessWidget {
             ),
             const SizedBox(height: 6),
             Text(label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
             Text('/ $target ${loc.grams}',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
                 style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textTertiary)),
           ],
         );
@@ -84,23 +90,29 @@ class MacroRingsRow extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
-        MacroRing(
-          current: consumed.protein,
-          target: target.protein,
-          color: c.macroProtein,
-          label: loc.protein,
+        Expanded(
+          child: MacroRing(
+            current: consumed.protein,
+            target: target.protein,
+            color: c.macroProtein,
+            label: loc.protein,
+          ),
         ),
-        MacroRing(
-          current: consumed.carbs,
-          target: target.carbs,
-          color: c.macroCarbs,
-          label: loc.carbs,
+        Expanded(
+          child: MacroRing(
+            current: consumed.carbs,
+            target: target.carbs,
+            color: c.macroCarbs,
+            label: loc.carbs,
+          ),
         ),
-        MacroRing(
-          current: consumed.fat,
-          target: target.fat,
-          color: c.macroFat,
-          label: loc.fat,
+        Expanded(
+          child: MacroRing(
+            current: consumed.fat,
+            target: target.fat,
+            color: c.macroFat,
+            label: loc.fat,
+          ),
         ),
       ],
     );

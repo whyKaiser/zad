@@ -92,11 +92,9 @@ class _CustomFoodScreenState extends State<CustomFoodScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(children: [
-                Text(
+                Expanded(child: Text(
                   loc.isAr ? 'طعام مخصص' : 'Custom food',
-                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary),
-                ),
-                const Spacer(),
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 IconButton(
                   tooltip: AppLocalizations.of(context).isAr ? 'إغلاق' : 'Close',
                   onPressed: () => Navigator.pop(context),

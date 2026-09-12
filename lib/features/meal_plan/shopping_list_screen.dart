@@ -35,9 +35,8 @@ class _ShoppingListScreenState extends State<ShoppingListScreen> {
                 IconButton(onPressed: () => Navigator.pop(context),
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-                Text(loc.isAr ? 'قائمة الشراء' : 'Shopping List',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                const Spacer(),
+                Expanded(child: Text(loc.isAr ? 'قائمة الشراء' : 'Shopping List',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 if (items.isNotEmpty)
                   IconButton(
                     tooltip: AppLocalizations.of(context).isAr ? 'انسخ القائمة' : 'Copy list',

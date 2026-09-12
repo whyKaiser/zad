@@ -89,8 +89,8 @@ class _WorkoutProgramsScreenState extends State<WorkoutProgramsScreen> {
                 IconButton(onPressed: () => Navigator.pop(context),
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-                Text(loc.isAr ? 'برامج التدريب' : 'Workout Programs',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                Flexible(child: Text(loc.isAr ? 'برامج التدريب' : 'Workout Programs',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
             ),
             // program selector

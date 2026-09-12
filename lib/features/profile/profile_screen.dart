@@ -47,8 +47,8 @@ class ProfileScreen extends StatelessWidget {
                 tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-              Text(loc.profile,
-                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+              Flexible(child: Text(loc.profile,
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
             const SizedBox(height: 12),
             if (profile != null) _headerCard(context, c, loc, profile),
@@ -274,9 +274,8 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             child: Row(children: [
-              Text(loc.isAr ? 'تعديل الملف الشخصي' : 'Edit Profile',
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary)),
-              const Spacer(),
+              Expanded(child: Text(loc.isAr ? 'تعديل الملف الشخصي' : 'Edit Profile',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               TextButton(
                 onPressed: () {
                   if (_name.text.trim().isEmpty) return;
@@ -341,8 +340,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
                   decoration: BoxDecoration(color: c.accent.withOpacity(0.08),
                       borderRadius: BorderRadius.circular(16), border: Border.all(color: c.accent.withOpacity(0.3))),
                   child: Row(children: [
-                    Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary)),
-                    const Spacer(),
+                    Expanded(child: Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     TweenAnimationBuilder<int>(
                       tween: IntTween(begin: widget.profile.targetCalories, end: _draft.targetCalories),
                       duration: const Duration(milliseconds: 300),
@@ -350,7 +348,7 @@ class _EditProfileSheetState extends State<_EditProfileSheet> {
                           style: TextStyle(fontSize: 26, letterSpacing: 26 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
                     ),
                     const SizedBox(width: 4),
-                    Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+                    Flexible(child: Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   ]),
                 ),
               ],
@@ -441,10 +439,9 @@ class _GoalSheetState extends State<_GoalSheet> {
           ]),
           const SizedBox(height: 18),
           Row(children: [
-            Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary)),
-            const Spacer(),
-            Text('${preview.targetCalories} ${loc.calorieUnit}',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
+            Expanded(child: Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Flexible(child: Text('${preview.targetCalories} ${loc.calorieUnit}',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           const SizedBox(height: 16),
           SizedBox(
@@ -583,8 +580,7 @@ class _UnitToggleRow extends StatelessWidget {
       child: Row(children: [
         Icon(Icons.straighten_rounded, size: 20, color: c.accent),
         const SizedBox(width: 12),
-        Text(loc.unitToggle, style: TextStyle(fontSize: 15, color: c.textPrimary)),
-        const Spacer(),
+        Expanded(child: Text(loc.unitToggle, style: TextStyle(fontSize: 15, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ZadTap(
           onTap: () { Haptics.select(); unit.toggle(); },
           child: AnimatedContainer(
@@ -685,11 +681,10 @@ class _MacroSplitSheetState extends State<_MacroSplitSheet> {
   Widget _macroSlider(c, String label, double val, Color color, int grams, String unit, ValueChanged<double>? onChanged) {
     return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
       Row(children: [
-        Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary)),
-        const Spacer(),
-        Text('${val.round()}%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: color)),
+        Expanded(child: Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+        Flexible(child: Text('${val.round()}%', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: color), maxLines: 1, overflow: TextOverflow.ellipsis)),
         const SizedBox(width: 8),
-        Text('$grams$unit', style: TextStyle(fontSize: 12, color: c.textSecondary)),
+        Flexible(child: Text('$grams$unit', style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
       ]),
       Slider(
         value: val, min: 5, max: 75,

@@ -65,9 +65,9 @@ class _FastingScreenState extends State<FastingScreen> {
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
-              Text(loc.isAr ? 'الصيام المتقطّع' : 'Intermittent fasting',
+              Flexible(child: Text(loc.isAr ? 'الصيام المتقطّع' : 'Intermittent fasting',
                   style: TextStyle(
-                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
             const SizedBox(height: 8),
 
@@ -212,16 +212,14 @@ class _FastingScreenState extends State<FastingScreen> {
             if (f.log.isNotEmpty) ...[
               const SizedBox(height: 20),
               Row(children: [
-                Text(loc.isAr ? 'السجل' : 'History',
+                Expanded(child: Text(loc.isAr ? 'السجل' : 'History',
                     style: TextStyle(
-                        fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                const Spacer(),
-                Text(
+                        fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                Flexible(child: Text(
                   loc.isAr
                       ? '${f.goalsThisWeek} أهداف هذا الأسبوع'
                       : '${f.goalsThisWeek} goals this week',
-                  style: TextStyle(fontSize: 12, color: c.accent),
-                ),
+                  style: TextStyle(fontSize: 12, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
               const SizedBox(height: 10),
               ...f.log.take(7).map((s) => Container(
@@ -240,19 +238,17 @@ class _FastingScreenState extends State<FastingScreen> {
                           size: 18,
                           color: s.reachedGoal ? c.accent : c.textTertiary),
                       const SizedBox(width: 10),
-                      Text(intl.DateFormat('d MMM').format(s.start),
-                          style: TextStyle(fontSize: 13, color: c.textSecondary)),
-                      const Spacer(),
-                      Text(
+                      Expanded(child: Text(intl.DateFormat('d MMM').format(s.start),
+                          style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text(
                         '${s.duration.inHours}${loc.hourShort} '
                         '${s.duration.inMinutes % 60}${loc.minuteShort}',
                         style: TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.w600,
-                            color: c.textPrimary),
-                      ),
-                      Text(' / ${s.targetHours}${loc.hourShort}',
-                          style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
+                            color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text(' / ${s.targetHours}${loc.hourShort}',
+                          style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ]),
                   )),
             ],

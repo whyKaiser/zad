@@ -185,7 +185,7 @@ class _EntryView extends StatelessWidget {
                   width: 16, height: 16,
                   child: CircularProgressIndicator(strokeWidth: 2, color: c.accent)),
               const SizedBox(width: 10),
-              Text(loc.thinking, style: TextStyle(color: c.textSecondary, fontSize: 14)),
+              Flexible(child: Text(loc.thinking, style: TextStyle(color: c.textSecondary, fontSize: 14), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ])
           else if (entry.error)
             Text(loc.tryAgain, style: TextStyle(color: c.macroFat, fontSize: 14))
@@ -243,10 +243,10 @@ class _ResultCard extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.baseline,
             textBaseline: TextBaseline.alphabetic,
             children: [
-              Text('${result.calories}',
-                  style: TextStyle(fontSize: 28, letterSpacing: 28 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
+              Flexible(child: Text('${result.calories}',
+                  style: TextStyle(fontSize: 28, letterSpacing: 28 * -0.02, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
               const SizedBox(width: 4),
-              Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+              Flexible(child: Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ],
           ),
           const SizedBox(height: 10),

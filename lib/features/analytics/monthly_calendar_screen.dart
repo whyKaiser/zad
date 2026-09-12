@@ -255,6 +255,6 @@ class _MonthlyCalendarScreenState extends State<MonthlyCalendarScreen> {
             height: 12,
             decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(3))),
         const SizedBox(width: 6),
-        Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
+        Flexible(child: Text(label, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
       ]);
 }

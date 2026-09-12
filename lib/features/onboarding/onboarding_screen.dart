@@ -110,12 +110,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
               ),
               child: Row(
                 children: [
-                  Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary)),
-                  const Spacer(),
-                  Text('${_draft.targetCalories}',
-                      style: TextStyle(fontSize: 26, letterSpacing: 26 * -0.02, fontWeight: FontWeight.w700, color: c.accent)),
+                  Expanded(child: Text(loc.yourTarget, style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                  Flexible(child: Text('${_draft.targetCalories}',
+                      style: TextStyle(fontSize: 26, letterSpacing: 26 * -0.02, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   const SizedBox(width: 4),
-                  Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+                  Flexible(child: Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 ],
               ),
             ).animate(target: 1).fadeIn(),

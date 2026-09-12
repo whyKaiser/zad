@@ -38,8 +38,8 @@ class StreakScreen extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
-              Text(loc.isAr ? 'الستريك والرانك' : 'Streak & Rank',
-                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+              Flexible(child: Text(loc.isAr ? 'الستريك والرانك' : 'Streak & Rank',
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]).animate().fadeIn(duration: 300.ms),
             const SizedBox(height: 20),
 
@@ -83,7 +83,7 @@ class StreakScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(children: [
-                    Text(rank.emoji, style: const TextStyle(fontSize: 28, letterSpacing: 28 * -0.02)),
+                    Flexible(child: Text(rank.emoji, style: const TextStyle(fontSize: 28, letterSpacing: 28 * -0.02), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     const SizedBox(width: 12),
                     Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                       Text(loc.isAr ? rank.nameAr : rank.nameEn,
@@ -95,11 +95,10 @@ class StreakScreen extends StatelessWidget {
                   const SizedBox(height: 16),
                   if (nextRank != null) ...[
                     Row(children: [
-                      Text(loc.isAr ? 'إلى ${nextRank.nameAr}' : 'To ${nextRank.nameEn}',
-                          style: TextStyle(fontSize: 12, color: c.textSecondary)),
-                      const Spacer(),
-                      Text('${nextRank.minPoints - points} ${loc.points}',
-                          style: TextStyle(fontSize: 12, color: c.accent)),
+                      Expanded(child: Text(loc.isAr ? 'إلى ${nextRank.nameAr}' : 'To ${nextRank.nameEn}',
+                          style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text('${nextRank.minPoints - points} ${loc.points}',
+                          style: TextStyle(fontSize: 12, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ]),
                     const SizedBox(height: 6),
                     ClipRRect(
@@ -146,7 +145,7 @@ class StreakScreen extends StatelessWidget {
                   ),
                 ),
                 child: Row(children: [
-                  Text(r.emoji, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, color: unlocked ? null : c.textTertiary.withOpacity(0.4))),
+                  Flexible(child: Text(r.emoji, style: TextStyle(fontSize: 22, letterSpacing: 22 * -0.01, color: unlocked ? null : c.textTertiary.withOpacity(0.4)), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   const SizedBox(width: 12),
                   Expanded(child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                     Text(loc.isAr ? r.nameAr : r.nameEn,

@@ -176,9 +176,8 @@ class _ProgressPhotosScreenState extends State<ProgressPhotosScreen> {
                 IconButton(onPressed: () => Navigator.pop(context),
                   tooltip: MaterialLocalizations.of(context).backButtonTooltip,
                     icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary)),
-                Text(loc.isAr ? 'صور التقدم' : 'Progress Photos',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                const Spacer(),
+                Expanded(child: Text(loc.isAr ? 'صور التقدم' : 'Progress Photos',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 IconButton(
                   tooltip: AppLocalizations.of(context).isAr ? 'أضف صورة' : 'Add photo',
                   onPressed: _busy ? null : _pickSource,

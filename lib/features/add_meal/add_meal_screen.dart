@@ -169,7 +169,7 @@ class _AddMealScreenState extends State<AddMealScreen> {
         child: Row(children: [
           Icon(icon, size: 14, color: c.textTertiary),
           const SizedBox(width: 6),
-          Text(label, style: TextStyle(fontSize: 12, color: c.textTertiary)),
+          Flexible(child: Text(label, style: TextStyle(fontSize: 12, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
       );
 
@@ -189,9 +189,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
               padding: const EdgeInsets.fromLTRB(16, 12, 16, 8),
               child: Row(
                 children: [
-                  Text(loc.addMeal,
-                      style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                  const Spacer(),
+                  Expanded(child: Text(loc.addMeal,
+                      style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   IconButton(
                     tooltip: loc.isAr ? 'صوّر وجبتك' : 'Snap meal',
                     onPressed: () => Navigator.push(context, ZadPageRoute(
@@ -283,10 +282,9 @@ class _AddMealScreenState extends State<AddMealScreen> {
                   child: Row(children: [
                     Icon(Icons.add_circle_outline_rounded, size: 18, color: context.colors.accent),
                     const SizedBox(width: 10),
-                    Text(
+                    Flexible(child: Text(
                       AppLocalizations.of(context).isAr ? 'أضف طعام مخصص' : 'Add custom food',
-                      style: TextStyle(fontSize: 14, color: context.colors.accent, fontWeight: FontWeight.w500),
-                    ),
+                      style: TextStyle(fontSize: 14, color: context.colors.accent, fontWeight: FontWeight.w500), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   ]),
                 ),
               ),
@@ -334,8 +332,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
                         child: Row(children: [
                           SizedBox(width: 16, height: 16, child: CircularProgressIndicator(strokeWidth: 2, color: c.accent)),
                           const SizedBox(width: 10),
-                          Text(loc.isAr ? 'جارٍ البحث في الإنترنت…' : 'Searching online…',
-                              style: TextStyle(fontSize: 13, color: c.textSecondary)),
+                          Flexible(child: Text(loc.isAr ? 'جارٍ البحث في الإنترنت…' : 'Searching online…',
+                              style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                         ]),
                       )
                     else if (_offResults.isNotEmpty) ...[
@@ -345,8 +343,8 @@ class _AddMealScreenState extends State<AddMealScreen> {
                         child: Row(children: [
                           Icon(Icons.public_rounded, size: 14, color: c.textTertiary),
                           const SizedBox(width: 6),
-                          Text(loc.isAr ? 'نتائج من الإنترنت' : 'Online results',
-                              style: TextStyle(fontSize: 12, color: c.textTertiary)),
+                          Flexible(child: Text(loc.isAr ? 'نتائج من الإنترنت' : 'Online results',
+                              style: TextStyle(fontSize: 12, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                         ]),
                       ),
                       ..._offResults.map((off) => _OFFRow(off: off, onTap: () => _openOFFPortion(off))),
@@ -432,9 +430,9 @@ class _QuickRow extends StatelessWidget {
             ]),
           ),
           const SizedBox(width: 8),
-          Text('${food.calories}',
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent)),
-          Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textSecondary)),
+          Flexible(child: Text('${food.calories}',
+              style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Flexible(child: Text(' ${loc.calorieUnit}', style: TextStyle(fontSize: 10, letterSpacing: 10 * 0.02, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 8),
           Icon(Icons.add_circle_rounded, size: 22, color: c.accent),
         ]),
@@ -589,10 +587,10 @@ class _PortionSheetState extends State<_PortionSheet> {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                Text('${v.calories}',
-                    style: TextStyle(fontSize: 32, letterSpacing: 32 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
+                Flexible(child: Text('${v.calories}',
+                    style: TextStyle(fontSize: 32, letterSpacing: 32 * -0.025, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 const SizedBox(width: 4),
-                Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+                Flexible(child: Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ],
             ),
 
@@ -613,11 +611,10 @@ class _PortionSheetState extends State<_PortionSheet> {
               crossAxisAlignment: CrossAxisAlignment.baseline,
               textBaseline: TextBaseline.alphabetic,
               children: [
-                Text('${_grams.round()} ${loc.grams}',
-                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
-                const Spacer(),
-                Text(loc.isAr ? 'حجم الحصة' : 'Serving size',
-                    style: TextStyle(fontSize: 12, color: c.textSecondary)),
+                Expanded(child: Text('${_grams.round()} ${loc.grams}',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                Flexible(child: Text(loc.isAr ? 'حجم الحصة' : 'Serving size',
+                    style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ],
             ),
             Slider(
@@ -632,9 +629,8 @@ class _PortionSheetState extends State<_PortionSheet> {
 
             // servings row
             Row(children: [
-              Text(loc.isAr ? 'عدد الحصص' : 'Servings',
-                  style: TextStyle(fontSize: 14, color: c.textPrimary)),
-              const Spacer(),
+              Expanded(child: Text(loc.isAr ? 'عدد الحصص' : 'Servings',
+                  style: TextStyle(fontSize: 14, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               _CounterBtn(
                 icon: Icons.remove_rounded,
                 onTap: _servings > 1 ? () => setState(() => _servings--) : null,
@@ -770,13 +766,12 @@ class _DailyBar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(children: [
-          Text(label, style: TextStyle(fontSize: 12, color: c.textSecondary)),
-          const Spacer(),
-          Text('${current + adding} / $goal',
-              style: TextStyle(fontSize: 12, color: c.textSecondary)),
+          Expanded(child: Text(label, style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Flexible(child: Text('${current + adding} / $goal',
+              style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 4),
-          Text('${(after * 100).round()}%',
-              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w600, color: color)),
+          Flexible(child: Text('${(after * 100).round()}%',
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, fontWeight: FontWeight.w600, color: color), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
         const SizedBox(height: 4),
         Stack(

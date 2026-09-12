@@ -128,8 +128,8 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
-                Text(loc.isAr ? 'صوّر وجبتك' : 'Snap your meal',
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                Flexible(child: Text(loc.isAr ? 'صوّر وجبتك' : 'Snap your meal',
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
             ),
             Expanded(
@@ -219,8 +219,8 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
           child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Icon(icon, size: 18, color: primary ? c.onAccent : c.accent),
             const SizedBox(width: 8),
-            Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
-                color: primary ? c.onAccent : c.accent)),
+            Flexible(child: Text(label, style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600,
+                color: primary ? c.onAccent : c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
         ),
       );
@@ -251,10 +251,10 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
         const SizedBox(height: 14),
         Row(crossAxisAlignment: CrossAxisAlignment.baseline, textBaseline: TextBaseline.alphabetic,
             children: [
-          Text('$cal',
-              style: TextStyle(fontSize: 34, letterSpacing: 34 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
+          Flexible(child: Text('$cal',
+              style: TextStyle(fontSize: 34, letterSpacing: 34 * -0.025, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 5),
-          Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+          Flexible(child: Text(loc.calorieUnit, style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
         const SizedBox(height: 12),
         Row(children: [
@@ -266,11 +266,10 @@ class _PhotoMealScreenState extends State<PhotoMealScreen> {
         ]),
         const SizedBox(height: 16),
         Row(children: [
-          Text(loc.isAr ? 'حجم الحصة' : 'Portion size',
-              style: TextStyle(fontSize: 13, color: c.textSecondary)),
-          const Spacer(),
-          Text('×${_portion.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: c.accent)),
+          Expanded(child: Text(loc.isAr ? 'حجم الحصة' : 'Portion size',
+              style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Flexible(child: Text('×${_portion.toStringAsFixed(2)}',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
         Slider(
           value: _portion, min: 0.25, max: 3.0, divisions: 11,

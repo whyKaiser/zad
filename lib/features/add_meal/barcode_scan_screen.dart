@@ -111,9 +111,8 @@ class _BarcodeScanScreenState extends State<BarcodeScanScreen> {
                   onPressed: () => Navigator.pop(context),
                   icon: const Icon(Icons.close_rounded, color: Colors.white),
                 ),
-                Text(loc.isAr ? 'مسح الباركود' : 'Scan Barcode',
-                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white)),
-                const Spacer(),
+                Expanded(child: Text(loc.isAr ? 'مسح الباركود' : 'Scan Barcode',
+                    style: const TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: Colors.white), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 IconButton(
                   tooltip: AppLocalizations.of(context).isAr ? 'الفلاش' : 'Flash',
                   onPressed: () => _ctrl.toggleTorch(),
@@ -197,7 +196,7 @@ class _BarcodeResultSheetState extends State<_BarcodeResultSheet> {
           ]),
           const SizedBox(height: 16),
           Row(children: [
-            Text('${_grams.round()} ${loc.grams}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
+            Flexible(child: Text('${_grams.round()} ${loc.grams}', style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           Slider(value: _grams, min: 10, max: 500, divisions: 49,
               activeColor: c.accent, inactiveColor: c.track,

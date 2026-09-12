@@ -177,7 +177,9 @@ class _DateStripState extends State<_DateStrip> {
           ),
         ),
         SizedBox(
-          height: 76,
+          // الشريط يتمدّد مع خط النظام — بارتفاع ثابت تُقصّ أرقام الأيام
+          // عند تكبير الخط. والخلية تكبر بنفس النسبة (عرض ٥٢ أصلاً).
+          height: 76 * MediaQuery.textScalerOf(context).scale(1.0).clamp(1.0, 1.6),
           child: ListView.builder(
             controller: _scroll,
             scrollDirection: Axis.horizontal,
@@ -194,7 +196,8 @@ class _DateStripState extends State<_DateStrip> {
                 },
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 200),
-                  width: 52,
+                  width: 52 *
+                      MediaQuery.textScalerOf(context).scale(1.0).clamp(1.0, 1.4),
                   margin: const EdgeInsets.symmetric(horizontal: 4),
                   decoration: BoxDecoration(
                     color: isSel ? c.accent : c.surface,
@@ -248,15 +251,21 @@ class _TopBar extends StatelessWidget {
     final c = context.colors;
     return Row(
       children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(AppLocalizations.of(context).greeting,
-                style: TextStyle(fontSize: 13, color: c.textSecondary)),
-            Text(name, style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w500, color: c.textPrimary)),
-          ],
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(AppLocalizations.of(context).greeting,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 13, color: c.textSecondary)),
+              Text(name,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w500, color: c.textPrimary)),
+            ],
+          ),
         ),
-        const Spacer(),
         _StreakChip(days: streak),
         const SizedBox(width: 10),
         ZadTap(
@@ -296,10 +305,15 @@ class _StreakChip extends StatelessWidget {
         border: Border.all(color: c.border),
       ),
       child: Row(
+        // شارة تلتف حول محتواها داخل صف أب — بلا حجم أدنى تصلها قيود
+        // عرض غير محدودة فينكسر أي طفل مرن بداخلها.
+        mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.local_fire_department_rounded, size: 16, color: c.accent2),
           const SizedBox(width: 4),
-          Text('$days', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: c.accent2)),
+          Text('$days',
+              maxLines: 1,
+              style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: c.accent2)),
         ],
       ),
     );
@@ -440,9 +454,8 @@ class _MealSection extends StatelessWidget {
             child: Row(children: [
               Icon(_icon, size: 18, color: c.accent),
               const SizedBox(width: 8),
-              Text(loc.mealTypeLabel(type),
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
-              const Spacer(),
+              Expanded(child: Text(loc.mealTypeLabel(type),
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               if (meals.isNotEmpty)
                 Text('$_totalCal ${loc.calorieUnit}',
                     style: TextStyle(fontSize: 13, color: c.textSecondary)),
@@ -470,9 +483,8 @@ class _MealSection extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 10),
               child: Row(children: [
-                Text(loc.addFood,
-                    style: TextStyle(fontSize: 13, color: c.textTertiary)),
-                const Spacer(),
+                Expanded(child: Text(loc.addFood,
+                    style: TextStyle(fontSize: 13, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                 _CopyYesterdayButton(type: type, loc: loc, c: c),
               ]),
             )
@@ -599,10 +611,10 @@ class _MealRow extends StatelessWidget {
             child: Text(meal.name,
                 style: TextStyle(fontSize: 14, color: c.textPrimary)),
           ),
-          Text('${meal.calories}',
-              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent)),
-          Text(' ${loc.calorieUnit}',
-              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
+          Flexible(child: Text('${meal.calories}',
+              style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Flexible(child: Text(' ${loc.calorieUnit}',
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
         ]),
       ),
     );
@@ -636,20 +648,18 @@ class _StreakRankCard extends StatelessWidget {
         child: Row(children: [
           Icon(Icons.local_fire_department_rounded, size: 22, color: c.accent2),
           const SizedBox(width: 8),
-          Text('$streak', style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent2)),
+          Flexible(child: Text('$streak', style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent2), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 4),
-          Text(loc.isAr ? 'يوم' : 'days',
-              style: TextStyle(fontSize: 13, color: c.textSecondary)),
-          const Spacer(),
-          Text(rank.emoji, style: const TextStyle(fontSize: 18)),
+          Expanded(child: Text(loc.isAr ? 'يوم' : 'days',
+              style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+          Flexible(child: Text(rank.emoji, style: const TextStyle(fontSize: 18), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 6),
-          Text(
+          Flexible(child: Text(
             loc.isAr ? rank.nameAr : rank.nameEn,
-            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.textPrimary),
-          ),
+            style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 6),
-          Text('$points ${loc.points}',
-              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
+          Flexible(child: Text('$points ${loc.points}',
+              style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           const SizedBox(width: 4),
           Icon(Icons.chevron_right_rounded, size: 18, color: c.textTertiary),
         ]),
@@ -728,13 +738,12 @@ class _WaterGoalSheetState extends State<_WaterGoalSheet> {
                 color: c.textTertiary, borderRadius: BorderRadius.circular(4)),
           ),
           Row(children: [
-            Text(loc.isAr ? 'هدف الماء اليومي' : 'Daily water goal',
+            Expanded(child: Text(loc.isAr ? 'هدف الماء اليومي' : 'Daily water goal',
                 style: TextStyle(
-                    fontSize: 17, fontWeight: FontWeight.w600, color: c.textPrimary)),
-            const Spacer(),
-            Text('${value.round()} ${loc.cups}',
+                    fontSize: 17, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Flexible(child: Text('${value.round()} ${loc.cups}',
                 style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
+                    fontSize: 18, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           Slider(
             value: value,

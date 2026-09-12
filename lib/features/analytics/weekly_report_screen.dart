@@ -132,9 +132,9 @@ class _WeeklyReportScreenState extends State<WeeklyReportScreen> {
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
-              Text(loc.isAr ? 'تقرير الأسبوع' : 'Weekly report',
+              Flexible(child: Text(loc.isAr ? 'تقرير الأسبوع' : 'Weekly report',
                   style: TextStyle(
-                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
           ),
           Expanded(

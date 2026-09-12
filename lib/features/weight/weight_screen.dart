@@ -104,8 +104,8 @@ class _WeightScreenState extends State<WeightScreen> with SingleTickerProviderSt
                   onPressed: () => Navigator.pop(context),
                   icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
                 ),
-                Text(loc.weightTracking,
-                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                Flexible(child: Text(loc.weightTracking,
+                    style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
             ),
             TabBar(
@@ -240,11 +240,10 @@ class _WeightTab extends StatelessWidget {
                       color: c.surface, borderRadius: BorderRadius.circular(14), border: Border.all(color: c.border),
                     ),
                     child: Row(children: [
-                      Text(intl.DateFormat('d MMM').format(e.date),
-                          style: TextStyle(fontSize: 14, color: c.textSecondary)),
-                      const Spacer(),
-                      Text('${unit.toDisplay(e.kg).toStringAsFixed(1)} ${unit.useKg ? loc.kg : loc.lbs}',
-                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
+                      Expanded(child: Text(intl.DateFormat('d MMM').format(e.date),
+                          style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text('${unit.toDisplay(e.kg).toStringAsFixed(1)} ${unit.useKg ? loc.kg : loc.lbs}',
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ]),
                   ),
                 )),
@@ -495,10 +494,9 @@ class _LogWeightSheetState extends State<_LogWeightSheet> {
             decoration: BoxDecoration(color: c.textTertiary, borderRadius: BorderRadius.circular(4)),
           )),
           Row(children: [
-            Text(loc.logWeight, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary)),
-            const Spacer(),
-            Text('${disp.toStringAsFixed(1)} $unit',
-                style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent)),
+            Expanded(child: Text(loc.logWeight, style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Flexible(child: Text('${disp.toStringAsFixed(1)} $unit',
+                style: TextStyle(fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           Slider(
             value: _kg, min: _minKg, max: _maxKg, divisions: 440, // خطوة ٠٫٥ كجم

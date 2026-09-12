@@ -70,15 +70,24 @@ class ChallengesScreen extends StatelessWidget {
                     builder: (_, v, __) => Text('$v',
                         style: TextStyle(fontSize: 32, letterSpacing: 32 * -0.025, fontWeight: FontWeight.w700, color: c.accent)),
                   ),
-                  Text(loc.points, style: TextStyle(fontSize: 13, color: c.textSecondary)),
+                  Text(loc.points,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(fontSize: 13, color: c.textSecondary)),
                 ]),
-                const Spacer(),
-                Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
-                  Row(children: [
-                    Text(rank.emoji, style: const TextStyle(fontSize: 20, letterSpacing: 20 * -0.01)),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Column(crossAxisAlignment: CrossAxisAlignment.end, children: [
+                  Row(mainAxisAlignment: MainAxisAlignment.end, children: [
+                    Flexible(child: Text(rank.emoji, style: const TextStyle(fontSize: 20, letterSpacing: 20 * -0.01), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     const SizedBox(width: 8),
-                    Text(loc.isAr ? rank.nameAr : rank.nameEn,
-                        style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    Flexible(
+                      child: Text(loc.isAr ? rank.nameAr : rank.nameEn,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.end,
+                          style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                    ),
                   ]),
                   const SizedBox(height: 6),
                   if (nextRank != null)
@@ -86,9 +95,13 @@ class ChallengesScreen extends StatelessWidget {
                       loc.isAr
                           ? '${nextRank.minPoints - totalPts} نقطة للـ ${nextRank.nameAr}'
                           : '${nextRank.minPoints - totalPts} pts to ${nextRank.nameEn}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.end,
                       style: TextStyle(fontSize: 12, color: c.textSecondary),
                     ),
                 ]),
+                ),
               ],
             ),
           ).animate().fadeIn(duration: 400.ms).slideY(begin: 0.15, curve: Curves.easeOutCubic),
@@ -155,10 +168,9 @@ class ChallengesScreen extends StatelessWidget {
               .slideX(begin: 0.1, curve: Curves.easeOutCubic)),
           const SizedBox(height: 24),
           Row(children: [
-            Text(loc.leaderboard,
-                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: c.textPrimary)),
-            const Spacer(),
-            Text(loc.weeklyLeague, style: TextStyle(fontSize: 12, color: c.textSecondary)),
+            Expanded(child: Text(loc.leaderboard,
+                style: TextStyle(fontSize: 17, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Flexible(child: Text(loc.weeklyLeague, style: TextStyle(fontSize: 12, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]).animate().fadeIn(delay: 135.ms),
           const SizedBox(height: 12),
           ...ranked.asMap().entries.map((e) => _LeaderRow(ranked: e.value, loc: loc)
@@ -241,8 +253,8 @@ class _ChallengeCard extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 10),
-            Text('${challenge.current}/${challenge.target}',
-                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: c.textSecondary)),
+            Flexible(child: Text('${challenge.current}/${challenge.target}',
+                style: TextStyle(fontSize: 13, fontWeight: FontWeight.w500, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
         ],
       ),
@@ -284,10 +296,10 @@ class _LeaderRow extends StatelessWidget {
                 fontSize: 15,
                 fontWeight: highlight ? FontWeight.w700 : FontWeight.w400,
                 color: c.textPrimary))),
-        Text('${entry.points}',
-            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.accent)),
+        Flexible(child: Text('${entry.points}',
+            style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
         const SizedBox(width: 4),
-        Text(loc.points, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary)),
+        Flexible(child: Text(loc.points, style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textTertiary), maxLines: 1, overflow: TextOverflow.ellipsis)),
       ]),
     );
   }

@@ -47,9 +47,9 @@ class RecipesScreen extends StatelessWidget {
                 onPressed: () => Navigator.pop(context),
                 icon: Icon(Icons.arrow_back_rounded, color: c.textPrimary),
               ),
-              Text(loc.isAr ? 'وصفاتي' : 'My recipes',
+              Flexible(child: Text(loc.isAr ? 'وصفاتي' : 'My recipes',
                   style: TextStyle(
-                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary)),
+                      fontSize: 20, letterSpacing: 20 * -0.01, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
           ),
           Expanded(
@@ -149,11 +149,11 @@ class _RecipeCard extends StatelessWidget {
                     style: TextStyle(
                         fontSize: 16, fontWeight: FontWeight.w700, color: c.textPrimary)),
               ),
-              Text('${recipe.caloriesPerServing}',
+              Flexible(child: Text('${recipe.caloriesPerServing}',
                   style: TextStyle(
-                      fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
-              Text(' ${loc.calorieUnit}',
-                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
+                      fontSize: 18, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
+              Flexible(child: Text(' ${loc.calorieUnit}',
+                  style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
             const SizedBox(height: 4),
             Text(
@@ -164,11 +164,11 @@ class _RecipeCard extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             Row(children: [
-              _macro(c, loc.protein, m.protein, c.macroProtein),
+              Flexible(child: _macro(c, loc.protein, m.protein, c.macroProtein)),
               const SizedBox(width: 8),
-              _macro(c, loc.carbs, m.carbs, c.macroCarbs),
+              Flexible(child: _macro(c, loc.carbs, m.carbs, c.macroCarbs)),
               const SizedBox(width: 8),
-              _macro(c, loc.fat, m.fat, c.macroFat),
+              Flexible(child: _macro(c, loc.fat, m.fat, c.macroFat)),
               const Spacer(),
               ZadTap(
                 onTap: () => _logSheet(context, recipe),
@@ -268,9 +268,9 @@ class _LogRecipeSheetState extends State<_LogRecipeSheet> {
                   style: TextStyle(
                       fontSize: 17, fontWeight: FontWeight.w700, color: c.textPrimary)),
             ),
-            Text('$cal ${loc.calorieUnit}',
+            Flexible(child: Text('$cal ${loc.calorieUnit}',
                 style: TextStyle(
-                    fontSize: 18, fontWeight: FontWeight.w700, color: c.accent)),
+                    fontSize: 18, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           const SizedBox(height: 16),
           SizedBox(
@@ -306,12 +306,11 @@ class _LogRecipeSheetState extends State<_LogRecipeSheet> {
           ),
           const SizedBox(height: 12),
           Row(children: [
-            Text(loc.isAr ? 'عدد الحصص' : 'Servings',
-                style: TextStyle(fontSize: 14, color: c.textSecondary)),
-            const Spacer(),
-            Text(_servings.toStringAsFixed(_servings == _servings.roundToDouble() ? 0 : 1),
+            Expanded(child: Text(loc.isAr ? 'عدد الحصص' : 'Servings',
+                style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+            Flexible(child: Text(_servings.toStringAsFixed(_servings == _servings.roundToDouble() ? 0 : 1),
                 style: TextStyle(
-                    fontSize: 16, fontWeight: FontWeight.w700, color: c.accent)),
+                    fontSize: 16, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
           ]),
           Slider(
             value: _servings,
@@ -477,38 +476,35 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                   ),
                   child: Column(children: [
                     Row(children: [
-                      Text(loc.isAr ? 'المجموع' : 'Total',
-                          style: TextStyle(fontSize: 13, color: c.textSecondary)),
-                      const Spacer(),
-                      Text('${draft.totalCalories} ${loc.calorieUnit}',
+                      Expanded(child: Text(loc.isAr ? 'المجموع' : 'Total',
+                          style: TextStyle(fontSize: 13, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text('${draft.totalCalories} ${loc.calorieUnit}',
                           style: TextStyle(
                               fontSize: 15,
                               fontWeight: FontWeight.w600,
-                              color: c.textPrimary)),
+                              color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ]),
                     const SizedBox(height: 6),
                     Row(children: [
-                      Text(loc.isAr ? 'للحصة الواحدة' : 'Per serving',
+                      Expanded(child: Text(loc.isAr ? 'للحصة الواحدة' : 'Per serving',
                           style: TextStyle(
                               fontSize: 13,
                               fontWeight: FontWeight.w600,
-                              color: c.textPrimary)),
-                      const Spacer(),
-                      Text('${draft.caloriesPerServing} ${loc.calorieUnit}',
+                              color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                      Flexible(child: Text('${draft.caloriesPerServing} ${loc.calorieUnit}',
                           style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.w700,
-                              color: c.accent)),
+                              color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
                     ]),
                   ]),
                 ),
                 const SizedBox(height: 16),
 
                 Row(children: [
-                  Text(loc.isAr ? 'عدد الحصص' : 'Servings',
+                  Expanded(child: Text(loc.isAr ? 'عدد الحصص' : 'Servings',
                       style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
-                  const Spacer(),
+                          fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   IconButton(
                     tooltip: AppLocalizations.of(context).isAr ? 'إنقاص' : 'Decrease',
                     onPressed: _servings > 1
@@ -520,9 +516,9 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                     icon: Icon(Icons.remove_circle_outline_rounded,
                         color: _servings > 1 ? c.accent : c.textTertiary),
                   ),
-                  Text('$_servings',
+                  Flexible(child: Text('$_servings',
                       style: TextStyle(
-                          fontSize: 18, fontWeight: FontWeight.w700, color: c.textPrimary)),
+                          fontSize: 18, fontWeight: FontWeight.w700, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   IconButton(
                     tooltip: AppLocalizations.of(context).isAr ? 'زيادة' : 'Increase',
                     onPressed: _servings < 20
@@ -538,10 +534,9 @@ class _RecipeEditorScreenState extends State<RecipeEditorScreen> {
                 const SizedBox(height: 8),
 
                 Row(children: [
-                  Text(loc.isAr ? 'المكوّنات' : 'Ingredients',
+                  Expanded(child: Text(loc.isAr ? 'المكوّنات' : 'Ingredients',
                       style: TextStyle(
-                          fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary)),
-                  const Spacer(),
+                          fontSize: 15, fontWeight: FontWeight.w600, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   TextButton.icon(
                     onPressed: _addIngredient,
                     icon: Icon(Icons.add_rounded, size: 18, color: c.accent),
@@ -709,8 +704,8 @@ class _PickIngredientSheetState extends State<_PickIngredientSheet> {
                               fontWeight: sel ? FontWeight.w600 : FontWeight.w400,
                               color: sel ? c.accent : c.textPrimary)),
                     ),
-                    Text('${f.kcalPer100g} / 100${loc.grams}',
-                        style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary)),
+                    Flexible(child: Text('${f.kcalPer100g} / 100${loc.grams}',
+                        style: TextStyle(fontSize: 11, letterSpacing: 11 * 0.01, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
                   ]),
                 ),
               );
@@ -726,12 +721,11 @@ class _PickIngredientSheetState extends State<_PickIngredientSheet> {
             ),
             child: Column(mainAxisSize: MainAxisSize.min, children: [
               Row(children: [
-                Text(loc.isAr ? 'الكمية' : 'Amount',
-                    style: TextStyle(fontSize: 14, color: c.textSecondary)),
-                const Spacer(),
-                Text('${_grams.round()} ${loc.grams}',
+                Expanded(child: Text(loc.isAr ? 'الكمية' : 'Amount',
+                    style: TextStyle(fontSize: 14, color: c.textSecondary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+                Flexible(child: Text('${_grams.round()} ${loc.grams}',
                     style: TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w700, color: c.accent)),
+                        fontSize: 16, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
               ]),
               Slider(
                 value: _grams,

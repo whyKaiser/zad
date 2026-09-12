@@ -49,10 +49,9 @@ class _DetrainingScreenState extends State<DetrainingScreen> {
             const SizedBox(height: 22),
 
             Row(children: [
-              Text(loc.weeksOffQ, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary)),
-              const Spacer(),
-              Text('${_weeks.round()} ${loc.weeksUnit}',
-                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent)),
+              Expanded(child: Text(loc.weeksOffQ, style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500, color: c.textPrimary), maxLines: 1, overflow: TextOverflow.ellipsis)),
+              Flexible(child: Text('${_weeks.round()} ${loc.weeksUnit}',
+                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w700, color: c.accent), maxLines: 1, overflow: TextOverflow.ellipsis)),
             ]),
             Slider(
               value: _weeks, min: 1, max: 52, divisions: 51,
